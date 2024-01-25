@@ -1,0 +1,24 @@
+# .gitignore for Python projects
+
+# Virtual environment
+venv/
+
+# Byte-compiled / optimized Python files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# IDE files
+.idea/
+.vscode/
+
+# Compiled files
+*.pyc
+
+# Local configuration file
+.env
+
+# Ignore pipenv virtual environment
+Pipfile
+Pipfile.lock
