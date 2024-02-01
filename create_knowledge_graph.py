@@ -39,7 +39,7 @@ embed_model = LangchainEmbedding(
 )
 
 # load the data
-documents = SimpleDirectoryReader("./data").load_data()
+documents = SimpleDirectoryReader("./data/real_world_community_model").load_data()
 print('Loaded the data...')
 
 # setup the service context
@@ -47,7 +47,8 @@ print('Loaded the data...')
 service_context = ServiceContext.from_defaults(
     chunk_size=256,
     llm=llm,
-    embed_model=embed_model
+    embed_model=embed_model,
+    chunk_overlap=True
 )
 
 #setup the storage context
@@ -58,7 +59,7 @@ print('Constructing the Knowledge Graph Index...')
 
 # load the Knowlege Graph Index ( if it's not first application )
 try:
-  storage_context = StorageContext.from_defaults(persist_dir='./persistence')
+  storage_context = StorageContext.from_defaults(persist_dir='./persistence/real_world_community_model')
   index = load_index_from_storage(storage_context=storage_context,
                                   service_context=service_context,
                                   max_triplets_per_chunk=3,
@@ -69,25 +70,38 @@ except:
   index_loaded = False
 if not index_loaded:
   # construct the Knowledge Graph Index
+  
+  storage_context = StorageContext.from_defaults(graph_store=graph_store)
   index = KnowledgeGraphIndex.from_documents(documents=documents,
                                              max_triplets_per_chunk=3,
                                              service_context=service_context,
                                              storage_context=storage_context,
-                                             include_embeddings=True)
+                                             include_embeddings=False)
+  
   
 
 print('Construction of index is finished...')
 
 # persist the Knowledge Graph Index so we don't have to recreate it again once we want to play with it
 
-storage_context.persist('./persistence')
+storage_context.persist('./persistence/real_world_community_model')
 
 # technical debt - create script from here that loads from persisted index
 
 # query the knowledge graph by building Query Engine
 
+# Related to questions about flow
+
 # query = "What does it feel like to be in a state of the flow?"
-query = 'What is the ‘flow’ cycle?'
+# query = 'What is the ‘flow’ cycle?'
+# query = 'What are the five performance enhancing chemicals that are released during a flow state?'
+
+# query = "What is reality?"
+
+query = "What is Real world community model?"
+
+# Related to questions about `real world community model`
+
 query_engine = index.as_query_engine(include_text=True,
                                      response_mode ="tree_summarize",
                                      embedding_mode="hybrid",
@@ -110,4 +124,4 @@ print(response.response.split("<|assistant|>")[-1].strip())
 g = index.get_networkx_graph()
 net = Network(notebook=True, cdn_resources="in_line", directed=True)
 net.from_nx(g)
-net.show("example.html")
+net.show("real_world_community_model.html")
