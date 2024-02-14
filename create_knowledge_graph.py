@@ -96,9 +96,6 @@ if not index_loaded:
                                              include_embeddings=False)
   
   
-
-print('Construction of index is finished...')
-
 # persist the Knowledge Graph Index so we don't have to recreate it again once we want to play with it
 
 storage_context.persist('./persistence/real_world_community_model_15_triplets_per_chunk_neo4j')
@@ -139,8 +136,10 @@ Helpful Answer:
 </s>"""
 #
 response = query_engine.query(message_template)
-#
-print(response.response.split("<|assistant|>")[-1].strip())
+# default print response
+# print(response.response.split("<|assistant|>")[-1].strip())
+# print whole response
+print(response.response)
 
 # visualizing the graph
 g = index.get_networkx_graph()
