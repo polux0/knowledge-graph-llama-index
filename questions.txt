@@ -1,0 +1,13 @@
+Flow:
+
+    # query = "What does it feel like to be in a state of the flow?"
+    # query = 'What is the ‘flow’ cycle?'
+    # query = 'What are the five performance enhancing chemicals that are released during a flow state?'
+    # query = "What is reality?"
+    # query = "What is Real world community model?"
+
+Real World Community Model: 
+
+    # query = "What is Real world community model?"
+    # The Real World Community Model is a concept described in the Aurvana System Overview document. It refers to a model of a community as a population of people navigating together in common, surrounded by their environment, and includes the direction domain (goals and other directional components), data domain (data collected from the environment and data output as the result of information processing), knowledge domain (logical integration of observations and relationships into common knowledge, social approach, and the value system and reasoning), and values domain (society's value system and reasoning that supports the fulfillment of needs and orients the total alignment with the common direction of intent). The model is dynamically simulatable and adaptive, and the whole of the real world must be modeled for optimal societal structuring.
+    # query = "The material system domain"
