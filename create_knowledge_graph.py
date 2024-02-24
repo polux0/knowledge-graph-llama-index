@@ -70,10 +70,9 @@ try:
   print('Loading of index is finished...')
 except:
   index_loaded = False
-  print('Index not found, constructing one...')
 if not index_loaded:
   # construct the Knowledge Graph Index
-  
+  print('Index not found, constructing one...')
   storage_context = StorageContext.from_defaults(graph_store=graph_store)
   index = KnowledgeGraphIndex.from_documents(documents=documents,
                                              max_triplets_per_chunk=15,
