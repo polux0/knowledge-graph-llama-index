@@ -30,9 +30,6 @@ NEO4J_URL = os.getenv('NEO4J_URL')
 NEO4J_DATABASE = os.getenv('NEO4J_DATABASE')
 
 
-print('Neo4j version')
-print(neo4j.__version__)
-
 # setup logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
@@ -70,8 +67,6 @@ graph_store = Neo4jGraphStore(
   url=NEO4J_URL,
   database=NEO4J_DATABASE
 )
-
-print('Constructing the Knowledge Graph Index...')
 
 # load the Knowlege Graph Index ( if it's not first application )
 try:
