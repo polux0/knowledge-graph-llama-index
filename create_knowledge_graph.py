@@ -8,7 +8,8 @@ from llama_index import (SimpleDirectoryReader,
 LLMPredictor,
 ServiceContext,
 KnowledgeGraphIndex)
-from llama_index.graph_stores import SimpleGraphStore
+from llama_index.graph_stores import SimpleGraphStore, Neo4jGraphStore
+import neo4j
 from llama_index.storage.storage_context import StorageContext
 from llama_index import load_index_from_storage
 from llama_index.llms import HuggingFaceInferenceAPI
@@ -16,13 +17,21 @@ from langchain.embeddings import HuggingFaceInferenceAPIEmbeddings
 from llama_index.embeddings import LangchainEmbedding
 from pyvis.network import Network
 
-
-
 # load environment variables from .env file
 load_dotenv()
 
 # accessing the environment variables
 HF_TOKEN = os.getenv('HUGGING_FACE_API_KEY')
+
+# neo4j environment variables
+NEO4J_USERNAME = os.getenv('NEO4J_USERNAME')
+NEO4J_PASSOWRD = os.getenv('NEO4J_PASSOWRD')
+NEO4J_URL = os.getenv('NEO4J_URL')
+NEO4J_DATABASE = os.getenv('NEO4J_DATABASE')
+
+
+print('Neo4j version')
+print(neo4j.__version__)
 
 # setup logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -55,13 +64,18 @@ service_context = ServiceContext.from_defaults(
 
 #setup the storage context
 
-graph_store = SimpleGraphStore()
+graph_store = Neo4jGraphStore(
+  username=NEO4J_USERNAME,
+  password=NEO4J_PASSOWRD,
+  url=NEO4J_URL,
+  database=NEO4J_DATABASE
+)
 
 print('Constructing the Knowledge Graph Index...')
 
 # load the Knowlege Graph Index ( if it's not first application )
 try:
-  storage_context = StorageContext.from_defaults(persist_dir='./persistence/real_world_community_model_15_triplets_per_chunk')
+  storage_context = StorageContext.from_defaults(persist_dir='./persistence/real_world_community_model_15_triplets_per_chunk_neo4j')
   index = load_index_from_storage(storage_context=storage_context,
                                   service_context=service_context,
                                   max_triplets_per_chunk=15,
@@ -82,12 +96,9 @@ if not index_loaded:
                                              include_embeddings=False)
   
   
-
-print('Construction of index is finished...')
-
 # persist the Knowledge Graph Index so we don't have to recreate it again once we want to play with it
 
-storage_context.persist('./persistence/real_world_community_model_15_triplets_per_chunk')
+storage_context.persist('./persistence/real_world_community_model_15_triplets_per_chunk_neo4j')
 
 # technical debt - create script from here that loads from persisted index
 
@@ -125,8 +136,10 @@ Helpful Answer:
 </s>"""
 #
 response = query_engine.query(message_template)
-#
-print(response.response.split("<|assistant|>")[-1].strip())
+# default print response
+# print(response.response.split("<|assistant|>")[-1].strip())
+# print whole response
+print(response.response)
 
 # visualizing the graph
 g = index.get_networkx_graph()
