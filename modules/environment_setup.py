@@ -16,6 +16,7 @@ def load_environment_variables():
         "NEO4J_PASSWORD": os.getenv("NEO4J_PASSWORD"),
         "NEO4J_URL": os.getenv("NEO4J_URL"),
         "NEO4J_DATABASE": os.getenv("NEO4J_DATABASE"),
+        
     }
 def setup_logging():
     """Set up logging to output to standard output with INFO level."""
