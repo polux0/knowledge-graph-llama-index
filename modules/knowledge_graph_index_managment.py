@@ -1,6 +1,6 @@
 from llama_index import KnowledgeGraphIndex, load_index_from_storage
 
-def manage_knowledge_graph_index(documents, service_context, storage_context, index_loaded):
+def manage_knowledge_graph_index(documents, max_triplets_per_chunk, service_context, storage_context):
     """Manage the Knowledge Graph Index by either loading or constructing it.
 
     Args:
@@ -12,7 +12,7 @@ def manage_knowledge_graph_index(documents, service_context, storage_context, in
     Returns:
         KnowledgeGraphIndex: The loaded or constructed Knowledge Graph Index.
     """
-    if index_loaded:
+    try:
         return load_index_from_storage(storage_context=storage_context, service_context=service_context, include_embeddings=True)
-    else:
-        return KnowledgeGraphIndex.from_documents(documents=documents, service_context=service_context, storage_context=storage_context, include_embeddings=False)
+    except:
+        return KnowledgeGraphIndex.from_documents(documents=documents, max_triplets_per_chunk=max_triplets_per_chunk, service_context=service_context, storage_context=storage_context, include_embeddings=True)
