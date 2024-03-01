@@ -6,3 +6,4 @@ pypdf
 python-dotenv
 huggingface_hub
 neo4j
+langchain-community

@@ -34,7 +34,7 @@ neo4j_credentials = {
 persist_dir = '../persistence/modularization'
 
 try:
-    storage_context = create_storage_context(neo4j_credentials, env_vars, '../persistence/KURAC')
+    storage_context = create_storage_context(neo4j_credentials, env_vars, '../persistence/test')
     index = manage_knowledge_graph_index(documents=documents, max_triplets_per_chunk=15, service_context=service_context, storage_context=storage_context)
 
 except:
