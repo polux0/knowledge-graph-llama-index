@@ -22,9 +22,9 @@ def create_storage_context(neo4j_credentials, env_vars, persistence_dir):
         StorageContext: The initialized storage context.
     """
     #try:
-    storage_context = StorageContext.from_defaults(persistence_dir)
     required_files = ['default__vector_store.json', 'docstore.json', 'graph_store.json', 'image__vector_store.json', 'index_store.json']  # Example file names
     if check_files_in_directory(persistence_dir, required_files):
+        print("Persistence directory: ", persistence_dir)
         storage_context = StorageContext.from_defaults(persistence_dir)
         print("Created storage context from persistence directory...")  
     else:
