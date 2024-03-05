@@ -1,4 +1,4 @@
-from llama_index import KnowledgeGraphIndex, load_index_from_storage
+from llama_index.core import KnowledgeGraphIndex, load_index_from_storage
 
 def manage_knowledge_graph_index(documents, max_triplets_per_chunk, service_context, storage_context):
     """Manage the Knowledge Graph Index by either loading or constructing it.

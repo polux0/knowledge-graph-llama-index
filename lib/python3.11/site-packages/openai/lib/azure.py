@@ -22,6 +22,7 @@ _deployments_endpoints = set(
         "/embeddings",
         "/audio/transcriptions",
         "/audio/translations",
+        "/audio/speech",
         "/images/generations",
     ]
 )
@@ -154,7 +155,7 @@ class AzureOpenAI(BaseAzureClient[httpx.Client, Stream[Any]], OpenAI):
             azure_ad_token_provider: A function that returns an Azure Active Directory token, will be invoked on every request.
 
             azure_deployment: A model deployment, if given sets the base client URL to include `/deployments/{azure_deployment}`.
-                Note: this means you won't be able to use non-deployment endpoints.
+                Note: this means you won't be able to use non-deployment endpoints. Not supported with Assistants APIs.
         """
         if api_key is None:
             api_key = os.environ.get("AZURE_OPENAI_API_KEY")
@@ -387,7 +388,7 @@ class AsyncAzureOpenAI(BaseAzureClient[httpx.AsyncClient, AsyncStream[Any]], Asy
             azure_ad_token_provider: A function that returns an Azure Active Directory token, will be invoked on every request.
 
             azure_deployment: A model deployment, if given sets the base client URL to include `/deployments/{azure_deployment}`.
-                Note: this means you won't be able to use non-deployment endpoints.
+                Note: this means you won't be able to use non-deployment endpoints. Not supported with Assistants APIs.
         """
         if api_key is None:
             api_key = os.environ.get("AZURE_OPENAI_API_KEY")

@@ -1,19 +1,19 @@
 import logging
 import os
 from dotenv import load_dotenv
-from llama_index import KnowledgeGraphIndex, StorageContext, load_index_from_storage
+from llama_index.core import KnowledgeGraphIndex, StorageContext, load_index_from_storage
 from environment_setup import (load_environment_variables, setup_logging)
 from large_language_model_setup import initialize_llm
-from embedding_model_setup import initialize_embedding_model
+from embedding_model_modular_setup import initialize_embedding_model
 from data_loading import load_documents
 from service_context_setup import create_service_context
 # Related to technical debt #1
-from llama_index.graph_stores import Neo4jGraphStore
+from llama_index.graph_stores.neo4j import Neo4jGraphStore
 from storage_context_setup import create_storage_context
 from knowledge_graph_index_managment import manage_knowledge_graph_index
 # Related to technical debt #1
-
 from querying import query_knowledge_graph
+from data_path_resolver import resolve_data_path
 
 # Load environment variables and setup logging
 load_dotenv()
@@ -37,7 +37,7 @@ neo4j_credentials = {
     'url': env_vars['NEO4J_URL'],
     'database': env_vars['NEO4J_DATABASE']
 }
-persistence_directory = '../persistence/real_world_community_model_15_triplets_per_chunk_neo4j'
+persistence_directory = resolve_data_path('../persistence/real_world_community_model_15_triplets_per_chunk_neo4j')
 
 # Technical debt 1 - modularize further
 
@@ -65,7 +65,7 @@ if not index_loaded:
   index = KnowledgeGraphIndex.from_documents(documents=documents,
                                              max_triplets_per_chunk=15,
                                              service_context=service_context,
-                                             storage_context=storage_context,
+                                              storage_context=storage_context,
                                              include_embeddings=False)
 
 # Technical debt 1 - modularize further

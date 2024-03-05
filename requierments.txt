@@ -1,4 +1,4 @@
-llama_index 
+llama-index===0.10.15
 pyvis 
 Ipython 
 langchain 
@@ -7,3 +7,6 @@ python-dotenv
 huggingface_hub
 neo4j
 langchain-community
+llama-index-llms-huggingface
+llama-index-graph-stores-neo4j
+llama-index-embeddings-huggingface
