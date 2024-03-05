@@ -1,6 +1,6 @@
 from dotenv import load_dotenv
-from llama_index import StorageContext
-from llama_index.graph_stores import Neo4jGraphStore
+from llama_index.core import StorageContext
+from llama_index.graph_stores.neo4j import Neo4jGraphStore
 import os
 from persistence_directory_validity import check_files_in_directory
 

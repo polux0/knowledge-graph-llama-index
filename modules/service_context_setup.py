@@ -1,5 +1,5 @@
-from llama_index import ServiceContext, StorageContext
-from llama_index.graph_stores import Neo4jGraphStore
+from llama_index.core import ServiceContext, StorageContext
+from llama_index.graph_stores.neo4j import Neo4jGraphStore
 
 def create_service_context(llm, chunk_size, embed_model, chunk_overlap):
     """Create a service context with default settings, LLM, and embedding model.

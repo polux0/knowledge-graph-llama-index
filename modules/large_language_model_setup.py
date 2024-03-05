@@ -1,5 +1,5 @@
 import logging
-from llama_index.llms import HuggingFaceInferenceAPI
+from llama_index.llms.huggingface import HuggingFaceInferenceAPI
 from language_models import LANGUAGE_MODELS
 
 def initialize_llm(hf_token, model_name_id):
