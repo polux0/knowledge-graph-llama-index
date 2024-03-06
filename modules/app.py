@@ -74,6 +74,9 @@ if not index_loaded:
 # Print the index
 print("index: ", index)
 # Query the knowledge graph
-query = "What are the domains of the Real World Community Model?"
+# query = "What are the domains of the Real World Community Model?"
+# query = "What do systems need to flourish?"
+# query = "Would you tell me more about societal information system"
+query = "What would be the way to construct better societies?"
 response = query_knowledge_graph(index, query, template_id="default")
 print(response)
