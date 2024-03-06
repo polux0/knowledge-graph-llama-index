@@ -72,8 +72,8 @@ retrievals = base_retriever.retrieve(
 
 # print("displaying retrievals")
 
-# for n in retrievals:
-#     display_source_node(n, source_length=1500)
+for n in retrievals:
+    display_source_node(n, source_length=1500)
 
 query_engine_base = RetrieverQueryEngine.from_args(base_retriever, llm=llm)
 
@@ -82,3 +82,52 @@ response = query_engine_base.query(
 )
 
 print(response)
+
+
+# Part II Chuck References: Smaller Child Chunks Reffering to Bigger Parent Chunk
+
+sub_chunk_sizes = [128, 256, 512]
+
+# technical debt - create service context for this
+sub_node_parsers = [
+    SentenceSplitter(chunk_size=c, chunk_overlap=c/2) for c in sub_chunk_sizes
+]
+
+all_nodes = []
+
+for base_node in base_nodes:
+    for n in sub_node_parsers:
+        sub_nodes = n.get_nodes_from_documents([base_node])
+        sub_indices = [
+            IndexNode.from_text_node(sub_node, base_node.node_id) for sub_node in sub_nodes
+        ]
+        all_nodes.extend(sub_indices)
+
+    original_node = IndexNode.from_text_node(base_node, base_node.node_id)
+    all_nodes.append(original_node)
+
+all_nodes_dict = {n.node_id: n for n in all_nodes}
+
+vector_index_chunk = VectorStoreIndex(all_nodes, embed_model=embed_model)
+vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k = 3)
+
+retriever_chunk = RecursiveRetriever(
+    "vector",
+    retriever_dict={"vector": vector_retriever_chunk},
+    node_dict=all_nodes_dict,
+    verbose=True
+)
+
+nodes = retriever_chunk.retrieve(
+    "Can you tell me about the key domains of Real World Community Model"
+)
+# for node in nodes:
+#     display_source_node(node, source_length=2000)
+
+query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
+
+response = query_engine_chunk.query(
+    "Can you tell me about the key domains of Real World Community Model"
+)
+print("With parent-child retriever enabled****************************************************************")
+print(str(response))
