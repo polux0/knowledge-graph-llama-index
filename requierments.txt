@@ -10,3 +10,4 @@ langchain-community
 llama-index-llms-huggingface
 llama-index-graph-stores-neo4j
 llama-index-embeddings-huggingface
+matplotlib

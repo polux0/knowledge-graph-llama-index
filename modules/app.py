@@ -77,6 +77,7 @@ print("index: ", index)
 # query = "What are the domains of the Real World Community Model?"
 # query = "What do systems need to flourish?"
 # query = "Would you tell me more about societal information system"
-query = "What would be the way to construct better societies?"
+# query = "What would be the way to construct better societies?"
+query = "Can you tell me about the key domains of Real World Community Model?"
 response = query_knowledge_graph(index, query, template_id="default")
 print(response)
