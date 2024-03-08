@@ -25,6 +25,6 @@ def query_knowledge_graph(index, query, template_id="default", response_mode="tr
 
     logging.info(f"Sending the following message to the query engine: {message_template}")
     response = query_engine.query(message_template)
-    logging.info(f"Logging the whole response before stripping it: {response}")
+    # logging.info(f"Logging the whole response before stripping it: {response}")
     return response.response
     # return response.response.split("")[-1].strip()

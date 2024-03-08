@@ -1,4 +1,4 @@
-llama-index===0.10.15
+llama-index===0.10.17
 pyvis 
 Ipython 
 langchain 
@@ -10,3 +10,6 @@ langchain-community
 llama-index-llms-huggingface
 llama-index-graph-stores-neo4j
 llama-index-embeddings-huggingface
+llama-index-vector-stores-chroma
+chromadb
+matplotlib
