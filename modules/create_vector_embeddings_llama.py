@@ -5,6 +5,7 @@ from llama_index.core.retrievers import RecursiveRetriever
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core import VectorStoreIndex
 from llama_index.llms.openai import OpenAI
+from llama_index.vector_stores.chroma import ChromaVectorStore
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
 from environment_setup import (load_environment_variables, setup_logging)
@@ -13,15 +14,20 @@ from llama_index.core import StorageContext, load_index_from_storage
 from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.schema import IndexNode
+import chromadb
 import json
 
 
-# load the documents, previously used for knowledge graph construction
+# load the documents, modular function previously used for knowledge graph construction
 
-# documents = load_documents("../data/real_world_community_model")
+documents_directory = "../data/real_world_community_model"
 
-loader = PDFReader()
-documents = loader.load_data(file=Path("./data/real_world_community_model/Aurvana System Overiew - 73 - 84.pdf"))
+documents = load_documents(documents_directory)
+
+# load the documents, example from llama documentation
+
+# loader = PDFReader()
+# documents = loader.load_data(file=Path("./data/real_world_community_model/Aurvana System Overiew - 73 - 84.pdf"))
 
 
 doc_text = "\n\n".join([d.get_content() for d in documents])
@@ -34,8 +40,6 @@ base_nodes = node_parser.get_nodes_from_documents(docs)
 # set node ids to be a constant
 for idx, node in enumerate(base_nodes):
     node.id_ = f"node-{idx}"
-
-# enviornment variables
     
 env_vars = load_environment_variables()
 
@@ -45,19 +49,28 @@ embed_model = initialize_embedding_model(env_vars['HF_TOKEN'], embedding_model_i
 # large language model
 llm = initialize_llm(env_vars['HF_TOKEN'], model_name_id="default")
 
-try:
-    storage_context = StorageContext.from_defaults(persist_dir="./persistence/vectors") 
-    # load index
-    base_index = load_index_from_storage(storage_context, embed_model=embed_model)
-    index_loaded = True
-    print('Loading of index is finished...')
-except:
-    index_loaded = False
-    print('Index not found, constructing one...')
-if not index_loaded:
-    # rebuild storage context
-    base_index = VectorStoreIndex(base_nodes, embed_model=embed_model)
-    base_index.storage_context.persist('./persistence/vectors')
+# initialize ChromaDB
+remote_db = chromadb.HttpClient()
+
+print("All collections in Chroma: ", remote_db.list_collections())
+
+chroma_collection = remote_db.get_or_create_collection('real_world_community_model')
+chroma_collection_parent = remote_db.get_or_create_collection("real_world_community_model_parent")
+
+vector_store = ChromaVectorStore(chroma_collection=chroma_collection, ssl=False)
+
+vector_store_parent = ChromaVectorStore(chroma_collection=chroma_collection_parent)
+# Storage context
+storage_context = StorageContext.from_defaults(vector_store=vector_store)
+
+storage_context_parent = StorageContext.from_defaults(vector_store=vector_store_parent)
+
+# necessary to create a collection for the first time
+# base_index = VectorStoreIndex.from_documents(documents, storage_context=storage_context, embed_model=embed_model)
+
+# after collection was sucessfully created
+
+base_index = VectorStoreIndex.from_vector_store(vector_store, storage_context=storage_context, embed_model=embed_model)
 
 base_retriever = base_index.as_retriever(similarity_top_k=2)
 
@@ -70,7 +83,7 @@ retrievals = base_retriever.retrieve(
 
 # to print all nodes that are retrieved ( debugging purposes )
 
-# print("displaying retrievals")
+print("Retrievals, length: ", len(retrievals))
 
 for n in retrievals:
     display_source_node(n, source_length=1500)
@@ -81,6 +94,7 @@ response = query_engine_base.query(
     "Can you tell me about the key domains of Real World Community Model"
 )
 
+print("Base retrieval, response: \n")
 print(response)
 
 
@@ -106,9 +120,17 @@ for base_node in base_nodes:
     original_node = IndexNode.from_text_node(base_node, base_node.node_id)
     all_nodes.append(original_node)
 
-all_nodes_dict = {n.node_id: n for n in all_nodes}
 
-vector_index_chunk = VectorStoreIndex(all_nodes, embed_model=embed_model)
+print("Started making dictionaries")
+all_nodes_dict = {n.node_id: n for n in all_nodes}
+print("Finished with making dictionaries")
+
+# necessary to create a collection for the first time
+# vector_index_chunk = VectorStoreIndex(all_nodes, storage_context=storage_context_parent,embed_model=embed_model)
+
+# after collection was sucessfully created
+vector_index_chunk = VectorStoreIndex.from_vector_store(vector_store_parent, storage_context=storage_context_parent, embed_model=embed_model)
+
 vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k = 3)
 
 retriever_chunk = RecursiveRetriever(
@@ -121,8 +143,11 @@ retriever_chunk = RecursiveRetriever(
 nodes = retriever_chunk.retrieve(
     "Can you tell me about the key domains of Real World Community Model"
 )
-# for node in nodes:
-#     display_source_node(node, source_length=2000)
+print("Parent retrievals, length: ", len(nodes))
+
+print("Displaying source node with parent retrieval")
+for node in nodes:
+    display_source_node(node, source_length=2000)
 
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 
