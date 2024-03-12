@@ -11,5 +11,6 @@ llama-index-llms-huggingface
 llama-index-graph-stores-neo4j
 llama-index-embeddings-huggingface
 llama-index-vector-stores-chroma
+llama-index-embeddings-langchain
 chromadb
 matplotlib

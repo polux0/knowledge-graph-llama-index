@@ -41,6 +41,10 @@ persistence_directory = resolve_data_path('../persistence/real_world_community_m
 
 # Technical debt 1 - modularize further
 
+print("NEO4J_USERNAME: " + os.getenv('NEO4J_USERNAME'))
+print("NEO4J_PASSOWRD: " + os.getenv('NEO4J_PASSOWRD'))
+print("NEO4J_URL: " + os.getenv('NEO4J_URL'))
+print("NEO4J_DATABASE: " + os.getenv('NEO4J_DATABASE'))
 graph_store = Neo4jGraphStore(
   username=os.getenv('NEO4J_USERNAME'),
   password=os.getenv('NEO4J_PASSOWRD'),

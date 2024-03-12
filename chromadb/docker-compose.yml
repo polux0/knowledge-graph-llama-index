@@ -1,8 +1,8 @@
 version: '3.9'
 
-networks:
-  net:
-    driver: bridge
+# networks:
+#   net:
+#     driver: bridge
 
 services:
   server:
@@ -40,6 +40,10 @@ services:
       retries: 3
     networks:
       - net
+
+networks:
+  net:
+    external: true
 
 volumes:
   chroma-data:

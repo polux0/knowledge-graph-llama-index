@@ -18,5 +18,5 @@ def initialize_embedding_model(hf_token, embedding_model_id):
     else:
         logging.error(f"Invalid embedding_model_id: {embedding_model_id}. Falling back to default embedding model name.")
         model_name = EMBEDDING_MODELS["default"]
-    return HuggingFaceEmbedding(model_name=model_name)
+    return HuggingFaceInferenceAPIEmbeddings(model_name=model_name, api_key=hf_token)
 
