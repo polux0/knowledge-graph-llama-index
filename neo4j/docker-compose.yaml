@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.9'
 services:
   neo4j:
     image: neo4j:latest
@@ -20,3 +20,9 @@ services:
       NEO4J_apoc_import_file_use__neo4j__config: "true"
       NEO4JLABS_PLUGINS: '["apoc"]'  # This line ensures APOC plugin is installed
       NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    networks:
+    - net
+
+networks:
+  net:
+    external: true

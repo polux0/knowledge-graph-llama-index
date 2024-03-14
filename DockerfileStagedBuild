@@ -1,0 +1,29 @@
+# Use an official Python runtime as a parent image
+FROM python:3.8-slim as builder
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy the requirements file into the container at /usr/src/app/
+COPY requirements.txt ./
+
+# Install any needed packages specified in requirements.txt
+RUN pip install --user -r requirements.txt
+
+# Use a multi-stage build to create a slim final image
+FROM python:3.8-slim
+
+# Set the working directory in the container
+WORKDIR /usr/src/app
+
+# Copy only the dependencies installation from the 1st stage image
+COPY --from=builder /root/.local /root/.local
+
+# Make sure scripts in .local are usable:
+ENV PATH=/root/.local/bin:$PATH
+
+# Copy the rest of your application's code
+COPY . .
+
+# Run your application
+CMD ["python", "./app.py"]

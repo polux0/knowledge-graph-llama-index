@@ -1,10 +1,32 @@
 version: '3.9'
 
 services:
-  server:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j_container
+    ports:
+      - "7474:7474" # HTTP
+      - "7687:7687" # Bolt
+    volumes:
+      - $HOME/neo4j/data:/data
+      - $HOME/neo4j/logs:/logs
+      - $HOME/neo4j/import:/var/lib/neo4j/import
+      - $HOME/neo4j/plugins:/plugins
+      - ./plugins:/plugins
+    environment:
+      NEO4J_AUTH: neo4j/testpassword
+      NEO4J_apoc_export_file_enabled: "true"
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_apoc_import_file_use__neo4j__config: "true"
+      NEO4JLABS_PLUGINS: '["apoc"]'  # This line ensures APOC plugin is installed
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    networks:
+      - net
+  chromadb:
     image: server
+    container_name: chromadb_container
     build:
-      context: .
+      context: ./chromadb
       dockerfile: Dockerfile
     volumes:
       # Be aware that indexed data are located in "/chroma/chroma/"
@@ -35,12 +57,31 @@ services:
       timeout: 10s
       retries: 3
     networks:
+      - net  
+  app:
+    build: .
+    depends_on:
+      - chromadb
+      - neo4j
+    container_name: app_container
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8080:8080"
+    environment:
+      - HUGGING_FACE_API_KEY=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
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=testpassword
+      - NEO4J_URL=bolt://neo4j:7687
+      - NEO4J_DATABASE=neo4j
+    restart: on-failure # possible values are: "no", always", "on-failure", "unless-stopped"
+    command: python ./modules/create_vector_embeddings_llama.py
+    networks:
       - net
-
-networks:
-  net:
-    external: true
 
 volumes:
   chroma-data:
     driver: local
+networks:
+  net:
+    driver: bridge
