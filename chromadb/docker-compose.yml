@@ -1,9 +1,5 @@
 version: '3.9'
 
-# networks:
-#   net:
-#     driver: bridge
-
 services:
   server:
     image: server

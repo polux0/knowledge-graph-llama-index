@@ -1,0 +1,25 @@
+version: '3.9'
+
+services:
+  app:
+    build: .
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8080:8080"
+    environment:
+      - HUGGING_FACE_API_KEY=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
+      - NEO4J_USERNAME=neo4j
+      - NEO4J_PASSWORD=testpassword
+      - NEO4J_URL=bolt://neo4j:7687
+      - NEO4J_DATABASE=neo4j
+    command: python ./modules/app.py
+    networks:
+      - net
+
+volumes: {}
+
+networks:
+  net:
+    external: true
+  
