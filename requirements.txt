@@ -1,4 +1,4 @@
-llama-index===0.10.17
+# llama-index===0.10.17
 pyvis 
 Ipython 
 langchain 
@@ -14,3 +14,8 @@ llama-index-vector-stores-chroma
 llama-index-embeddings-langchain
 chromadb
 matplotlib
+# streamlit related
+streamlit
+protobuf
+importlib-metadata
+cachetools
