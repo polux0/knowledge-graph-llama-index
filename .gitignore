@@ -1,5 +1,6 @@
 # Virtual environment
-bin/
+/bin/
+!/chroma/bin/
 include/
 lib/
 lib64/
