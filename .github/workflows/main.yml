@@ -1,0 +1,38 @@
+name: Deploy to Digital Ocean
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Deploy to Digital Ocean
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
+            export SECRET_NAME='${{ secrets.HUGGING_FACE_API_KEY }}'
+            export SECRET_NAME='${{ secrets.NEO4J_DATABASE }}'
+            export SECRET_NAME='${{ secrets.NEO4J_PASSWORD }}'
+            export SECRET_NAME='${{ secrets.NEO4J_URL }}'
+            export SECRET_NAME='${{ secrets.NEO4J_USERNAME }}'
+            if [ ! -d "/home/auravana/app" ]; then
+              # Clone the repository if the directory doesn't exist
+              git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app
+            else
+              # Pull the latest changes if the repository is already cloned
+              cd /home/auravana/app
+              git pull
+            fi
+            cd /home/auravana/app
+            docker-compose up -d
+          EOF
