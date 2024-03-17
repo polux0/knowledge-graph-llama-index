@@ -19,7 +19,7 @@ jobs:
 
       - name: Deploy to Digital Ocean
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
+          ssh -o -v StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
             export HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
             export NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
             export NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
