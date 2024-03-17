@@ -1,8 +1,0 @@
-llama_index 
-pyvis 
-Ipython 
-langchain 
-pypdf
-python-dotenv
-huggingface_hub
-streamlit

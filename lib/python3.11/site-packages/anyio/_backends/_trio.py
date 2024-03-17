@@ -283,14 +283,21 @@ class Process(abc.Process):
     _stderr: abc.ByteReceiveStream | None
 
     async def aclose(self) -> None:
-        if self._stdin:
-            await self._stdin.aclose()
-        if self._stdout:
-            await self._stdout.aclose()
-        if self._stderr:
-            await self._stderr.aclose()
+        with CancelScope(shield=True):
+            if self._stdin:
+                await self._stdin.aclose()
+            if self._stdout:
+                await self._stdout.aclose()
+            if self._stderr:
+                await self._stderr.aclose()
 
-        await self.wait()
+        try:
+            await self.wait()
+        except BaseException:
+            self.kill()
+            with CancelScope(shield=True):
+                await self.wait()
+            raise
 
     async def wait(self) -> int:
         return await self._process.wait()
@@ -631,14 +638,24 @@ class Event(BaseEvent):
 
 class CapacityLimiter(BaseCapacityLimiter):
     def __new__(
-        cls, *args: Any, original: trio.CapacityLimiter | None = None
+        cls,
+        total_tokens: float | None = None,
+        *,
+        original: trio.CapacityLimiter | None = None,
     ) -> CapacityLimiter:
         return object.__new__(cls)
 
     def __init__(
-        self, *args: Any, original: trio.CapacityLimiter | None = None
+        self,
+        total_tokens: float | None = None,
+        *,
+        original: trio.CapacityLimiter | None = None,
     ) -> None:
-        self.__original = original or trio.CapacityLimiter(*args)
+        if original is not None:
+            self.__original = original
+        else:
+            assert total_tokens is not None
+            self.__original = trio.CapacityLimiter(total_tokens)
 
     async def __aenter__(self) -> None:
         return await self.__original.__aenter__()

@@ -1,0 +1,28 @@
+version: '3.9'
+services:
+  neo4j:
+    image: neo4j:latest
+    container_name: neo4j_container
+    ports:
+      - "7474:7474" # HTTP
+      - "7687:7687" # Bolt
+    volumes:
+      - $HOME/neo4j/data:/data
+      - $HOME/neo4j/logs:/logs
+      - $HOME/neo4j/import:/var/lib/neo4j/import
+      - $HOME/neo4j/plugins:/plugins
+    # Uncomment the line below if you want to use the APOC library
+      - ./plugins:/plugins
+    environment:
+      NEO4J_AUTH: neo4j/testpassword  # Set your desired username and password
+      NEO4J_apoc_export_file_enabled: "true"
+      NEO4J_apoc_import_file_enabled: "true"
+      NEO4J_apoc_import_file_use__neo4j__config: "true"
+      NEO4JLABS_PLUGINS: '["apoc"]'  # This line ensures APOC plugin is installed
+      NEO4J_dbms_security_procedures_unrestricted: apoc.*
+    networks:
+    - net
+
+networks:
+  net:
+    external: true

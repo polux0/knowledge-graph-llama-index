@@ -1,3 +1,4 @@
+from ._sync import asyncify as asyncify
 from ._proxy import LazyProxy as LazyProxy
 from ._utils import (
     flatten as flatten,
@@ -8,6 +9,7 @@ from ._utils import (
     is_mapping as is_mapping,
     is_tuple_t as is_tuple_t,
     parse_date as parse_date,
+    is_iterable as is_iterable,
     is_sequence as is_sequence,
     coerce_float as coerce_float,
     is_mapping_t as is_mapping_t,
@@ -32,6 +34,7 @@ from ._typing import (
     is_list_type as is_list_type,
     is_union_type as is_union_type,
     extract_type_arg as extract_type_arg,
+    is_iterable_type as is_iterable_type,
     is_required_type as is_required_type,
     is_annotated_type as is_annotated_type,
     strip_annotated_type as strip_annotated_type,

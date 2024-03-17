@@ -171,12 +171,15 @@ class FTPFileSystem(AbstractFileSystem):
         def cb(x):
             out.append(x)
 
-        self.ftp.retrbinary(
-            f"RETR {path}",
-            blocksize=self.blocksize,
-            rest=start,
-            callback=cb,
-        )
+        try:
+            self.ftp.retrbinary(
+                f"RETR {path}",
+                blocksize=self.blocksize,
+                rest=start,
+                callback=cb,
+            )
+        except (Error, error_perm) as orig_exc:
+            raise FileNotFoundError(path) from orig_exc
         return b"".join(out)
 
     def _open(
@@ -361,15 +364,17 @@ def _mlsd2(ftp, path="."):
     minfo = []
     ftp.dir(path, lines.append)
     for line in lines:
-        line = line.split()
+        split_line = line.split()
+        if len(split_line) < 9:
+            continue
         this = (
-            line[-1],
+            split_line[-1],
             {
-                "modify": " ".join(line[5:8]),
-                "unix.owner": line[2],
-                "unix.group": line[3],
-                "unix.mode": line[0],
-                "size": line[4],
+                "modify": " ".join(split_line[5:8]),
+                "unix.owner": split_line[2],
+                "unix.group": split_line[3],
+                "unix.mode": split_line[0],
+                "size": split_line[4],
             },
         )
         if "d" == this[1]["unix.mode"][0]:
