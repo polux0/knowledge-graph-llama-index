@@ -169,8 +169,3 @@ response = query_engine_chunk.query(
 )
 print("With parent-child retriever enabled****************************************************************")
 print(str(response))
-
-# import time
-
-# while True:
-#     time.sleep(1000) 
