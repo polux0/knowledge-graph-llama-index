@@ -167,5 +167,5 @@ query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 response = query_engine_chunk.query(
     "Can you tell me about the key domains of Real World Community Model"
 )
-print("With parent-child retriever enabled***************************************************************")
+print("With parent-child retriever enabled*****************************************************************")
 print(str(response))
