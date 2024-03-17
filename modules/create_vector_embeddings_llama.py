@@ -85,25 +85,25 @@ base_retriever = base_index.as_retriever(similarity_top_k=2)
 
 # defining Baseline Retriever that simply fetches the top-k raw text nodes by embedding similarity
 
-retrievals = base_retriever.retrieve(
-    "Can you tell me about the key domains of Real World Community Model"
-)
+# retrievals = base_retriever.retrieve(
+#     "Can you tell me about the key domains of Real World Community Model"
+# )
 
-# to print all nodes that are retrieved ( debugging purposes )
+# # to print all nodes that are retrieved ( debugging purposes )
 
-print("Retrievals, length: ", len(retrievals))
+# print("Retrievals, length: ", len(retrievals))
 
-for n in retrievals:
-    display_source_node(n, source_length=1500)
+# for n in retrievals:
+#     display_source_node(n, source_length=1500)
 
 query_engine_base = RetrieverQueryEngine.from_args(base_retriever, llm=llm)
 
-response = query_engine_base.query(
-    "Can you tell me about the key domains of Real World Community Model"
-)
+# response = query_engine_base.query(
+#     "Can you tell me about the key domains of Real World Community Model"
+# )
 
-print("Base retrieval, response: \n")
-print(response)
+# print("Base retrieval, response: \n")
+# print(response)
 
 
 # Part II Chuck References: Smaller Child Chunks Reffering to Bigger Parent Chunk
@@ -153,19 +153,19 @@ retriever_chunk = RecursiveRetriever(
     verbose=True
 )
 
-nodes = retriever_chunk.retrieve(
-    "Can you tell me about the key domains of Real World Community Model"
-)
-print("Parent retrievals, length: ", len(nodes))
+# nodes = retriever_chunk.retrieve(
+#     "Can you tell me about the key domains of Real World Community Model"
+# )
+# print("Parent retrievals, length: ", len(nodes))
 
-print("Displaying source node with parent retrieval")
-for node in nodes:
-    display_source_node(node, source_length=2000)
+# print("Displaying source node with parent retrieval")
+# for node in nodes:
+#     display_source_node(node, source_length=2000)
 
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 
-response = query_engine_chunk.query(
-    "Can you tell me about the key domains of Real World Community Model"
-)
-print("With parent-child retriever enabled*****************************************************************")
-print(str(response))
+def generate_response_based_on_vector_embeddings(question:str):
+    response = query_engine_chunk.query(question)
+    return response
+# print("With parent-child retriever enabled*****************************************************************")
+# print(str(response))
