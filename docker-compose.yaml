@@ -70,11 +70,11 @@ services:
       - "8080:8080"
       - "8501:8501"
     environment:
-      - HUGGING_FACE_API_KEY=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
-      - NEO4J_USERNAME=neo4j
-      - NEO4J_PASSWORD=testpassword
-      - NEO4J_URL=bolt://neo4j:7687
-      - NEO4J_DATABASE=neo4j
+      - HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
+      - NEO4J_USERNAME=${NEO4J_USERNAME}
+      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
+      - NEO4J_URL=${NEO4J_URL}
+      - NEO4J_DATABASE=${NEO4J_DATABASE}
     restart: on-failure # possible values are: "no", always", "on-failure", "unless-stopped"
     command: streamlit run ./modules/app.py
     networks:
