@@ -167,5 +167,5 @@ query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 def generate_response_based_on_vector_embeddings(question:str):
     response = query_engine_chunk.query(question)
     return response
-# print("With parent-child retriever enabled*****************************************************************")
+# print("With parent-child retriever enabled****************************************************************")
 # print(str(response))
