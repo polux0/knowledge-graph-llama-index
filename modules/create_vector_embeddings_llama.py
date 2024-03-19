@@ -165,7 +165,7 @@ retriever_chunk = RecursiveRetriever(
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 
 def generate_response_based_on_vector_embeddings(question:str):
+    print("With parent-child retriever*******************************************************************\n\n: ")
     response = query_engine_chunk.query(question)
+    print(str(response))
     return response
-# print("With parent-child retriever enabled****************************************************************")
-# print(str(response))
