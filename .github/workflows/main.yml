@@ -20,13 +20,13 @@ jobs:
       - name: Create .env file on server
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
-            cat <<EOT > /home/auravana/app/.env
-            HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
-            NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
-            NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
-            NEO4J_URL=${{ secrets.NEO4J_URL }}
-            NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
-            EOT
+          cat <<EOT > /home/auravana/app/.env
+          HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
+          NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
+          NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
+          NEO4J_URL=${{ secrets.NEO4J_URL }}
+          NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
+          EOT
           EOF
 
       - name: Deploy to Digital Ocean
