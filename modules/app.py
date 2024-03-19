@@ -22,5 +22,7 @@ if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
     knowledgeGraphResponse = generate_response_based_on_knowledge_graph(prompt)
     vectorEmbeddingsResponse = generate_response_based_on_vector_embeddings(prompt)
+    st.markdown("Knowledge Graph: ")
     st.markdown(knowledgeGraphResponse)
+    st.markdown("Vector embeddings: ")
     st.markdown(vectorEmbeddingsResponse)

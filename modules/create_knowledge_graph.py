@@ -73,7 +73,9 @@ if not index_loaded:
 # Print the index
 # print("index: ", index)
 def generate_response_based_on_knowledge_graph(query: str):
-  return query_knowledge_graph(index, query, template_id="default")
+  response = query_knowledge_graph(index, query, template_id="default")
+  print("response from knowledge graph *******************************************************************]\n\n: ", response) 
+  return response
 # Query the knowledge graph
 # query = "What are the domains of the Real World Community Model?"
 # query = "What do systems need to flourish?"
