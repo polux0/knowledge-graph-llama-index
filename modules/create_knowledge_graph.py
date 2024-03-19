@@ -15,11 +15,6 @@ from knowledge_graph_index_managment import manage_knowledge_graph_index
 from querying import query_knowledge_graph
 from data_path_resolver import resolve_data_path
 
-print('NEO4J_USERNAME', os.getenv('NEO4J_USERNAME'))
-print('NEO4J_PASSOWRD', os.getenv('NEO4J_PASSOWRD'))
-print('NEO4J_URL', os.getenv('NEO4J_URL'))
-print('NEO4J_DATABASE ', os.getenv('NEO4J_DATABASE'))
-
 # Load environment variables and setup logging
 load_dotenv()
 env_vars = load_environment_variables()
@@ -45,12 +40,18 @@ neo4j_credentials = {
 persistence_directory = resolve_data_path('../persistence/real_world_community_model_15_triplets_per_chunk_neo4j')
 
 # Technical debt 1 - modularize further
-graph_store = Neo4jGraphStore(
-  username=os.getenv('NEO4J_USERNAME'),
-  password=os.getenv('NEO4J_PASSOWRD'),
-  url=os.getenv('NEO4J_URL'),
-  database=os.getenv('NEO4J_DATABASE')
-)
+try:
+  graph_store = Neo4jGraphStore(
+    username=os.getenv('NEO4J_USERNAME'),
+    password=os.getenv('NEO4J_PASSOWRD'),
+    url=os.getenv('NEO4J_URL'),
+    database=os.getenv('NEO4J_DATABASE')
+  )
+except:
+  print('NEO4J_USERNAME', os.getenv('NEO4J_USERNAME'))
+  print('NEO4J_PASSOWRD', os.getenv('NEO4J_PASSOWRD'))
+  print('NEO4J_URL', os.getenv('NEO4J_URL'))
+  print('NEO4J_DATABASE ', os.getenv('NEO4J_DATABASE'))
 
 try:
   storage_context = StorageContext.from_defaults(persist_dir=persistence_directory)
