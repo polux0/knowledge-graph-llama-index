@@ -1,5 +1,4 @@
 import streamlit as st
-
 from create_knowledge_graph import generate_response_based_on_knowledge_graph
 from create_vector_embeddings_llama import generate_response_based_on_vector_embeddings
 
