@@ -17,14 +17,26 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Deploy to Digital Ocean
+      - name: Create .env file on server
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
-            export SECRET_NAME='${{ secrets.HUGGING_FACE_API_KEY }}'
-            export SECRET_NAME='${{ secrets.NEO4J_DATABASE }}'
-            export SECRET_NAME='${{ secrets.NEO4J_PASSWORD }}'
-            export SECRET_NAME='${{ secrets.NEO4J_URL }}'
-            export SECRET_NAME='${{ secrets.NEO4J_USERNAME }}'
+          cat <<EOT > /home/auravana/app/.env
+          HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
+          NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
+          NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
+          NEO4J_URL=${{ secrets.NEO4J_URL }}
+          NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
+          EOT
+          EOF
+
+      - name: Deploy to Digital Ocean
+        run: |
+          ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
+            export HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
+            export NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
+            export NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
+            export NEO4J_URL=${{ secrets.NEO4J_URL }}
+            export NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
             if [ ! -d "/home/auravana/app" ]; then
               # Clone the repository if the directory doesn't exist
               git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app
@@ -34,5 +46,5 @@ jobs:
               git pull
             fi
             cd /home/auravana/app
-            docker-compose up -d
+            docker-compose down && docker-compose up --build -d
           EOF
