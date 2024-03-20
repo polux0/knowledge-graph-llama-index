@@ -1,18 +1,30 @@
 import logging
 import os
+print("importing dotenv")
 from dotenv import load_dotenv
+print("importing llama_index.core")
 from llama_index.core import KnowledgeGraphIndex, StorageContext, load_index_from_storage
+print("importing environment_setup")
 from environment_setup import (load_environment_variables, setup_logging)
+print("importing large_language_model_setup")
 from large_language_model_setup import initialize_llm
+print("importing embedding_model_modular_setup")
 from embedding_model_modular_setup import initialize_embedding_model
+print("importing data_loading")
 from data_loading import load_documents
+print("importing service_context_setup")
 from service_context_setup import create_service_context
+print("importing llama_index.graph_stores.neo4j")
 # Related to technical debt #1
 from llama_index.graph_stores.neo4j import Neo4jGraphStore
+print("importing storage_context_setup")
 from storage_context_setup import create_storage_context
+print("importing knowledge_graph_index_managment")
 from knowledge_graph_index_managment import manage_knowledge_graph_index
 # Related to technical debt #1
+print("importing query_knowledge_graph")
 from querying import query_knowledge_graph
+print("importing resolve_data_path")
 from data_path_resolver import resolve_data_path
 
 
@@ -74,7 +86,7 @@ if not index_loaded:
 # print("index: ", index)
 def generate_response_based_on_knowledge_graph(query: str):
   response = query_knowledge_graph(index, query, template_id="default")
-  print("response from knowledge graph *******************************************************************]\n\n: ", response) 
+  print("response from knowledge graph *******************************************************************: ", response) 
   return response
 # Query the knowledge graph
 # query = "What are the domains of the Real World Community Model?"
