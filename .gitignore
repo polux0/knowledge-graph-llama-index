@@ -1,24 +1,38 @@
-# .gitignore for Python projects
-
 # Virtual environment
-venv/
+bin/
+include/
+lib/
+lib64/
+share/
 
-# Byte-compiled / optimized Python files
+# Compiled python files
+*.pyc
 __pycache__/
-*.pyc
-*.pyo
-*.pyd
 
-# IDE files
-.idea/
+# Virtual environment configuration
+pyvenv.cfg
+
+# Operating system files
+.DS_Store
+Thumbs.db
+
+# IDE/Editor specific files
 .vscode/
+.idea/
 
-# Compiled files
-*.pyc
+# Python distribution artifacts
+build/
+dist/
+*.egg-info/
 
-# Local configuration file
+# Log files
+*.log
+
+# Neo4j data files
+neo4j/
+
+# Temporary files
+*.tmp
+
+# Env file
 .env
-
-# Ignore pipenv virtual environment
-Pipfile
-Pipfile.lock
