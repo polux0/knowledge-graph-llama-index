@@ -91,7 +91,7 @@ if not index_loaded:
 # print("index: ", index)
 def generate_response_based_on_knowledge_graph(query: str):
   response = query_knowledge_graph(index, query, template_id="default")
-  print("response from knowledge graph *******************************************************************: ", response) 
+  print("response from knowledge graph ******************************************************************: ", response) 
   return response
 # Query the knowledge graph
 # query = "What are the domains of the Real World Community Model?"
