@@ -52,6 +52,11 @@ neo4j_credentials = {
 }
 persistence_directory = resolve_data_path('../persistence/real_world_community_model_15_triplets_per_chunk_neo4j')
 
+print("os.getenv('NEO4J_USERNAME')", os.getenv('NEO4J_USERNAME'))
+print("os.getenv('NEO4J_PASSOWRD'),", os.getenv('NEO4J_PASSOWRD'))
+print("os.getenv('NEO4J_URL')", os.getenv('NEO4J_URL'))
+print("os.getenv('NEO4J_DATABASE')", os.getenv('NEO4J_DATABASE'))
+
 # Technical debt 1 - modularize further
 graph_store = Neo4jGraphStore(
   username=os.getenv('NEO4J_USERNAME'),
