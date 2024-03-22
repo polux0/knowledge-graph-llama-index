@@ -48,3 +48,8 @@ jobs:
             cd /home/auravana/app
             docker-compose down && docker-compose up --build -d
           EOF
+
+      - name: Set up Elasticsearch Schema
+        run: |
+          chmod +x .scripts/elasticsearch/setup.sh
+          .scripts/elasticsearch/setup.sh
