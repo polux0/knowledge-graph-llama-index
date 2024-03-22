@@ -18,8 +18,40 @@ from llama_index.core.schema import IndexNode
 import chromadb
 import json
 
+# Elasticsearch realted
+from elasticsearch_service import ExperimentDocument, ElasticsearchClient
 
-# load the documents, modular function previously used for knowledge graph construction
+from large_language_model_setup import get_llm_based_on_model_name_id
+from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id
+from prompts import get_template_based_on_template_id
+from datetime import datetime, timezone
+
+# Formating message related
+
+from format_message_with_prompt import format_message
+
+# Elasticsearch related
+es_client = ElasticsearchClient(scheme='http', host='elasticsearch', port=9200)
+
+# Initialize Experiment
+
+# Timestamp realted
+# Get the current time in UTC, making it timezone-aware
+current_time = datetime.now(timezone.utc)
+
+# Format the current time as an ISO 8601 string, including milliseconds
+created_at = current_time.isoformat(timespec='milliseconds')
+updated_at = created_at  # Initially, both timestamps will be the same
+
+experiment = ExperimentDocument()
+
+# Variables
+model_name_id = "default"
+embedding_model_id = "default" 
+chunk_size = 256
+max_triplets_per_chunk = 15
+
+# Load the documents, modular function previously used for knowledge graph construction
 
 documents_directory = "../data/real_world_community_model"
 
@@ -36,6 +68,7 @@ docs = [Document(text=doc_text)]
 
 
 node_parser = SentenceSplitter(chunk_size=1024)
+experiment.chunk_size=1024
 
 base_nodes = node_parser.get_nodes_from_documents(docs)
 # set node ids to be a constant
@@ -45,13 +78,16 @@ for idx, node in enumerate(base_nodes):
 env_vars = load_environment_variables()
 
 # embedings 
-embed_model = initialize_embedding_model(env_vars['HF_TOKEN'], embedding_model_id="default")
+embed_model = initialize_embedding_model(env_vars['HF_TOKEN'], embedding_model_id=embedding_model_id)
+experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embedding_model_id)
 
 # large language model
-llm = initialize_llm(env_vars['HF_TOKEN'], model_name_id="default")
+experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
+llm = initialize_llm(env_vars['HF_TOKEN'], model_name_id = model_name_id)
 
 # initialize ChromaDB
-remote_db = chromadb.HttpClient(host='chromadb')
+remote_db = chromadb.HttpClient(host='chromadb', port=8000)
+# remote_db = chromadb.HttpClient()
 
 print("All collections in Chroma: ", remote_db.list_collections())
 
@@ -152,6 +188,7 @@ retriever_chunk = RecursiveRetriever(
     node_dict=all_nodes_dict,
     verbose=True
 )
+experiment.retrieval_strategy = "RecursiveRetriever - Parent Child"
 
 # nodes = retriever_chunk.retrieve(
 #     "Can you tell me about the key domains of Real World Community Model"
@@ -165,7 +202,24 @@ retriever_chunk = RecursiveRetriever(
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 
 def generate_response_based_on_vector_embeddings(question:str):
+
+    experiment.question = question
+    prompt_template = get_template_based_on_template_id("default")
+    experiment.prompt_template = get_template_based_on_template_id("default"),
     print("With parent-child retriever*******************************************************************\n\n: ")
-    response = query_engine_chunk.query(question)
-    print(str(response))
+    response = query_engine_chunk.query(format_message(question, prompt_template))
+    experiment.response = str(response)
+    
+    current_time = datetime.now(timezone.utc)
+
+    # Format the current time as an ISO 8601 string, including milliseconds
+    created_at = current_time.isoformat(timespec='milliseconds')
+    updated_at = created_at  # Initially, both timestamps will be the same
+
+    experiment.created_at = created_at
+    experiment.updated_at = updated_at
+
+    es_client.save_experiment(experiment_document=experiment)
+
+    print("Final response", str(response))
     return response
