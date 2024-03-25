@@ -30,7 +30,7 @@ if [ $response -eq 200 ] ; then
           "Prompt_template": { "type": "text" },
           "Question": { "type": "text" },
           "Response": { "type": "text" },
-          "Satisfaction_with_answer": { "type": "boolean" },  # or boolean
+          "Satisfaction_with_answer": { "type": "boolean" },
           "Corrected_answer": { "type": "text" },
           "Retrieval_strategy": { "type": "keyword" },
           "Created_at": { "type": "date" },
