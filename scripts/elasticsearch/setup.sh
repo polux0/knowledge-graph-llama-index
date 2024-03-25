@@ -61,7 +61,7 @@ else
           "Response": { "type": "text" },
           "Satisfaction_with_answer": { "type": "boolean" },
           "Corrected_answer": { "type": "text" },
-          "Retrieval_strategy": { "type": "keyword" }
+          "Retrieval_strategy": { "type": "keyword" },
           "Created_at": { "type": "date" },
           "Updated_at": { "type": "date" }
         }
