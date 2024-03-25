@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Elasticsearch URL
-ES_URL="http://localhost:9200"
+ES_URL="http://elasticsearch:9200"
 
 # Index name
 INDEX_NAME="interaction"
