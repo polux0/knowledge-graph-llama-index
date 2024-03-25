@@ -5,7 +5,7 @@ class ExperimentDocument:
     def __init__(self, experiment_id="exp123", embeddings_model="modelXYZ", chunk_size=0, 
                  chunk_overlap=0, max_triplets_per_chunk=0, llm_used="GPT-3", 
                  prompt_template="What is the meaning of life?", question="Why are we here?", 
-                 response="To ask questions.", satisfaction_with_answer=1, 
+                 response="To ask questions.", satisfaction_with_answer=True, 
                  corrected_answer="To seek answers.", retrieval_strategy="sequential", 
                  created_at=None, updated_at=None):
         self.experiment_id = experiment_id
