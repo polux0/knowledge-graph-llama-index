@@ -36,22 +36,7 @@ current_time = datetime.now(timezone.utc)
 created_at = current_time.isoformat(timespec='milliseconds')
 updated_at = created_at  # Initially, both timestamps will be the same
 
-experiment = ExperimentDocument(
-    experiment_id="exp123",
-    embeddings_model="modelXYZ",
-    chunk_size=500,
-    chunk_overlap=50,
-    max_triplets_per_chunk=10,
-    llm_used="GPT-3",
-    prompt_template="What is the meaning of life?",
-    question="Why are we here?",
-    response="To ask questions.",
-    satisfaction_with_answer=1,
-    corrected_answer="To seek answers.",
-    retrieval_strategy="sequential",
-    created_at=created_at,
-    updated_at=updated_at
-)
+experiment = ExperimentDocument()
 # Load environment variables and setup logging
 load_dotenv()
 env_vars = load_environment_variables()
