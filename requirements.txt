@@ -20,3 +20,5 @@ streamlit
 protobuf
 importlib-metadata
 cachetools
+# elasticsearch related
+elasticsearch
