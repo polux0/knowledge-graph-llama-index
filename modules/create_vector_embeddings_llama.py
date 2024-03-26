@@ -204,8 +204,8 @@ query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 def generate_response_based_on_vector_embeddings(question:str):
 
     experiment.question = question
-    prompt_template = get_template_based_on_template_id("default")
-    experiment.prompt_template = get_template_based_on_template_id("default"),
+    prompt_template = get_template_based_on_template_id("simon")
+    experiment.prompt_template = get_template_based_on_template_id("simon"),
     print("With parent-child retriever*******************************************************************\n\n: ")
     response = query_engine_chunk.query(format_message(question, prompt_template))
     experiment.response = str(response)

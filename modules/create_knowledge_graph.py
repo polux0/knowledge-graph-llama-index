@@ -111,6 +111,7 @@ if not index_loaded:
 # graph_rag_retriever = KnowledgeGraphRAGRetriever(
 #     storage_context=storage_context,
 #     verbose=True,
+#     llm = llm
 # )
 
 # query_engine = RetrieverQueryEngine.from_args(
@@ -124,10 +125,10 @@ def generate_response_based_on_knowledge_graph(query: str):
   # knowledgeGraphRagRetriever = query_engine.query(query)
   # print("response form knowledge graph, graphRagRetriever ******************************************************************: ", knowledgeGraphRagRetriever)
   experiment.question = query
-  experiment.prompt_template = get_template_based_on_template_id("default"),
+  experiment.prompt_template = get_template_based_on_template_id("simon"),
   # technical debt - tree_summarize
   experiment.retrieval_strategy = "tree_summarize"
-  response = query_knowledge_graph(index, query, template_id="default")
+  response = query_knowledge_graph(index, query, template_id="simon")
   experiment.response = response
 
   # timestamp realted
