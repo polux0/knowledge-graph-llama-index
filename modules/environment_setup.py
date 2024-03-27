@@ -12,6 +12,7 @@ def load_environment_variables():
     load_dotenv()  # Load environment variables from .env file
     return {
         "HF_TOKEN": os.getenv("HUGGING_FACE_API_KEY"),
+        "HF_TOKEN_ANOTHER": os.getenv("HUGGING_FACE_API_KEY_ANOTHER"),
         "NEO4J_USERNAME": os.getenv("NEO4J_USERNAME"),
         "NEO4J_PASSWORD": os.getenv("NEO4J_PASSWORD"),
         "NEO4J_URL": os.getenv("NEO4J_URL"),
