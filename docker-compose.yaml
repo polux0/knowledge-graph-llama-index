@@ -110,8 +110,10 @@ services:
 
 volumes:
   chroma-data:
+    driver: local
   esdata1:
     driver: local
+
 
 networks:
   net:

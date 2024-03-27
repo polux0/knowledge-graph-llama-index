@@ -33,6 +33,7 @@ jobs:
         run: |
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
             export HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
+            export HUGGING_FACE_API_KEY_ANOTHER=${{ secrets.HUGGING_FACE_API_KEY_ANOTHER }}
             export NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
             export NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
             export NEO4J_URL=${{ secrets.NEO4J_URL }}
