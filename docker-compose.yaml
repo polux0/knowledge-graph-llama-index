@@ -69,6 +69,7 @@ services:
       - "9200:9200"
     volumes:
       - esdata1:/usr/share/elasticsearch/data
+      - ./snapshots:/usr/share/elasticsearch/snapshots
     networks:
       - net
   kibana:
