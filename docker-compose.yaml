@@ -85,7 +85,7 @@ services:
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
-      XPACK_SECURITY_ENABLED: false
+      XPACK_SECURITY_ENABLED: "false"
   app:
     build: .
     depends_on:
