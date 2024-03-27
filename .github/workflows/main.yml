@@ -54,3 +54,28 @@ jobs:
         run: |
           chmod +x ./scripts/elasticsearch/setup.sh
           ./scripts/elasticsearch/setup.sh
+      
+      - name: Create Elasticsearch Snapshot
+        run: |
+          ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
+          # Wait for Elasticsearch to be ready
+          while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:9200)" != "200" ]]; do sleep 5; done
+          # Configure the snapshot repository (if not already configured)
+          curl -X PUT "localhost:9200/_snapshot/my_backup_repository" -H 'Content-Type: application/json' -d'
+          {
+            "type": "fs",
+            "settings": {
+              "location": "/usr/share/elasticsearch/snapshots"
+            }
+          }
+          '
+          # Create a snapshot
+          curl -X PUT "localhost:9200/_snapshot/my_backup_repository/snapshot_$(date +%Y%m%d_%H%M%S)?wait_for_completion=true" -H 'Content-Type: application/json' -d'
+          {
+            "indices": "_all",
+            "ignore_unavailable": true,
+            "include_global_state": false
+          }
+          '
+          EOF
+  
