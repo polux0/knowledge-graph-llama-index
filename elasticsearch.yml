@@ -1,0 +1,3 @@
+path.repo: ["/usr/share/elasticsearch/snapshots"]
+xpack.security.enabled: false
+discovery.type: single-node
