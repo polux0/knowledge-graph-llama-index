@@ -58,7 +58,7 @@ jobs:
       
       - name: Create Elasticsearch Snapshot
         run: |
-          ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
+          ssh -T -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
           # Wait for Elasticsearch to be ready
           while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:9200)" != "200" ]]; do sleep 5; done
           # Configure the snapshot repository (if not already configured)
