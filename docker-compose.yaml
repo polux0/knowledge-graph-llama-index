@@ -26,7 +26,7 @@ services:
       interval: 10s
       timeout: 5s
       retries: 5
-
+          
   chromadb:
     image: server
     container_name: chromadb_container
@@ -70,6 +70,7 @@ services:
     volumes:
       - esdata1:/usr/share/elasticsearch/data
       - ./snapshots:/usr/share/elasticsearch/snapshots
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     networks:
       - net
   kibana:
@@ -84,6 +85,7 @@ services:
     environment:
       ELASTICSEARCH_URL: http://elasticsearch:9200
       ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      XPACK_SECURITY_ENABLED: false
   app:
     build: .
     depends_on:
@@ -114,6 +116,7 @@ volumes:
     driver: local
   esdata1:
     driver: local
+  
 
 
 networks:
