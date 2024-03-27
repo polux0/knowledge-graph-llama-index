@@ -79,12 +79,12 @@ env_vars = load_environment_variables()
 print("env_vars: {}".format(env_vars))
 
 # embedings 
-embed_model = initialize_embedding_model(hf_token=env_vars['HF_TOKEN_ANOTHER'], embedding_model_id=embedding_model_id)
+embed_model = initialize_embedding_model(hf_token=env_vars['HF_TOKEN'], embedding_model_id=embedding_model_id)
 experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embedding_model_id)
 
 # large language model
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
-llm = initialize_llm(hf_token=env_vars['HF_TOKEN_ANOTHER'], model_name_id = model_name_id)
+llm = initialize_llm(hf_token=env_vars['HF_TOKEN'], model_name_id = model_name_id)
 
 # initialize ChromaDB
 remote_db = chromadb.HttpClient(host='chromadb', port=8000) 
