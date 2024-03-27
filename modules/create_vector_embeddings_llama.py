@@ -38,11 +38,8 @@ es_client = ElasticsearchClient(scheme='http', host='elasticsearch', port=9200)
 # Get the current time in UTC, making it timezone-aware
 current_time = datetime.now(timezone.utc)
 
-# Format the current time as an ISO 8601 string, including milliseconds
-created_at = current_time.isoformat(timespec='milliseconds')
-updated_at = created_at  # Initially, both timestamps will be the same
-
 experiment = ExperimentDocument()
+experiment.created_at = current_time.isoformat(timespec='milliseconds')
 
 # Variables
 model_name_id = "default"
