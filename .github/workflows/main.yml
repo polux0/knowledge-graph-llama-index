@@ -54,6 +54,7 @@ jobs:
         run: |
           chmod +x ./scripts/elasticsearch/setup.sh
           ./scripts/elasticsearch/setup.sh
+        continue-on-error: true
       
       - name: Create Elasticsearch Snapshot
         run: |
