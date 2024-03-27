@@ -213,11 +213,7 @@ def generate_response_based_on_vector_embeddings(question:str):
     current_time = datetime.now(timezone.utc)
 
     # Format the current time as an ISO 8601 string, including milliseconds
-    created_at = current_time.isoformat(timespec='milliseconds')
-    updated_at = created_at  # Initially, both timestamps will be the same
-
-    experiment.created_at = created_at
-    experiment.updated_at = updated_at
+    experiment.updated_at = current_time.isoformat(timespec='milliseconds')
 
     es_client.save_experiment(experiment_document=experiment)
 
