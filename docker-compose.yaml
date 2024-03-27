@@ -70,7 +70,7 @@ services:
     volumes:
       - esdata1:/usr/share/elasticsearch/data
       - ./snapshots:/usr/share/elasticsearch/snapshots
-      # - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     networks:
       - net
   kibana:
@@ -80,8 +80,6 @@ services:
       - elasticsearch
     ports:
       - "5601:5601"
-    # volumes:
-    #   - ./kibana.yml:/usr/share/kibana/config/kibana.yml
     networks:
       - net
     environment:
