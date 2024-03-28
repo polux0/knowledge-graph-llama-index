@@ -2,6 +2,7 @@ import logging
 from llama_index.llms.huggingface import HuggingFaceInferenceAPI
 from language_models import LANGUAGE_MODELS
 
+#tecnical debt - https://docs.llamaindex.ai/en/stable/api_reference/llms/huggingface/
 def initialize_llm(hf_token, model_name_id):
     """Initialize the language model using Hugging Face Inference API.
 
