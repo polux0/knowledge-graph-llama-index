@@ -71,7 +71,7 @@ services:
       - "9200:9200"
     volumes:
       -  $HOME/esdata1:/usr/share/elasticsearch/data
-      - ./snapshots:/usr/share/elasticsearch/snapshots
+      # - ./snapshots:/usr/share/elasticsearch/snapshots
       # - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
     networks:
       - net
