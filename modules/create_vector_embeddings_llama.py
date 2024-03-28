@@ -73,8 +73,6 @@ for idx, node in enumerate(base_nodes):
     
 env_vars = load_environment_variables()
 
-print("env_vars: {}".format(env_vars))
-
 # embedings 
 embed_model = initialize_embedding_model(hf_token=env_vars['HF_TOKEN'], embedding_model_id=embedding_model_id)
 experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embedding_model_id)
