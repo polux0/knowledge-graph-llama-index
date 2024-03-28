@@ -60,6 +60,7 @@ jobs:
 
       - name: Set up Elasticsearch Schema
         run: |
+          ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
           chmod +x ./scripts/elasticsearch/setup.sh
           ./scripts/elasticsearch/setup.sh
         continue-on-error: true
