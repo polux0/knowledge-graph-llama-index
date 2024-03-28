@@ -23,8 +23,8 @@ jobs:
 
           # Ensure required directories exist and set permissions
           mkdir -p $HOME/elasticsearch/snapshots $HOME/neo4j/data $HOME/neo4j/logs $HOME/neo4j/import $HOME/neo4j/plugins $HOME/chroma-data $HOME/esdata1
-          chown -R root:root $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
-          chmod -R 755 $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
+          # chown -R root:root $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
+          chown -R 1000:1000 $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
 
           cat <<EOT > /home/auravana/app/.env
           HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
