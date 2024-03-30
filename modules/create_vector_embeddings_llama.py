@@ -9,7 +9,7 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
 from environment_setup import (load_environment_variables, setup_logging)
-from large_language_model_setup import initialize_llm
+from large_language_model_setup import initialize_llm, initialize_openai_llm
 from llama_index.core import StorageContext, load_index_from_storage
 from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
@@ -80,7 +80,8 @@ experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embeddi
 # large language model
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 print("experiment.llm_used", experiment.llm_used)
-llm = initialize_llm(hf_token=env_vars['HF_TOKEN'], model_name_id = model_name_id)
+# llm = initialize_llm(hf_token=env_vars['HF_TOKEN'], model_name_id = model_name_id)
+llm = initialize_openai_llm("gpt-4", env_vars['OPEN_API_KEY'])
 
 # initialize ChromaDB
 remote_db = chromadb.HttpClient(host='chromadb', port=8000) 

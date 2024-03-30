@@ -1,5 +1,6 @@
 import logging
 from llama_index.llms.huggingface import HuggingFaceInferenceAPI, HuggingFaceLLM
+from llama_index.llms.openai import OpenAI
 from language_models import LANGUAGE_MODELS
 
 #tecnical debt - https://docs.llamaindex.ai/en/stable/api_reference/llms/huggingface/
@@ -13,6 +14,17 @@ def initialize_llm(hf_token, model_name_id):
         HuggingFaceInferenceAPI: The initialized language model.
     """
     return HuggingFaceInferenceAPI(model_name=get_llm_based_on_model_name_id(model_name_id), token=hf_token)
+
+def initialize_openai_llm(model_name, openai_api_key):
+    """Initialize openai language model.
+
+    Args:
+        openai_api_key (str): The OpenAI API key.
+
+    Returns:
+        OpenAI: The initialized language model.
+    """
+    return OpenAI(model=model_name, api_key=openai_api_key)
 
 def messages_to_prompt(messages):
     prompt = ""

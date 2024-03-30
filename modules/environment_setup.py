@@ -17,6 +17,7 @@ def load_environment_variables():
         "NEO4J_PASSWORD": os.getenv("NEO4J_PASSWORD"),
         "NEO4J_URL": os.getenv("NEO4J_URL"),
         "NEO4J_DATABASE": os.getenv("NEO4J_DATABASE"),
+        "OPEN_API_KEY": os.getenv("OPEN_API_KEY"),
         
     }
 def setup_logging():
