@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from llama_index.core import KnowledgeGraphIndex, StorageContext, load_index_from_storage
 from environment_setup import (load_environment_variables, setup_logging)
-from large_language_model_setup import initialize_llm
+from large_language_model_setup import initialize_llm, initialize_llm_with_more_parameters
 from embedding_model_modular_setup import initialize_embedding_model
 from data_loading import load_documents
 from service_context_setup import create_service_context
@@ -124,6 +124,7 @@ def generate_response_based_on_knowledge_graph(query: str):
   # print("response form knowledge graph, graphRagRetriever ******************************************************************: ", knowledgeGraphRagRetriever)
 
   template = get_template_based_on_template_id("simon")
+  print("template, that is making an issue: ", template)
   experiment.question = query
   experiment.prompt_template = template,
   # technical debt - tree_summarize
@@ -142,11 +143,27 @@ def generate_response_based_on_knowledge_graph(query: str):
 
   print("response from knowledge graph ******************************************************************: ", response) 
   return response
-# Query the knowledge graph
-# query = "What are the domains of the Real World Community Model?"
-# query = "What do systems need to flourish?"
-# query = "Would you tell me more about societal information system"
-# query = "What would be the way to construct better societies?"
-# query = "Can you tell me about the key domains of Real World Community Model?"
-# response = generate_response_based_on_knowledge_graph(index, query, template_id="default")
-# print(response)
+
+
+# technical debt
+
+def generate_response_based_on_knowledge_graph_with_debt(query: str):
+
+  template = get_template_based_on_template_id("simon")
+  print("template, that is making an issue: ", template)
+  experiment.question = query
+  experiment.prompt_template = template,
+  # technical debt - tree_summarize
+  experiment.retrieval_strategy = "tree_summarize"
+  response = query_knowledge_graph(index, query, template)
+  experiment.response = response
+
+  # timestamp realted
+  # Get the current time in UTC, making it timezone-aware
+  current_time = datetime.now(timezone.utc)
+
+  # Format the current time as an ISO 8601 string, including milliseconds
+  experiment.updated_at = current_time.isoformat(timespec='milliseconds')
+
+  print("response from knowledge graph ******************************************************************: ", response) 
+  return response, experiment

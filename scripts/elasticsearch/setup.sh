@@ -26,7 +26,7 @@ create_index() {
           "Prompt_template": { "type": "text" },
           "Question": { "type": "text" },
           "Response": { "type": "text" },
-          "Satisfaction_with_answer": { "type": "boolean" },
+          "Satisfaction_with_answer": { "type": "integer" },
           "Corrected_answer": { "type": "text" },
           "Retrieval_strategy": { "type": "keyword" },
           "Created_at": { "type": "date" },
