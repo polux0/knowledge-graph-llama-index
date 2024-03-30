@@ -79,6 +79,7 @@ experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embeddi
 
 # large language model
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
+print("experiment.llm_used", experiment.llm_used)
 llm = initialize_llm(hf_token=env_vars['HF_TOKEN'], model_name_id = model_name_id)
 
 # initialize ChromaDB
@@ -215,3 +216,20 @@ def generate_response_based_on_vector_embeddings(question:str):
 
     print("Final response", str(response))
     return response
+
+def generate_response_based_on_vector_embeddings_with_debt(question:str):
+
+    experiment.question = question
+    prompt_template = get_template_based_on_template_id("simon")
+    experiment.prompt_template = get_template_based_on_template_id("simon"),
+    print("With parent-child retriever*******************************************************************\n\n: ")
+    response = query_engine_chunk.query(format_message(question, prompt_template))
+    experiment.response = str(response)
+    
+    current_time = datetime.now(timezone.utc)
+
+    # Format the current time as an ISO 8601 string, including milliseconds
+    experiment.updated_at = current_time.isoformat(timespec='milliseconds')
+
+    print("Final response", str(response))
+    return response, experiment
