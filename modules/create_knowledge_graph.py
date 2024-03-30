@@ -3,7 +3,7 @@ import os
 from dotenv import load_dotenv
 from llama_index.core import KnowledgeGraphIndex, StorageContext, load_index_from_storage
 from environment_setup import (load_environment_variables, setup_logging)
-from large_language_model_setup import initialize_llm, initialize_llm_with_more_parameters
+from large_language_model_setup import initialize_llm, initialize_llm_with_more_parameters, initialize_openai_llm
 from embedding_model_modular_setup import initialize_embedding_model
 from data_loading import load_documents
 from service_context_setup import create_service_context
@@ -48,7 +48,8 @@ max_triplets_per_chunk = 15
 
 
 # Initialize LLM and Embedding model
-llm = initialize_llm(env_vars['HF_TOKEN'], model_name_id = model_name_id)
+# llm = initialize_llm(env_vars['HF_TOKEN'], model_name_id = model_name_id)
+llm = initialize_openai_llm("gpt-4", env_vars['OPEN_API_KEY'])
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 
 embed_model = initialize_embedding_model(env_vars['HF_TOKEN'], embedding_model_id=embedding_model_id)

@@ -22,3 +22,4 @@ importlib-metadata
 cachetools
 # elasticsearch related
 elasticsearch
+llama-index-llms-openai
