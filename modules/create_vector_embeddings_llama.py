@@ -17,6 +17,13 @@ from llama_index.core.schema import IndexNode
 import chromadb
 import json
 
+# technical debt - modularize
+
+import sys, logging
+
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+
 # Elasticsearch realted
 from elasticsearch_service import ExperimentDocument, ElasticsearchClient
 
@@ -82,7 +89,7 @@ experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 print("experiment.llm_used", experiment.llm_used)
 # llm = initialize_llm(hf_token=env_vars['HF_TOKEN'], model_name_id = model_name_id)
 llm = initialize_openai_llm("gpt-4", env_vars['OPEN_API_KEY'])
-
+# gpt-4	
 # initialize ChromaDB
 remote_db = chromadb.HttpClient(host='chromadb', port=8000) 
 # remote_db = chromadb.HttpClient()
@@ -225,6 +232,7 @@ def generate_response_based_on_vector_embeddings_with_debt(question:str):
     experiment.prompt_template = get_template_based_on_template_id("simon"),
     print("With parent-child retriever*******************************************************************\n\n: ")
     response = query_engine_chunk.query(format_message(question, prompt_template))
+    # logging.info(f"Logging the response nodes from a vector database: {response.source_nodes}")
     experiment.response = str(response)
     
     current_time = datetime.now(timezone.utc)
@@ -233,4 +241,4 @@ def generate_response_based_on_vector_embeddings_with_debt(question:str):
     experiment.updated_at = current_time.isoformat(timespec='milliseconds')
 
     print("Final response", str(response))
-    return response, experiment
+    return response, experiment, response.source_nodes

@@ -1,6 +1,13 @@
+from environment_setup import setup_logging
 import streamlit as st
 from create_knowledge_graph import generate_response_based_on_knowledge_graph_with_debt
 from create_vector_embeddings_llama import generate_response_based_on_vector_embeddings_with_debt
+from response_synthesizer import get_synthesized_response_based_on_nodes_with_score, merge_nodes
+import sys, logging
+
+# logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+# logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+setup_logging()
 
 from elasticsearch_service import ElasticsearchClient
 
@@ -14,15 +21,19 @@ if "initialized" not in st.session_state:
     st.session_state.messages = []
     st.session_state.knowledgeGraphResponse = ""
     st.session_state.vectorEmbeddingsResponse = ""
+    st.session_state.synthesizedResponse = ""  # Add a new state for the synthesized response
     st.session_state.experimentKG = None
     st.session_state.experimentVDB = None
+    st.session_state.experimentSynthesized = None  # Add a new state for the synthesized experiment
     st.session_state.kg_response_value = 0
     st.session_state.ve_response_value = 0
+    st.session_state.synthesized_response_value = 0  # Add a new state for the synthesized response value
 
 # Function to reset response values
 def reset_response_values():
     st.session_state.kg_response_value = 0
     st.session_state.ve_response_value = 0
+    st.session_state.synthesized_response_value = 0  # Reset the synthesized response value as well
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
@@ -40,6 +51,10 @@ if prompt := st.chat_input("What is up?"):
         st.session_state.experimentVDB.satisfaction_with_answer = st.session_state.ve_response_value
         es_client.save_experiment(experiment_document=st.session_state.experimentVDB)
 
+    if st.session_state.experimentSynthesized:  # Handle the synthesized experiment as well
+        st.session_state.experimentSynthesized.satisfaction_with_answer = st.session_state.synthesized_response_value
+        # es_client.save_experiment(experiment_document=st.session_state.experimentSynthesized)
+
     # Reset response values for the new question
     reset_response_values()
 
@@ -50,13 +65,20 @@ if prompt := st.chat_input("What is up?"):
     st.session_state.messages.append({"role": "user", "content": prompt})
 
     # Generate responses based on input
-    responseKG, experimentKG = generate_response_based_on_knowledge_graph_with_debt(prompt)
-    responseVE, experimentVDB = generate_response_based_on_vector_embeddings_with_debt(prompt)
+    responseKG, experimentKG, sourceNodesKG = generate_response_based_on_knowledge_graph_with_debt(prompt)
+    responseVE, experimentVDB, sourceNodesVDB = generate_response_based_on_vector_embeddings_with_debt(prompt)
+    
+    nodesCombined = merge_nodes(sourceNodesKG, sourceNodesVDB)
+    logging.info(f"***********************Logging combined nodes: {nodesCombined}")
+
+    experimentSynthesized = get_synthesized_response_based_on_nodes_with_score(prompt, nodesCombined)  # Generate the synthesized response
 
     st.session_state.knowledgeGraphResponse = responseKG
     st.session_state.vectorEmbeddingsResponse = responseVE
+    # st.session_state.synthesizedResponse = responseSynthesized  # Store the synthesized response
     st.session_state.experimentKG = experimentKG
     st.session_state.experimentVDB = experimentVDB
+    st.session_state.experimentSynthesized = experimentSynthesized  # Store the synthesized experiment
 
 # Display stored responses
 st.markdown("Knowledge Graph: ")
@@ -72,3 +94,11 @@ if st.button('👍', key="ve_like"):
     st.session_state.ve_response_value = 2
 if st.button('👎', key="ve_dislike"):
     st.session_state.ve_response_value = 1
+
+# Display synthesized response and handle feedback
+st.markdown("Synthesized response: ")
+st.markdown(st.session_state.experimentSynthesized)
+if st.button('👍', key="synthesized_like"):
+    st.session_state.synthesized_response_value = 2
+if st.button('👎', key="synthesized_dislike"):
+    st.session_state.synthesized_response_value = 1
