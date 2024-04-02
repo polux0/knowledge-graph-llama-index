@@ -1,4 +1,3 @@
-import logging
 import os
 from dotenv import load_dotenv
 from llama_index.core import KnowledgeGraphIndex, StorageContext, load_index_from_storage
@@ -46,10 +45,10 @@ embedding_model_id = "default"
 chunk_size = 256
 max_triplets_per_chunk = 15
 
-
 # Initialize LLM and Embedding model
 # llm = initialize_llm(env_vars['HF_TOKEN'], model_name_id = model_name_id)
 llm = initialize_openai_llm("gpt-4", env_vars['OPEN_API_KEY'])
+# gpt-4	
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 
 embed_model = initialize_embedding_model(env_vars['HF_TOKEN'], embedding_model_id=embedding_model_id)
@@ -156,7 +155,7 @@ def generate_response_based_on_knowledge_graph_with_debt(query: str):
   experiment.prompt_template = template,
   # technical debt - tree_summarize
   experiment.retrieval_strategy = "tree_summarize"
-  response = query_knowledge_graph(index, query, template)
+  response, source_nodes = query_knowledge_graph(index, query, template)
   experiment.response = response
 
   # timestamp realted
@@ -167,4 +166,4 @@ def generate_response_based_on_knowledge_graph_with_debt(query: str):
   experiment.updated_at = current_time.isoformat(timespec='milliseconds')
 
   print("response from knowledge graph ******************************************************************: ", response) 
-  return response, experiment
+  return response, experiment, source_nodes
