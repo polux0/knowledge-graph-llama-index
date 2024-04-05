@@ -9,7 +9,7 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
 from environment_setup import (load_environment_variables, setup_logging)
-from large_language_model_setup import initialize_llm, initialize_openai_llm
+from large_language_model_setup import initialize_llm
 from llama_index.core import StorageContext, load_index_from_storage
 from llama_index.core import Document
 from llama_index.core.node_parser import SentenceSplitter
@@ -37,7 +37,7 @@ from datetime import datetime, timezone
 from format_message_with_prompt import format_message
 
 # Elasticsearch related
-es_client = ElasticsearchClient(scheme='http', host='elasticsearch', port=9200)
+es_client = ElasticsearchClient()
 
 # Initialize Experiment
 
@@ -87,12 +87,9 @@ experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embeddi
 # large language model
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 print("experiment.llm_used", experiment.llm_used)
-# llm = initialize_llm(hf_token=env_vars['HF_TOKEN'], model_name_id = model_name_id)
-llm = initialize_openai_llm("gpt-4", env_vars['OPEN_API_KEY'])
-# gpt-4	
-# initialize ChromaDB
-remote_db = chromadb.HttpClient(host='chromadb', port=8000) 
-# remote_db = chromadb.HttpClient()
+llm = initialize_llm(model_name_id, env_vars['OPEN_API_KEY'])
+
+remote_db = chromadb.HttpClient(host=env_vars['CHROMA_URL'], port=env_vars['CHROMA_PORT']) 
 
 print("All collections in Chroma: ", remote_db.list_collections())
 
@@ -209,8 +206,8 @@ query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 def generate_response_based_on_vector_embeddings(question:str):
 
     experiment.question = question
-    prompt_template = get_template_based_on_template_id("simon")
-    experiment.prompt_template = get_template_based_on_template_id("simon"),
+    prompt_template = get_template_based_on_template_id("default")
+    experiment.prompt_template = get_template_based_on_template_id("default"),
     print("With parent-child retriever*******************************************************************\n\n: ")
     response = query_engine_chunk.query(format_message(question, prompt_template))
     experiment.response = str(response)
@@ -228,10 +225,13 @@ def generate_response_based_on_vector_embeddings(question:str):
 def generate_response_based_on_vector_embeddings_with_debt(question:str):
 
     experiment.question = question
-    prompt_template = get_template_based_on_template_id("simon")
-    experiment.prompt_template = get_template_based_on_template_id("simon"),
+    prompt_template = get_template_based_on_template_id("default")
+    experiment.prompt_template = get_template_based_on_template_id("default"),
     print("With parent-child retriever*******************************************************************\n\n: ")
-    response = query_engine_chunk.query(format_message(question, prompt_template))
+    print("Template received, vector embeddings:", prompt_template)
+    message_template = format_message(question, prompt_template)
+    print("!!!!!!!!!!!!!!!!Final question, vetor embeddings:", message_template)
+    response = query_engine_chunk.query(message_template)
     # logging.info(f"Logging the response nodes from a vector database: {response.source_nodes}")
     experiment.response = str(response)
     

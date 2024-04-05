@@ -2,29 +2,26 @@ import logging
 from llama_index.llms.huggingface import HuggingFaceInferenceAPI, HuggingFaceLLM
 from llama_index.llms.openai import OpenAI
 from language_models import LANGUAGE_MODELS
+from environment_setup import load_environment_variables
+env_vars = load_environment_variables()
 
 #tecnical debt - https://docs.llamaindex.ai/en/stable/api_reference/llms/huggingface/
-def initialize_llm(hf_token, model_name_id):
-    """Initialize the language model using Hugging Face Inference API.
+def initialize_llm(model_name_id, token):
+    """Initialize a language model using either OpenAI or Hugging Face Inference API.
 
     Args:
-        hf_token (str): The Hugging Face API token.
+        token (str): The API token for the chosen provider.
+        model_name_id (str): The model name or ID, depending on the provider.
 
     Returns:
-        HuggingFaceInferenceAPI: The initialized language model.
+        Union[OpenAI, HuggingFaceInferenceAPI]: The initialized language model.
     """
-    return HuggingFaceInferenceAPI(model_name=get_llm_based_on_model_name_id(model_name_id), token=hf_token)
-
-def initialize_openai_llm(model_name, openai_api_key):
-    """Initialize openai language model.
-
-    Args:
-        openai_api_key (str): The OpenAI API key.
-
-    Returns:
-        OpenAI: The initialized language model.
-    """
-    return OpenAI(model=model_name, api_key=openai_api_key)
+    if model_name_id == 'gpt-4':
+        # For OpenAI, use the model_name_id directly as the model name
+        return OpenAI(model=model_name_id, api_key=env_vars['OPEN_API_KEY'])
+    else:
+        # For Hugging Face, a helper function might be used to determine the exact model name based on an ID
+        return HuggingFaceInferenceAPI(model_name=get_llm_based_on_model_name_id(model_name_id), hf_token=env_vars['HF_TOKEN'])
 
 def messages_to_prompt(messages):
     prompt = ""
