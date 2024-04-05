@@ -34,6 +34,11 @@ jobs:
           NEO4J_URL=${{ secrets.NEO4J_URL }}
           NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
           OPENAI_API_KEY=${{secrets.OPENAI_API_KEY}}
+          CHROMA_URL=${{ secrets.CHROMA_URL }}
+          CHROMA_PORT=${{secrets.CHROMA_PORT}}
+          ELASTIC_SCHEME=${{secrets.ELASTIC_SCHEME}}
+          ELASTIC_URL=${{ secrets.ELASTIC_URL }}
+          ELASTIC_PORT=${{secrets.ELASTIC_PORT}}
           EOT
           EOF
         continue-on-error: true
@@ -48,6 +53,11 @@ jobs:
             export NEO4J_URL=${{ secrets.NEO4J_URL }}
             export NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
             export OPENAI_API_KEY=${{secrets.OPENAI_API_KEY}}
+            export CHROMA_URL=${{ secrets.CHROMA_URL }}
+            export CHROMA_PORT=${{secrets.CHROMA_PORT}}
+            export ELASTIC_SCHEME=${{secrets.ELASTIC_SCHEME}}
+            export ELASTIC_URL=${{ secrets.ELASTIC_URL }}
+            export ELASTIC_PORT=${{secrets.ELASTIC_PORT}}
             if [ ! -d "/home/auravana/app" ]; then
               # Clone the repository if the directory doesn't exist
               git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app

@@ -18,7 +18,10 @@ def load_environment_variables():
         "NEO4J_URL": os.getenv("NEO4J_URL"),
         "NEO4J_DATABASE": os.getenv("NEO4J_DATABASE"),
         "OPEN_API_KEY": os.getenv("OPEN_API_KEY"),
-        
+        "CHROMA_URL": os.getenv("CHROMA_URL"),
+        "CHROMA_PORT": os.getenv("CHROMA_PORT"),
+        "ELASTIC_URL": os.getenv("ELASTIC_URL"),
+        "ELASTIC_PORT": os.getenv("ELASTIC_PORT"),
     }
 def setup_logging():
     """Set up logging to output to standard output with INFO level."""

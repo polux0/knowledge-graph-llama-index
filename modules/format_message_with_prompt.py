@@ -15,11 +15,7 @@ def format_message(query, template_id):
     - The response from the query engine after sending the formatted message.
     """
     # Select the template based on the template_id
-    if template_id in TEMPLATES:
-        message_template = TEMPLATES[template_id].format(query=query)
-    else:
-        logging.error(f"Invalid template_id: {template_id}. Falling back to default template.")
-        message_template = TEMPLATES["default"].format(query=query)
+    message_template = template_id.format(query=query)
 
     # Log the message being formatted
     logging.info(f"Final format the following message to the query engine: {message_template}")

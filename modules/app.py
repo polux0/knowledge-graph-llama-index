@@ -1,5 +1,6 @@
 from environment_setup import setup_logging
 import streamlit as st
+from concurrent.futures import ThreadPoolExecutor
 from create_knowledge_graph import generate_response_based_on_knowledge_graph_with_debt
 from create_vector_embeddings_llama import generate_response_based_on_vector_embeddings_with_debt
 from response_synthesizer import get_synthesized_response_based_on_nodes_with_score, merge_nodes
@@ -11,7 +12,7 @@ setup_logging()
 
 from elasticsearch_service import ElasticsearchClient
 
-es_client = ElasticsearchClient(scheme='http', host='elasticsearch', port=9200)
+es_client = ElasticsearchClient()
 
 st.title("Explore Auravana")
 
@@ -64,12 +65,17 @@ if prompt := st.chat_input("What is up?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    # Generate responses based on input
-    responseKG, experimentKG, sourceNodesKG = generate_response_based_on_knowledge_graph_with_debt(prompt)
-    responseVE, experimentVDB, sourceNodesVDB = generate_response_based_on_vector_embeddings_with_debt(prompt)
+    with ThreadPoolExecutor(max_workers=2) as executor:
+        # Schedule the functions to be executed in parallel
+        future_kg = executor.submit(generate_response_based_on_knowledge_graph_with_debt, prompt)
+        future_ve = executor.submit(generate_response_based_on_vector_embeddings_with_debt, prompt)
+
+        # Wait for the functions to complete and retrieve results
+        responseKG, experimentKG, sourceNodesKG = future_kg.result()
+        responseVE, experimentVDB, sourceNodesVDB = future_ve.result()
     
     nodesCombined = merge_nodes(sourceNodesKG, sourceNodesVDB)
-    logging.info(f"***********************Logging combined nodes: {nodesCombined}")
+    print("** Nodes combined: %s" % nodesCombined)
 
     experimentSynthesized = get_synthesized_response_based_on_nodes_with_score(prompt, nodesCombined)  # Generate the synthesized response
 

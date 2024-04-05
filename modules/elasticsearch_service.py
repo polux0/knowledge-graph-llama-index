@@ -1,6 +1,11 @@
+import logging
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
+from environment_setup import (load_environment_variables, setup_logging)
+import os
 
+env_vars = load_environment_variables()
+setup_logging()
 class ExperimentDocument:
     def __init__(self, experiment_id="exp123", embeddings_model="modelXYZ", chunk_size=0, 
                  chunk_overlap=0, max_triplets_per_chunk=0, llm_used="GPT-3", 
@@ -42,7 +47,13 @@ class ExperimentDocument:
         }
 
 class ElasticsearchClient:
-    def __init__(self, scheme, host='localhost', port=9200):
+    def __init__(self, scheme='http', host='localhost', port=9200):
+        # Read environment variables, providing default values if they're not set
+        scheme = os.getenv('ELASTIC_SCHEME', 'http')
+        host = os.getenv('ELASTIC_URL', 'localhost')
+        port = os.getenv('ELASTIC_PORT', 9200)  # Note that `os.getenv` returns a string, so you might need to convert types
+
+        port = int(port)
         self.client = Elasticsearch([{'scheme': scheme, 'host': host, 'port': port}])
 
     def save_experiment(self, experiment_document):
