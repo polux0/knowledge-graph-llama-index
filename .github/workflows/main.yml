@@ -78,11 +78,11 @@ jobs:
       - name: Deploy to Digital Ocean and set up cron job for Elasticsearch snapshots
         run: |
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
-          # Setup repository for elasticsearch snapshots
-          ./scripts/elasticsearch/setup_repository.sh
-          # Set up cron job to create Elasticsearch snapshots every hour
-          (crontab -l ; echo "0 * * * * ./scripts/elasticsearch/create_snapshot_with_cleanup.sh") | crontab -
-          EOF 
+            # Setup repository for elasticsearch snapshots
+            ./scripts/elasticsearch/setup_repository.sh
+            # Set up cron job to create Elasticsearch snapshots every hour
+            (crontab -l ; echo "0 * * * * ./home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh") | crontab -
+          EOF
 
       - name: Set up Elasticsearch Schema
         run: |
