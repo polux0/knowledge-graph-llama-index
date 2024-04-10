@@ -87,6 +87,13 @@ jobs:
       - name: Set up Elasticsearch Schema
         run: |
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
-          chmod +x ./scripts/elasticsearch/setup.sh
-          ./scripts/elasticsearch/setup.sh
-        continue-on-error: true
+            if [ -f /home/auravana/app/scripts/elasticsearch/setup.sh ]; then
+                chmod +x /home/auravana/app/scripts/elasticsearch/setup.sh
+                /home/auravana/app/scripts/elasticsearch/setup.sh
+            else
+                echo "Elasticsearch setup.sh script not found"
+                exit 1
+            fi
+          EOF
+
+        
