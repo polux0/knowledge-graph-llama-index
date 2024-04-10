@@ -83,7 +83,7 @@ jobs:
             # Set up cron job to create Elasticsearch snapshots every hour
             # Check if the cron job already exists, and append it if it doesn't
             CRON_JOB="0 * * * * /home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh"
-            crontab -l | grep -Fq "\$CRON_JOB" || (crontab -l; echo "\$CRON_JOB") | crontab 
+            crontab -l | grep -Fq "\\$CRON_JOB" || (crontab -l; echo "\\$CRON_JOB") | crontab 
           EOF
 
       - name: Set up Elasticsearch Schema
