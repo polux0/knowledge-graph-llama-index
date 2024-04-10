@@ -45,7 +45,7 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
     texts: Sequence[str] = [node_with_score.node.text for node_with_score in nodes_with_score]
 
 
-    llm = initialize_llm(model_name_id, token=env_vars['HF_TOKEN'])
+    llm = initialize_llm(model_name_id)
 
 
     # response_synthesizer = TreeSummarize(verbose=True, summary_template=prompt, llm=llm)

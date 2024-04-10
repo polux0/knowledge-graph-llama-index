@@ -22,9 +22,14 @@ jobs:
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
 
           # Ensure required directories exist and set permissions
-          mkdir -p $HOME/elasticsearch/snapshots $HOME/neo4j/data $HOME/neo4j/logs $HOME/neo4j/import $HOME/neo4j/plugins $HOME/chroma-data $HOME/esdata1
+          mkdir -p /usr/share/snapshots/elasticsearch $HOME/es_snapshots/ $HOME/neo4j/data $HOME/neo4j/logs $HOME/neo4j/import $HOME/neo4j/plugins $HOME/chroma-data $HOME/esdata1
+          # Set permissions for Elasticsearch snapshots
+          chmod -R 777 /usr/share/snapshots/elasticsearch $HOME/es_snapshots
           # chown -R root:root $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
-          chown -R 1000:1000 $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
+          chown -R 1000:1000 $HOME/es_snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
+
+          # Make snapshot scripts executable
+          chmod +x ./scripts/elasticsearch/create_snapshot.sh ./scripts/elasticsearch/setup_repository.sh ./scripts/elasticsearch/create_snapshot_with_cleanup.sh ./scripts/elasticsearch/restore_from_a_snapshot.sh
 
           cat <<EOT > /home/auravana/app/.env
           HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
@@ -70,34 +75,18 @@ jobs:
             docker-compose down && docker-compose up --build -d
           EOF
 
+      - name: Deploy to Digital Ocean and set up cron job for Elasticsearch snapshots
+        run: |
+          ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
+          # Setup repository for elasticsearch snapshots
+          ./scripts/elasticsearch/setup_repository.sh
+          # Set up cron job to create Elasticsearch snapshots every hour
+          (crontab -l ; echo "0 * * * * ./scripts/elasticsearch/create_snapshot_with_cleanup.sh") | crontab -
+          EOF 
+
       - name: Set up Elasticsearch Schema
         run: |
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
           chmod +x ./scripts/elasticsearch/setup.sh
           ./scripts/elasticsearch/setup.sh
         continue-on-error: true
-      
-      # - name: Create Elasticsearch Snapshot
-      #   run: |
-      #     ssh -T -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
-      #     # Wait for Elasticsearch to be ready
-      #     while [[ "$(curl -s -o /dev/null -w ''%{http_code}'' http://localhost:9200)" != "200" ]]; do sleep 5; done
-      #     # Configure the snapshot repository (if not already configured)
-      #     curl -X PUT "localhost:9200/_snapshot/my_backup_repository" -H 'Content-Type: application/json' -d'
-      #     {
-      #       "type": "fs",
-      #       "settings": {
-      #         "location": "/usr/share/elasticsearch/snapshots"
-      #       }
-      #     }
-      #     '
-      #     # Create a snapshot
-      #     curl -X PUT "localhost:9200/_snapshot/my_backup_repository/snapshot_$(date +%Y%m%d_%H%M%S)?wait_for_completion=true" -H 'Content-Type: application/json' -d'
-      #     {
-      #       "indices": "_all",
-      #       "ignore_unavailable": true,
-      #       "include_global_state": false
-      #     }
-      #     '
-      #     EOF
-  

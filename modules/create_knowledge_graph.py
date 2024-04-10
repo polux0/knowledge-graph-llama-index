@@ -40,13 +40,13 @@ env_vars = load_environment_variables()
 setup_logging()
 
 # variables
-model_name_id = "default"
+model_name_id = "gpt-4"
 embedding_model_id = "default" 
 chunk_size = 256
 max_triplets_per_chunk = 15
 
 # Initialize LLM and Embedding model
-llm = initialize_llm(model_name_id, env_vars['OPEN_API_KEY'])
+llm = initialize_llm(model_name_id)
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 
 embed_model = initialize_embedding_model(env_vars['HF_TOKEN'], embedding_model_id=embedding_model_id)
