@@ -6,7 +6,7 @@ from environment_setup import load_environment_variables
 env_vars = load_environment_variables()
 
 #tecnical debt - https://docs.llamaindex.ai/en/stable/api_reference/llms/huggingface/
-def initialize_llm(model_name_id, token):
+def initialize_llm(model_name_id):
     """Initialize a language model using either OpenAI or Hugging Face Inference API.
 
     Args:

@@ -66,13 +66,14 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      # - path.repo=$HOME/elasticsearch/snapshots
+      # Ensure this matches the mounted volume path inside the container
+      - path.repo=/usr/share/elasticsearch/snapshots
     ports:
       - "9200:9200"
     volumes:
-      -  $HOME/esdata1:/usr/share/elasticsearch/data
-      # - ./snapshots:/usr/share/elasticsearch/snapshots
-      # - ./elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - $HOME/esdata1:/usr/share/elasticsearch/data
+      # This line mounts $HOME/es_snapshots to /usr/share/elasticsearch/snapshots inside the container
+      - $HOME/es_snapshots:/usr/share/elasticsearch/snapshots
     networks:
       - net
   kibana:

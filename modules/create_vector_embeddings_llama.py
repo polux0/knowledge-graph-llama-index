@@ -49,7 +49,7 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec='milliseconds')
 
 # Variables
-model_name_id = "default"
+model_name_id = "gpt-4"
 embedding_model_id = "default" 
 chunk_size = 256
 max_triplets_per_chunk = 15
@@ -87,7 +87,7 @@ experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embeddi
 # large language model
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 print("experiment.llm_used", experiment.llm_used)
-llm = initialize_llm(model_name_id, env_vars['OPEN_API_KEY'])
+llm = initialize_llm(model_name_id)
 
 remote_db = chromadb.HttpClient(host=env_vars['CHROMA_URL'], port=env_vars['CHROMA_PORT']) 
 
