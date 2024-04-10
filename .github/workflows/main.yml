@@ -81,7 +81,9 @@ jobs:
             # Setup repository for elasticsearch snapshots
             ./scripts/elasticsearch/setup_repository.sh
             # Set up cron job to create Elasticsearch snapshots every hour
-            (crontab -l ; echo "0 * * * * ./home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh") | crontab -
+            # Check if the cron job already exists, and append it if it doesn't
+            CRON_JOB="0 * * * * /home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh"
+            crontab -l | grep -Fq "\$CRON_JOB" || (crontab -l; echo "\$CRON_JOB") | crontab 
           EOF
 
       - name: Set up Elasticsearch Schema
