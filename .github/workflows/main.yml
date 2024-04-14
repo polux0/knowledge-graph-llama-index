@@ -80,10 +80,11 @@ jobs:
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
             # Setup repository for elasticsearch snapshots
             ./scripts/elasticsearch/setup_repository.sh
+            # Remove existing cron jobs
+            crontab -r || true
             # Set up cron job to create Elasticsearch snapshots every hour
-            # Check if the cron job already exists, and append it if it doesn't
             CRON_JOB="0 * * * * /home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh"
-            crontab -l | grep -Fq "\\$CRON_JOB" || (crontab -l; echo "\\$CRON_JOB") | crontab 
+            echo "$CRON_JOB" | crontab -
           EOF
 
       - name: Set up Elasticsearch Schema
