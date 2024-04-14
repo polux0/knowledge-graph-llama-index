@@ -40,7 +40,7 @@ env_vars = load_environment_variables()
 setup_logging()
 
 # variables
-model_name_id = "gpt-4"
+model_name_id = "default"
 embedding_model_id = "default" 
 chunk_size = 256
 max_triplets_per_chunk = 15

@@ -2,6 +2,7 @@ import logging
 from llama_index.llms.huggingface import HuggingFaceInferenceAPI, HuggingFaceLLM
 from llama_index.llms.openai import OpenAI
 from language_models import LANGUAGE_MODELS
+from huggingface_hub import login
 from environment_setup import load_environment_variables
 env_vars = load_environment_variables()
 
@@ -20,6 +21,7 @@ def initialize_llm(model_name_id):
         # For OpenAI, use the model_name_id directly as the model name
         return OpenAI(model=model_name_id, api_key=env_vars['OPEN_API_KEY'])
     else:
+        login(token=env_vars['HF_TOKEN'])
         # For Hugging Face, a helper function might be used to determine the exact model name based on an ID
         return HuggingFaceInferenceAPI(model_name=get_llm_based_on_model_name_id(model_name_id), hf_token=env_vars['HF_TOKEN'])
 
