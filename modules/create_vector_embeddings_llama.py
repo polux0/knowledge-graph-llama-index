@@ -49,7 +49,7 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec='milliseconds')
 
 # Variables
-model_name_id = "gpt-4"
+model_name_id = "default"
 embedding_model_id = "default" 
 chunk_size = 256
 max_triplets_per_chunk = 15
