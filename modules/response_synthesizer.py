@@ -7,6 +7,20 @@ from large_language_model_setup import initialize_llm
 from llama_index.core import PromptTemplate
 from llama_index.core.response_synthesizers import TreeSummarize
 from typing import Sequence
+from elasticsearch_service import ExperimentDocument, ElasticsearchClient
+from datetime import datetime, timezone
+from large_language_model_setup import get_llm_based_on_model_name_id
+
+es_client = ElasticsearchClient()
+
+# Initialize Experiment
+
+# Timestamp realted
+# Get the current time in UTC, making it timezone-aware
+current_time = datetime.now(timezone.utc)
+
+experiment = ExperimentDocument()
+experiment.created_at = current_time.isoformat(timespec='milliseconds')
 
 def merge_nodes(nodes_with_score1: List[NodeWithScore], nodes_with_score2: List[NodeWithScore]): 
     return [
@@ -15,8 +29,8 @@ def merge_nodes(nodes_with_score1: List[NodeWithScore], nodes_with_score2: List[
     ]
                 
 def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_score: any):
-    env_vars = load_environment_variables()
-    model_name_id="gpt-4"
+    model_name_id="default"
+    response_mode = "compact"
 
     prompt = (    
     "Context information is below.\n"
@@ -46,6 +60,8 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
 
 
     llm = initialize_llm(model_name_id)
+    experiment.llm_used = get_llm_based_on_model_name_id(model_name_id=model_name_id)
+    experiment.question = query
 
 
     # response_synthesizer = TreeSummarize(verbose=True, summary_template=prompt, llm=llm)
@@ -53,12 +69,15 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
     #      query, nodes=nodes_with_score
     # )
 
-    response_synthesizer = get_response_synthesizer(response_mode="compact", llm=llm)
+    response_synthesizer = get_response_synthesizer(response_mode=response_mode, llm=llm)
+    experiment.retrieval_strategy = response_mode
     response = response_synthesizer.synthesize(
         query, nodes=nodes_with_score
     )
+    experiment.response = str(response)
+    experiment.updated_at = current_time.isoformat(timespec='milliseconds')
     
     # response = response_synthesizer.synthesize(
     #     query, [texts]
     # )
-    return response
+    return response, experiment
