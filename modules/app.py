@@ -22,7 +22,7 @@ if "initialized" not in st.session_state:
     st.session_state.messages = []
     st.session_state.knowledgeGraphResponse = ""
     st.session_state.vectorEmbeddingsResponse = ""
-    st.session_state.synthesizedResponse = ""  # Add a new state for the synthesized response
+    st.session_state.responseSynthesized = ""  # Add a new state for the synthesized response
     st.session_state.experimentKG = None
     st.session_state.experimentVDB = None
     st.session_state.experimentSynthesized = None  # Add a new state for the synthesized experiment
@@ -54,7 +54,7 @@ if prompt := st.chat_input("What is up?"):
 
     if st.session_state.experimentSynthesized:  # Handle the synthesized experiment as well
         st.session_state.experimentSynthesized.satisfaction_with_answer = st.session_state.synthesized_response_value
-        # es_client.save_experiment(experiment_document=st.session_state.experimentSynthesized)
+        es_client.save_experiment(experiment_document=st.session_state.experimentSynthesized)
 
     # Reset response values for the new question
     reset_response_values()
@@ -77,11 +77,11 @@ if prompt := st.chat_input("What is up?"):
     nodesCombined = merge_nodes(sourceNodesKG, sourceNodesVDB)
     print("** Nodes combined: %s" % nodesCombined)
 
-    experimentSynthesized = get_synthesized_response_based_on_nodes_with_score(prompt, nodesCombined)  # Generate the synthesized response
+    responseSynthesized, experimentSynthesized = get_synthesized_response_based_on_nodes_with_score(prompt, nodesCombined)  # Generate the synthesized response
 
     st.session_state.knowledgeGraphResponse = responseKG
     st.session_state.vectorEmbeddingsResponse = responseVE
-    # st.session_state.synthesizedResponse = responseSynthesized  # Store the synthesized response
+    st.session_state.responseSynthesized = responseSynthesized  # Store the synthesized response
     st.session_state.experimentKG = experimentKG
     st.session_state.experimentVDB = experimentVDB
     st.session_state.experimentSynthesized = experimentSynthesized  # Store the synthesized experiment
@@ -103,7 +103,7 @@ if st.button('👎', key="ve_dislike"):
 
 # Display synthesized response and handle feedback
 st.markdown("Synthesized response: ")
-st.markdown(st.session_state.experimentSynthesized)
+st.markdown(st.session_state.responseSynthesized)
 if st.button('👍', key="synthesized_like"):
     st.session_state.synthesized_response_value = 2
 if st.button('👎', key="synthesized_dislike"):
