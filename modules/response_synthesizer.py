@@ -75,6 +75,7 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
         query, nodes=nodes_with_score
     )
     experiment.response = str(response)
+    experiment.source_agent = "Response synthesizer"
     experiment.updated_at = current_time.isoformat(timespec='milliseconds')
     
     # response = response_synthesizer.synthesize(

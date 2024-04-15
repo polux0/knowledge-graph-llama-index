@@ -11,7 +11,7 @@ class ExperimentDocument:
                  chunk_overlap=0, max_triplets_per_chunk=0, llm_used="GPT-3", 
                  prompt_template="What is the meaning of life?", question="Why are we here?", 
                  response="To ask questions.", satisfaction_with_answer=True, 
-                 corrected_answer="To seek answers.", retrieval_strategy="sequential", 
+                 corrected_answer="To seek answers.", retrieval_strategy="sequential", source_agent="",
                  created_at=None, updated_at=None):
         self.experiment_id = experiment_id
         self.embeddings_model = embeddings_model
@@ -25,6 +25,7 @@ class ExperimentDocument:
         self.satisfaction_with_answer = satisfaction_with_answer
         self.corrected_answer = corrected_answer
         self.retrieval_strategy = retrieval_strategy
+        self.source_agent = source_agent
         self.created_at = created_at or "default_created_at_value"
         self.updated_at = updated_at or "default_updated_at_value"
 
@@ -42,6 +43,7 @@ class ExperimentDocument:
             "Satisfaction_with_answer": self.satisfaction_with_answer,
             "Corrected_answer": self.corrected_answer,
             "Retrieval_strategy": self.retrieval_strategy,
+            "Source_agent": self.source_agent,
             "Created_at": self.created_at, 
             "Updated_at": self.updated_at
         }

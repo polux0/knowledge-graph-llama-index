@@ -126,6 +126,7 @@ def generate_response_based_on_knowledge_graph(query: str):
   experiment.prompt_template = template,
   # technical debt - tree_summarize
   experiment.retrieval_strategy = "tree_summarize"
+  experiment.source_agent = "KGAgent"
   response = query_knowledge_graph(index, query, template)
   experiment.response = response
 
@@ -151,6 +152,7 @@ def generate_response_based_on_knowledge_graph_with_debt(query: str):
   experiment.prompt_template = template,
   # technical debt - tree_summarize
   experiment.retrieval_strategy = "tree_summarize"
+  experiment.source_agent = "KGAgent"
   response, source_nodes = query_knowledge_graph(index, query, template)
   experiment.response = response
 
