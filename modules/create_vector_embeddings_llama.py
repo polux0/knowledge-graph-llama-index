@@ -234,6 +234,7 @@ def generate_response_based_on_vector_embeddings_with_debt(question:str):
     response = query_engine_chunk.query(message_template)
     # logging.info(f"Logging the response nodes from a vector database: {response.source_nodes}")
     experiment.response = str(response)
+    experiment.source_agent = "VDBAgent"
     
     current_time = datetime.now(timezone.utc)
 
