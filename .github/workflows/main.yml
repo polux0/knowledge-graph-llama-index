@@ -90,11 +90,13 @@ jobs:
       - name: Set up Elasticsearch Schema
         run: |
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
-            if [ -f /home/auravana/app/scripts/elasticsearch/setup.sh ]; then
+            if [ -f /home/auravana/app/scripts/elasticsearch/setup.sh ] && [ -f /home/auravana/app/scripts/elasticsearch/migrations/01_add_source_agent_into_interaction.sh ]; then
                 chmod +x /home/auravana/app/scripts/elasticsearch/setup.sh
                 /home/auravana/app/scripts/elasticsearch/setup.sh
+                chmod +x /home/auravana/app/scripts/elasticsearch/migrations/01_add_source_agent_into_interaction.sh
+                /home/auravana/app/scripts/elasticsearch/migrations/01_add_source_agent_into_interaction.sh
             else
-                echo "Elasticsearch setup.sh script not found"
+                echo "One or more Elasticsearch scripts not found"
                 exit 1
             fi
           EOF
