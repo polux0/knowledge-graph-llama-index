@@ -1,3 +1,4 @@
+import json
 from datetime import datetime, timezone
 from typing import List, Sequence
 
@@ -67,7 +68,34 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
     #      query, nodes=nodes_with_score
     # )
 
+    DEFAULT_REFINE_PROMPT_TMPL = (
+        "The original query is as follows: {query_str}\n"
+        "We have provided an existing answer: {existing_answer}\n"
+        "We have the opportunity to refine the existing answer "
+        "(only if needed) with some more context below.\n"
+        "------------\n"
+        "{context_msg}\n"
+        "------------\n"
+        "Given the new context, refine the original answer to better "
+        "answer the query. If the context isn't useful, return the original answer.\n"
+        "Refined Answer: "
+    )
+
+    DEFAULT_TEXT_QA_PROMPT_TMPL = (
+        "\nAND\n\n"
+        "Context information is below.\n"
+        "---------------------\n"
+        "{context_str}\n"
+        "---------------------\n"
+        "Given the context information and not prior knowledge, "
+        "answer the query.\n"
+        "Query: {query_str}\n"
+        "Answer: "
+    )
+    combined_prompt = f"{DEFAULT_REFINE_PROMPT_TMPL}{DEFAULT_TEXT_QA_PROMPT_TMPL}"
+
     response_synthesizer = get_response_synthesizer(response_mode=response_mode, llm=llm)
+    experiment.prompt_template = combined_prompt
     experiment.retrieval_strategy = response_mode
     response = response_synthesizer.synthesize(
         query, nodes=nodes_with_score
