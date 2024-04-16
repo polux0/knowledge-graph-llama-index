@@ -1,13 +1,16 @@
-from environment_setup import setup_logging
-import streamlit as st
+import logging
+import sys
 from concurrent.futures import ThreadPoolExecutor
-from create_knowledge_graph import generate_response_based_on_knowledge_graph_with_debt
-from create_vector_embeddings_llama import generate_response_based_on_vector_embeddings_with_debt
-from response_synthesizer import get_synthesized_response_based_on_nodes_with_score, merge_nodes
-import sys, logging
 
-# logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-# logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+import streamlit as st
+from create_knowledge_graph import \
+    generate_response_based_on_knowledge_graph_with_debt
+from create_vector_embeddings_llama import \
+    generate_response_based_on_vector_embeddings_with_debt
+from environment_setup import setup_logging
+from response_synthesizer import (
+    get_synthesized_response_based_on_nodes_with_score, merge_nodes)
+
 setup_logging()
 
 from elasticsearch_service import ElasticsearchClient
@@ -22,13 +25,13 @@ if "initialized" not in st.session_state:
     st.session_state.messages = []
     st.session_state.knowledgeGraphResponse = ""
     st.session_state.vectorEmbeddingsResponse = ""
-    st.session_state.responseSynthesized = ""  # Add a new state for the synthesized response
+    st.session_state.responseSynthesized = ""
     st.session_state.experimentKG = None
     st.session_state.experimentVDB = None
-    st.session_state.experimentSynthesized = None  # Add a new state for the synthesized experiment
+    st.session_state.experimentSynthesized = None
     st.session_state.kg_response_value = 0
     st.session_state.ve_response_value = 0
-    st.session_state.synthesized_response_value = 0  # Add a new state for the synthesized response value
+    st.session_state.synthesized_response_value = 0
 
 # Function to reset response values
 def reset_response_values():

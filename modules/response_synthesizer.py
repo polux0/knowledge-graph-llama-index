@@ -1,15 +1,14 @@
-from typing import List
-from llama_index.core.data_structs import Node
-from llama_index.core.schema import NodeWithScore
-from llama_index.core import get_response_synthesizer
-from environment_setup import load_environment_variables
-from large_language_model_setup import initialize_llm
-from llama_index.core import PromptTemplate
-from llama_index.core.response_synthesizers import TreeSummarize
-from typing import Sequence
-from elasticsearch_service import ExperimentDocument, ElasticsearchClient
 from datetime import datetime, timezone
-from large_language_model_setup import get_llm_based_on_model_name_id
+from typing import List, Sequence
+
+from elasticsearch_service import ElasticsearchClient, ExperimentDocument
+from environment_setup import load_environment_variables
+from large_language_model_setup import (get_llm_based_on_model_name_id,
+                                        initialize_llm)
+from llama_index.core import PromptTemplate, get_response_synthesizer
+from llama_index.core.data_structs import Node
+from llama_index.core.response_synthesizers import TreeSummarize
+from llama_index.core.schema import NodeWithScore
 
 es_client = ElasticsearchClient()
 
@@ -63,7 +62,6 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
     experiment.llm_used = get_llm_based_on_model_name_id(model_name_id=model_name_id)
     experiment.question = query
 
-
     # response_synthesizer = TreeSummarize(verbose=True, summary_template=prompt, llm=llm)
     # response = response_synthesizer.synthesize(
     #      query, nodes=nodes_with_score
@@ -76,7 +74,9 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
     )
     experiment.response = str(response)
     experiment.source_agent = "Response synthesizer"
-    experiment.updated_at = current_time.isoformat(timespec='milliseconds')
+
+    updated_at_time = datetime.now(timezone.utc)
+    experiment.updated_at = updated_at_time.isoformat(timespec='milliseconds')
     
     # response = response_synthesizer.synthesize(
     #     query, [texts]
