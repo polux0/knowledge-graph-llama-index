@@ -24,3 +24,5 @@ cachetools
 elasticsearch
 llama-index-llms-openai
 huggingface_hub
+nebula3-python
+llama-index-graph-stores-nebula

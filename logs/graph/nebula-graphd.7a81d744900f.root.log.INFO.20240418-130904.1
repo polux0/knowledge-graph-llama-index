@@ -1,0 +1,59 @@
+Log file created at: 2024/04/18 13:09:04
+Running on machine: 7a81d744900f
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240418 13:09:04.588928     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20240418 13:09:04.611528     7 WebService.cpp:124] Web service started on HTTP[19669]
+I20240418 13:09:04.611768     1 GraphDaemon.cpp:136] Number of networking IO threads: 8
+I20240418 13:09:04.611781     1 GraphDaemon.cpp:145] Number of worker threads: 8
+I20240418 13:09:04.613523     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240418 13:09:04.613687     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20240418 13:09:04.624929    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.628510    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.633750    36 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.638238    37 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.640045    38 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.642603    39 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.678473    40 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.680997    41 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.685082    42 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.176.4":9559
+I20240418 13:09:05.689280     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 13:09:05.689558     1 MetaClient.cpp:3269] Load leader ok
+I20240418 13:09:05.691449     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240418 13:09:05.692234     1 GraphSessionManager.cpp:337] Total of 2 sessions are loaded
+E20240418 13:09:05.693071     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+I20240418 13:09:05.695418     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240418 13:09:05.696287     1 Snowflake.cpp:17] WorkerId init success: 1
+I20240418 13:09:05.696754    46 GraphServer.cpp:63] Starting nebula-graphd on graphd:9669
+I20240418 13:09:06.007989    26 GraphService.cpp:77] Authenticating user root from 192.168.176.8:43840
+E20240418 13:09:06.011926    23 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+I20240418 13:09:25.751516    43 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 13:09:25.751549    43 MetaClient.cpp:3269] Load leader ok
+I20240418 13:09:46.639503    21 GraphService.cpp:77] Authenticating user root from 192.168.176.10:48766
+E20240418 13:09:46.640234    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+I20240418 13:09:46.640712    21 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+W20240418 13:09:46.641453    22 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240418 13:09:46.641489    22 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240418 13:09:46.641918    22 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240418 13:09:46.641929    22 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240418 13:09:46.642328    25 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240418 13:09:46.642349    22 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+I20240418 13:09:46.642726    25 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+E20240418 13:09:46.642947    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+I20240418 13:09:47.559414    25 GraphService.cpp:77] Authenticating user root from 192.168.176.10:48772
+I20240418 13:09:47.560336    26 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+I20240418 13:09:48.445771    37 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:09:48.456233    38 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:09:48.457397    39 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:09:48.458907    40 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:09:48.459260    41 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:09:48.459617    42 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:09:48.460352    35 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:09:48.460655    36 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "192.168.176.6":9779
+I20240418 13:10:08.625051    19 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 13:10:08.629818    19 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+E20240418 13:10:08.629966    19 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `relationship'.
+I20240418 13:12:33.880281     1 GraphDaemon.cpp:176] Signal 15(Terminated) received, stopping this server
+I20240418 13:12:33.881672    46 GraphServer.cpp:74] nebula-graphd on graphd:9669 has been stopped
+I20240418 13:12:33.881773     1 GraphDaemon.cpp:161] The graph Daemon stopped
+I20240418 13:12:33.881783     1 GraphServer.cpp:109] The graph server has been stopped

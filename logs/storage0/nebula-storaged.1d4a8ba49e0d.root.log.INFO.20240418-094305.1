@@ -1,0 +1,90 @@
+Log file created at: 2024/04/18 09:43:05
+Running on machine: 1d4a8ba49e0d
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240418 09:43:05.653430     1 StorageDaemon.cpp:132] localhost = "storaged0":9779
+I20240418 09:43:05.654536     1 StorageDaemon.cpp:147] data path= /data/storage
+I20240418 09:43:05.659643     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240418 09:43:05.659675     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 1
+W20240418 09:43:05.660491     1 FileBasedClusterIdMan.cpp:43] Open file failed, error No such file or directory
+I20240418 09:43:05.673312    48 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.700191    48 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.723953    48 MetaClient.cpp:2672] Persist the cluster Id from metad 2525445105384512363
+I20240418 09:43:06.724231    48 FileBasedClusterIdMan.cpp:21] Remove the existed file cluster.id
+I20240418 09:43:06.724521    48 FileBasedClusterIdMan.cpp:34] Persist clusterId 2525445105384512363 succeeded!
+I20240418 09:43:06.725833    54 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.731899    55 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.734417    56 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.741457    57 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.747153    58 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.749274    59 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.752128    60 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.754844    61 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.755795    62 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.806864    63 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.811084    64 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.812896    65 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.813799    66 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.816341    67 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.817559     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 09:43:06.817582     1 MetaClient.cpp:3269] Load leader ok
+I20240418 09:43:06.818269    68 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "192.168.144.2":9559
+I20240418 09:43:06.819772     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240418 09:43:06.820499     1 StorageServer.cpp:250] Init schema manager
+I20240418 09:43:06.820746     1 StorageServer.cpp:253] Init index manager
+I20240418 09:43:06.820959     1 StorageServer.cpp:256] Init kvstore
+I20240418 09:43:06.821776     1 NebulaStore.cpp:48] Start the raft service...
+I20240418 09:43:06.822939     1 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20240418 09:43:06.921304     1 RaftexService.cpp:46] Start raft service on 9780
+I20240418 09:43:06.921581     1 NebulaStore.cpp:82] Scan the local path, and init the spaces_
+I20240418 09:43:06.921629     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/0"
+I20240418 09:43:06.921641     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/9"
+I20240418 09:43:06.928411    76 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240418 09:43:06.928452    76 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240418 09:43:06.931705    76 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240418 09:43:06.932591    76 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240418 09:43:06.982208    76 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/9/data
+I20240418 09:43:06.982260     1 NebulaStore.cpp:117] Load space 9 from disk
+I20240418 09:43:06.982508     1 NebulaStore.cpp:220] Load space 9 from disk
+I20240418 09:43:06.982517     1 NebulaStore.cpp:229] Need to open 1 parts of space 9
+I20240418 09:43:06.993165    70 NebulaStore.cpp:252] Load part 9, 1 from disk
+I20240418 09:43:06.993227     1 NebulaStore.cpp:286] Load space 9 complete
+I20240418 09:43:06.993238     1 NebulaStore.cpp:292] Init data from partManager for "storaged0":9779
+I20240418 09:43:06.993250     1 NebulaStore.cpp:399] Data space 9 has existed!
+I20240418 09:43:06.993602     1 NebulaStore.cpp:451] [Space: 9, Part: 1] has existed!
+I20240418 09:43:06.993643     1 NebulaStore.cpp:75] Register handler...
+I20240418 09:43:06.993649     1 StorageServer.cpp:259] Init LogMonitor
+I20240418 09:43:06.993722     1 StorageServer.cpp:126] Starting Storage HTTP Service
+I20240418 09:43:06.993888     1 StorageServer.cpp:130] Http Thread Pool started
+I20240418 09:43:06.997622    99 WebService.cpp:124] Web service started on HTTP[19779]
+I20240418 09:43:06.998072     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240418 09:43:06.998093     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240418 09:43:06.998099     1 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240418 09:43:06.998272     1 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240418 09:43:07.023149     1 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/0/data
+I20240418 09:43:07.026916     1 AdminTaskManager.cpp:22] max concurrent subtasks: 10
+I20240418 09:43:07.027205     1 AdminTaskManager.cpp:40] exit AdminTaskManager::init()
+I20240418 09:43:07.027405   120 AdminTaskManager.cpp:224] waiting for incoming task
+E20240418 09:43:07.084233     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/129.038MiB
+I20240418 09:43:07.085676     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240418 09:43:27.340296    69 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 09:43:27.340359    69 MetaClient.cpp:3269] Load leader ok
+I20240418 09:45:15.692392     1 StorageDaemon.cpp:201] Signal 15(Terminated) received, stopping this server
+I20240418 09:45:15.695669     1 NebulaStore.cpp:343] Stop the raft service...
+I20240418 09:45:15.695695     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240418 09:45:15.695785     1 RaftexService.cpp:77] All partitions have stopped
+I20240418 09:45:15.695791     1 NebulaStore.cpp:346] Stop kv engine...
+I20240418 09:45:15.698886     1 AdminTaskManager.cpp:176] enter AdminTaskManager::shutdown()
+I20240418 09:45:15.698908   121 AdminTaskManager.cpp:146] Unreported-Admin-Thread stopped
+I20240418 09:45:15.718894   120 AdminTaskManager.cpp:231] detect AdminTaskManager::shutdown()
+I20240418 09:45:15.719018     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/0
+I20240418 09:45:15.720243     1 AdminTaskManager.cpp:193] exit AdminTaskManager::shutdown()
+I20240418 09:45:15.720362     1 NebulaStore.cpp:343] Stop the raft service...
+I20240418 09:45:15.720368     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240418 09:45:15.720371     1 RaftexService.cpp:77] All partitions have stopped
+I20240418 09:45:15.720376     1 NebulaStore.cpp:346] Stop kv engine...
+I20240418 09:45:15.720384     1 NebulaStore.cpp:36] Cut off the relationship with meta client
+I20240418 09:45:15.720599     1 Part.h:59] [Port: 9780, Space: 9, Part: 1] ~Part()
+I20240418 09:45:15.722259     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/9
+I20240418 09:45:15.722553     1 NebulaStore.cpp:44] ~NebulaStore()
+I20240418 09:45:15.722609     1 StorageDaemon.cpp:186] The storage Daemon stopped

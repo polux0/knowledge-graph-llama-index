@@ -1,0 +1,92 @@
+Log file created at: 2024/04/18 15:24:50
+Running on machine: 2184f0773ae7
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240418 15:24:50.022711     1 StorageDaemon.cpp:132] localhost = "storaged0":9779
+I20240418 15:24:50.023677     1 StorageDaemon.cpp:147] data path= /data/storage
+I20240418 15:24:50.032552     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240418 15:24:50.032605     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 1
+I20240418 15:24:50.033324     1 FileBasedClusterIdMan.cpp:53] Get clusterId: 2525445105384512363
+I20240418 15:24:50.048380    48 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.063601    48 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.069717    54 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.072415    55 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.074680    56 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.076509    57 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.077950    58 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.079715    59 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.081400    60 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.084805    61 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.086280    62 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.088115    63 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.111546    64 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.113534    65 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.115221    66 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.116420    67 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.117202     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 15:24:51.117230     1 MetaClient.cpp:3269] Load leader ok
+I20240418 15:24:51.117718    68 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.118790     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240418 15:24:51.118834     1 StorageServer.cpp:250] Init schema manager
+I20240418 15:24:51.118845     1 StorageServer.cpp:253] Init index manager
+I20240418 15:24:51.118854     1 StorageServer.cpp:256] Init kvstore
+I20240418 15:24:51.118937     1 NebulaStore.cpp:48] Start the raft service...
+I20240418 15:24:51.120095     1 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20240418 15:24:51.140709     1 RaftexService.cpp:46] Start raft service on 9780
+I20240418 15:24:51.140837     1 NebulaStore.cpp:82] Scan the local path, and init the spaces_
+I20240418 15:24:51.140900     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/0"
+I20240418 15:24:51.140911     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/9"
+I20240418 15:24:51.143455    76 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240418 15:24:51.143497    76 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240418 15:24:51.143508    76 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240418 15:24:51.144356    76 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240418 15:24:51.186502    77 EventListener.h:21] Rocksdb start compaction column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 0, base level is 0, output level is 1
+I20240418 15:24:51.187484    77 CompactionFilter.h:81] Do full/manual compaction!
+I20240418 15:24:51.187892    76 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/9/data
+I20240418 15:24:51.187947     1 NebulaStore.cpp:117] Load space 9 from disk
+I20240418 15:24:51.188078     1 NebulaStore.cpp:220] Load space 9 from disk
+I20240418 15:24:51.188092     1 NebulaStore.cpp:229] Need to open 1 parts of space 9
+I20240418 15:24:51.212287    77 EventListener.h:35] Rocksdb compaction completed column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 1, base level is 0, output level is 1
+I20240418 15:24:51.215165    70 NebulaStore.cpp:252] Load part 9, 1 from disk
+I20240418 15:24:51.215247     1 NebulaStore.cpp:286] Load space 9 complete
+I20240418 15:24:51.215263     1 NebulaStore.cpp:292] Init data from partManager for "storaged0":9779
+I20240418 15:24:51.215281     1 NebulaStore.cpp:399] Data space 9 has existed!
+I20240418 15:24:51.215567     1 NebulaStore.cpp:451] [Space: 9, Part: 1] has existed!
+I20240418 15:24:51.215595     1 NebulaStore.cpp:75] Register handler...
+I20240418 15:24:51.215605     1 StorageServer.cpp:259] Init LogMonitor
+I20240418 15:24:51.215715     1 StorageServer.cpp:126] Starting Storage HTTP Service
+I20240418 15:24:51.215987     1 StorageServer.cpp:130] Http Thread Pool started
+I20240418 15:24:51.229593    99 WebService.cpp:124] Web service started on HTTP[19779]
+I20240418 15:24:51.229859     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240418 15:24:51.229880     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240418 15:24:51.229889     1 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240418 15:24:51.230201     1 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240418 15:24:51.271373    77 EventListener.h:21] Rocksdb start compaction column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 0, base level is 0, output level is 1
+I20240418 15:24:51.271740     1 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/0/data
+I20240418 15:24:51.279911     1 AdminTaskManager.cpp:22] max concurrent subtasks: 10
+I20240418 15:24:51.280325     1 AdminTaskManager.cpp:40] exit AdminTaskManager::init()
+I20240418 15:24:51.280372   120 AdminTaskManager.cpp:224] waiting for incoming task
+I20240418 15:24:51.293012    77 EventListener.h:35] Rocksdb compaction completed column family: default because of LevelL0FilesNum, status: OK, compacted 5 files into 1, base level is 0, output level is 1
+E20240418 15:24:51.326663     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/128.068MiB
+I20240418 15:24:51.327181     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240418 15:25:11.586799    69 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 15:25:11.587023    69 MetaClient.cpp:3269] Load leader ok
+I20240418 21:32:58.236763     1 StorageDaemon.cpp:201] Signal 15(Terminated) received, stopping this server
+I20240418 21:32:58.239655     1 NebulaStore.cpp:343] Stop the raft service...
+I20240418 21:32:58.239677     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240418 21:32:58.239681     1 RaftexService.cpp:77] All partitions have stopped
+I20240418 21:32:58.239842     1 NebulaStore.cpp:346] Stop kv engine...
+I20240418 21:32:58.243033     1 AdminTaskManager.cpp:176] enter AdminTaskManager::shutdown()
+I20240418 21:32:58.243126   121 AdminTaskManager.cpp:146] Unreported-Admin-Thread stopped
+I20240418 21:32:58.262115   120 AdminTaskManager.cpp:231] detect AdminTaskManager::shutdown()
+I20240418 21:32:58.262537     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/0
+I20240418 21:32:58.265919     1 AdminTaskManager.cpp:193] exit AdminTaskManager::shutdown()
+I20240418 21:32:58.265959     1 NebulaStore.cpp:343] Stop the raft service...
+I20240418 21:32:58.265969     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240418 21:32:58.265974     1 RaftexService.cpp:77] All partitions have stopped
+I20240418 21:32:58.265977     1 NebulaStore.cpp:346] Stop kv engine...
+I20240418 21:32:58.265983     1 NebulaStore.cpp:36] Cut off the relationship with meta client
+I20240418 21:32:58.266357     1 Part.h:59] [Port: 9780, Space: 9, Part: 1] ~Part()
+I20240418 21:32:58.266713     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/9
+I20240418 21:32:58.267553     1 NebulaStore.cpp:44] ~NebulaStore()
+I20240418 21:32:58.267787     1 StorageDaemon.cpp:186] The storage Daemon stopped

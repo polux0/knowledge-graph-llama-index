@@ -6,7 +6,7 @@ from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from environment_setup import load_environment_variables
 from large_language_model_setup import (get_llm_based_on_model_name_id,
                                         initialize_llm)
-from llama_index.core import PromptTemplate, get_response_synthesizer
+from llama_index.core import PromptTemplate, Settings, get_response_synthesizer
 from llama_index.core.data_structs import Node
 from llama_index.core.response_synthesizers import TreeSummarize
 from llama_index.core.schema import NodeWithScore
@@ -60,6 +60,7 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
 
 
     llm = initialize_llm(model_name_id)
+    Settings.llm = llm
     experiment.llm_used = get_llm_based_on_model_name_id(model_name_id=model_name_id)
     experiment.question = query
 

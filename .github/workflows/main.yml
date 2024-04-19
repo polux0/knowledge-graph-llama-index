@@ -44,6 +44,10 @@ jobs:
           ELASTIC_SCHEME=${{secrets.ELASTIC_SCHEME}}
           ELASTIC_URL=${{ secrets.ELASTIC_URL }}
           ELASTIC_PORT=${{secrets.ELASTIC_PORT}}
+          NEBULA_URL=${{ secrets.NEBULA_URL }}
+          NEBULA_PORT=${{ secrets.NEBULA_PORT }}
+          NEBULA_USERNAME=${{ secrets.NEBULA_USERNAME }}
+          NEBULA_PASSWORD=${{ secrets.NEBULA_PASSWORD }}
           EOT
           EOF
         continue-on-error: true
@@ -63,6 +67,10 @@ jobs:
             export ELASTIC_SCHEME=${{secrets.ELASTIC_SCHEME}}
             export ELASTIC_URL=${{ secrets.ELASTIC_URL }}
             export ELASTIC_PORT=${{secrets.ELASTIC_PORT}}
+            export NEBULA_URL=${{ secrets.NEBULA_URL }}
+            export NEBULA_PORT=${{ secrets.NEBULA_PORT }}
+            export NEBULA_USERNAME=${{ secrets.NEBULA_USERNAME }}
+            export NEBULA_PASSWORD=${{ secrets.NEBULA_PASSWORD }}
             if [ ! -d "/home/auravana/app" ]; then
               # Clone the repository if the directory doesn't exist
               git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app
@@ -100,5 +108,3 @@ jobs:
                 exit 1
             fi
           EOF
-
-        

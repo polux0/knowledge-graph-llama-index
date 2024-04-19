@@ -1,0 +1,106 @@
+Log file created at: 2024/04/18 13:03:53
+Running on machine: c93b5fca580e
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240418 13:03:53.462505     1 MetaDaemon.cpp:137] localhost = "metad0":9559
+I20240418 13:03:53.466482     1 NebulaStore.cpp:48] Start the raft service...
+I20240418 13:03:53.466991     1 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20240418 13:03:53.531020     1 RaftexService.cpp:46] Start raft service on 9560
+I20240418 13:03:53.531333     1 NebulaStore.cpp:82] Scan the local path, and init the spaces_
+I20240418 13:03:53.531378     1 NebulaStore.cpp:90] Scan path "/data/meta/nebula/0"
+I20240418 13:03:53.532346     1 NebulaStore.cpp:292] Init data from partManager for "metad0":9559
+I20240418 13:03:53.532372     1 NebulaStore.cpp:417] Create data space 0
+I20240418 13:03:53.566098    74 RocksEngine.cpp:107] open rocksdb on /data/meta/nebula/0/data
+I20240418 13:03:53.606518     1 NebulaStore.cpp:480] Space 0, part 0 has been added, asLearner 0
+I20240418 13:03:53.606565     1 NebulaStore.cpp:75] Register handler...
+I20240418 13:03:53.606575     1 MetaDaemonInit.cpp:106] Waiting for the leader elected...
+I20240418 13:03:53.606581     1 MetaDaemonInit.cpp:118] Leader has not been elected, sleep 1s
+I20240418 13:03:54.607419     1 MetaDaemonInit.cpp:153] Get meta version is 4
+I20240418 13:03:54.607524     1 MetaDaemonInit.cpp:169] Nebula store init succeeded, clusterId 2525445105384512363
+I20240418 13:03:54.607539     1 MetaDaemon.cpp:150] Start http service
+I20240418 13:03:54.608345     1 MetaDaemonInit.cpp:226] Starting Meta HTTP Service
+I20240418 13:03:54.616187    97 WebService.cpp:124] Web service started on HTTP[19559]
+I20240418 13:03:54.616276     1 MetaDaemonInit.cpp:192] Check root user
+I20240418 13:03:54.616395     1 RootUserMan.h:35] God user exists
+I20240418 13:03:54.628647     1 MetaDaemon.cpp:193] The meta daemon start on "metad0":9559
+I20240418 13:03:54.629102     1 JobManager.cpp:64] JobManager initialized
+I20240418 13:03:54.629122   103 JobManager.cpp:150] JobManager::scheduleThread enter
+I20240418 13:03:54.824806   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:03:54.825181   114 HBProcessor.cpp:52] Set clusterId for new host "storaged0":9779!
+I20240418 13:03:54.825227   114 HBProcessor.cpp:89] Update host "storaged0":9779 dir info, root path: /usr/local/nebula, data path size: 1
+I20240418 13:03:54.843685   114 SessionManagerProcessor.cpp:150] resp session size: 1
+I20240418 13:03:55.303829   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:03:55.303885   114 HBProcessor.cpp:89] Update host "graphd":9669 dir info, root path: /usr/local/nebula, data path size: 0
+I20240418 13:03:55.375943   114 SessionManagerProcessor.cpp:150] resp session size: 1
+I20240418 13:03:55.390305   114 SessionManagerProcessor.cpp:150] resp session size: 1
+E20240418 13:03:55.675953   114 AddHostsProcessor.cpp:72] The host "storaged0":9779 have existed!
+I20240418 13:04:05.154131   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:04:06.108287   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:04:06.109917   114 SessionManagerProcessor.cpp:150] resp session size: 1
+I20240418 13:04:15.171458   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:04:15.173137   114 SessionManagerProcessor.cpp:150] resp session size: 1
+I20240418 13:04:16.126075   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:04:25.184794   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:04:26.134783   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:04:35.194901   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:04:36.145641   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:04:41.360539   114 CreateTagProcessor.cpp:55] Create Tag Failed :entity has existed
+I20240418 13:04:41.361264   114 CreateEdgeProcessor.cpp:54] Create Edge Failed :relationship has existed
+I20240418 13:04:41.361771   114 CreateTagIndexProcessor.cpp:49] Create Tag Index Failed: entity_index has existed
+I20240418 13:04:45.205222   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:04:46.154704   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:04:55.215857   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:04:56.165735   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:05:05.224879   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:05:06.174937   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:05:15.235067   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:05:16.178507   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:05:25.244638   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:05:26.188315   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:05:35.254904   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:05:36.196565   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:05:45.264887   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:05:46.207257   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:05:55.274873   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:05:56.218130   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:06:05.284912   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:06:06.228209   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:06:15.294828   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:06:16.238220   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:06:25.304874   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:06:26.249063   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:06:35.314711   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:06:36.258414   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:06:45.325174   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:06:46.268417   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:06:55.335001   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:06:56.278374   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:07:05.344949   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:07:06.287019   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:07:15.354713   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:07:16.294757   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:07:25.365226   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:07:26.304915   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:07:35.374964   114 HBProcessor.cpp:33] Receive heartbeat from "storaged0":9779, role = STORAGE
+I20240418 13:07:36.314807   114 HBProcessor.cpp:33] Receive heartbeat from "graphd":9669, role = GRAPH
+I20240418 13:07:45.135825     1 MetaDaemon.cpp:230] Signal 15(Terminated) received, stopping this server
+I20240418 13:07:45.138514     1 JobManager.cpp:138] JobManager::shutDown() begin
+I20240418 13:07:45.142884   103 JobManager.cpp:155] Detect shutdown called, exit
+I20240418 13:07:45.143173   103 JobDescription.cpp:113] Loading job description failed, error: E_JOB_NOT_IN_SPACE
+I20240418 13:07:45.143198   103 JobManager.cpp:175] Load an invalid job from space 0 jodId 0
+I20240418 13:07:45.143268     1 JobManager.cpp:146] JobManager::shutDown() end
+I20240418 13:07:45.143273     1 NebulaStore.cpp:343] Stop the raft service...
+I20240418 13:07:45.143376     1 RaftexService.cpp:67] Stopping the raftex service on port 9560
+I20240418 13:07:45.143393     1 RaftexService.cpp:77] All partitions have stopped
+I20240418 13:07:45.143397     1 NebulaStore.cpp:346] Stop kv engine...
+I20240418 13:07:45.143519     1 NebulaStore.cpp:343] Stop the raft service...
+I20240418 13:07:45.143522     1 RaftexService.cpp:67] Stopping the raftex service on port 9560
+I20240418 13:07:45.143525     1 RaftexService.cpp:77] All partitions have stopped
+I20240418 13:07:45.143527     1 NebulaStore.cpp:346] Stop kv engine...
+I20240418 13:07:45.143532     1 NebulaStore.cpp:36] Cut off the relationship with meta client
+I20240418 13:07:45.143697     1 Part.h:59] [Port: 9560, Space: 0, Part: 0] ~Part()
+I20240418 13:07:45.143754     1 RocksEngine.h:247] Release rocksdb on /data/meta/nebula/0
+I20240418 13:07:45.144016     1 NebulaStore.cpp:44] ~NebulaStore()
+I20240418 13:07:45.144371     1 MetaDaemon.cpp:215] The meta Daemon stopped
+I20240418 13:07:45.144901     1 JobManager.cpp:138] JobManager::shutDown() begin
+I20240418 13:07:45.144912     1 JobManager.cpp:141] JobManager not running, exit
