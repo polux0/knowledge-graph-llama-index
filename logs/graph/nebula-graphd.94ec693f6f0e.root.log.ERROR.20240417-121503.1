@@ -1,0 +1,68 @@
+Log file created at: 2024/04/17 12:15:03
+Running on machine: 94ec693f6f0e
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20240417 12:15:03.614161     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+E20240417 12:17:00.927901    26 QueryInstance.cpp:151] Host not enough!, query: CREATE SPACE test(vid_type=FIXED_STRING(256), partition_num=1, replica_factor=1);
+E20240417 12:17:10.929100    21 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:17:10.929179    21 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:17:10.930195    21 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG entity(name string);
+E20240417 12:17:10.931077    23 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE EDGE relationship(relationship string);
+E20240417 12:17:10.931711    26 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 12:21:14.395610    21 QueryInstance.cpp:151] Host not enough!, query: CREATE SPACE test(vid_type=FIXED_STRING(256), partition_num=1, replica_factor=1);
+E20240417 12:21:24.396837    24 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:21:24.396915    24 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:21:24.397897    24 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG entity(name string);
+E20240417 12:21:24.398485    26 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE EDGE relationship(relationship string);
+E20240417 12:21:24.399515    26 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 12:22:38.415712    20 QueryInstance.cpp:151] Host not enough!, query: CREATE SPACE test(vid_type=FIXED_STRING(256), partition_num=1, replica_factor=1);
+E20240417 12:22:48.416915    25 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:22:48.416997    25 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:22:48.417723    25 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG entity(name string);
+E20240417 12:22:48.418577    20 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE EDGE relationship(relationship string);
+E20240417 12:22:48.419414    24 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 12:22:48.420019    24 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:22:48.420063    24 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:32:01.094571    25 QueryInstance.cpp:151] Host not enough!, query: CREATE SPACE test(vid_type=FIXED_STRING(256), partition_num=1, replica_factor=1);
+E20240417 12:32:11.095548    24 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:32:11.095626    24 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:32:11.096818    25 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG entity(name string);
+E20240417 12:32:11.097879    22 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE EDGE relationship(relationship string);
+E20240417 12:32:11.098582    24 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 12:32:11.099431    22 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:32:11.099479    22 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:32:11.103256    25 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE TAG test', query: 'DESCRIBE TAG test
+E20240417 12:37:21.470752    20 QueryInstance.cpp:151] Host not enough!, query: CREATE SPACE test(vid_type=FIXED_STRING(256), partition_num=1, replica_factor=1);
+E20240417 12:37:31.471818    26 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:37:31.471892    26 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:37:31.472977    22 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG entity(name string);
+E20240417 12:37:31.473878    22 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE EDGE relationship(relationship string);
+E20240417 12:37:31.474855    22 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 12:37:31.475562    22 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:37:31.475610    22 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:37:31.476279    20 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 12:38:35.390960    22 QueryInstance.cpp:151] Host not enough!, query: CREATE SPACE test(vid_type=FIXED_STRING(256), partition_num=1, replica_factor=1);
+E20240417 12:38:45.392252    22 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:38:45.392338    22 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:38:45.393486    26 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG entity(name string);
+E20240417 12:38:45.394587    22 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE EDGE relationship(relationship string);
+E20240417 12:38:45.395838    22 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 12:38:45.396785    20 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:38:45.396835    20 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:38:45.397658    26 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 12:42:14.461251    26 QueryInstance.cpp:151] SyntaxError: syntax error near `');', query: CREATE SPACE test (partition_num=1, replica_factor=1, vid_type='FIXED_STRING(256)');
+E20240417 12:42:14.461544    22 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:42:14.461560    22 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:42:14.461768    20 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 12:43:41.436043    26 QueryInstance.cpp:151] SyntaxError: syntax error near `');', query: CREATE SPACE test (partition_num=1, replica_factor=1, vid_type='FIXED_STRING(256)');
+E20240417 12:43:41.436295    20 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:43:41.436311    20 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:43:41.436508    22 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 12:44:58.391336    26 QueryInstance.cpp:151] SyntaxError: syntax error near `');', query: CREATE SPACE test (partition_num=1, replica_factor=1, vid_type='FIXED_STRING(256)');
+E20240417 12:44:58.391530    26 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 12:44:58.391537    26 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 12:44:58.391709    20 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 13:02:44.415184    26 QueryInstance.cpp:151] Host not enough!, query: CREATE SPACE test (partition_num = 1, replica_factor = 1, vid_type = FIXED_STRING(256));
+E20240417 13:02:44.415443    20 UseValidator.cpp:28] Unknown space: test : SpaceNotFound: SpaceName `test`
+E20240417 13:02:44.415450    20 QueryInstance.cpp:151] SpaceNotFound: SpaceName `test`, query: USE test;
+E20240417 13:02:44.415635    21 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test

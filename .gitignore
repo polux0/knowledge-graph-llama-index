@@ -37,3 +37,5 @@ neo4j/
 
 # Env file
 .env
+# Env file for local development
+.env.local

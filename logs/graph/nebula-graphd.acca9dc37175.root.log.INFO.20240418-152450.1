@@ -1,0 +1,151 @@
+Log file created at: 2024/04/18 15:24:50
+Running on machine: acca9dc37175
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240418 15:24:50.415972     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20240418 15:24:50.422140     7 WebService.cpp:124] Web service started on HTTP[19669]
+I20240418 15:24:50.422868     1 GraphDaemon.cpp:136] Number of networking IO threads: 8
+I20240418 15:24:50.423925     1 GraphDaemon.cpp:145] Number of worker threads: 8
+I20240418 15:24:50.427700     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240418 15:24:50.427748     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20240418 15:24:50.439364    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.442119    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.444593    36 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.461688    37 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.463815    38 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.465653    39 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.486881    40 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.488765    41 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.490865    42 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240418 15:24:51.496402     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 15:24:51.496783     1 MetaClient.cpp:3269] Load leader ok
+I20240418 15:24:51.498595     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240418 15:24:51.499320     1 GraphSessionManager.cpp:337] Total of 3 sessions are loaded
+E20240418 15:24:51.499888     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+I20240418 15:24:51.500272     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240418 15:24:51.507342     1 Snowflake.cpp:17] WorkerId init success: 1
+I20240418 15:24:51.511487    46 GraphServer.cpp:63] Starting nebula-graphd on graphd:9669
+I20240418 15:24:51.911211    22 GraphService.cpp:77] Authenticating user root from 172.20.0.8:44186
+E20240418 15:24:51.919257    26 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+I20240418 15:25:01.583662    43 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240418 15:25:01.584286    43 MetaClient.cpp:3269] Load leader ok
+I20240418 15:26:23.416819    26 GraphService.cpp:77] Authenticating user root from 172.20.0.10:51026
+E20240418 15:26:23.436370    26 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+I20240418 15:26:23.441305    24 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+W20240418 15:26:23.444166    22 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240418 15:26:23.444200    25 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240418 15:26:23.444821    25 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240418 15:26:23.444844    23 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240418 15:26:23.445560    25 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240418 15:26:23.445581    25 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+I20240418 15:26:23.446004    24 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+E20240418 15:26:23.450098    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+I20240418 15:26:25.157263    22 GraphService.cpp:77] Authenticating user root from 172.20.0.10:51044
+I20240418 15:26:25.190879    24 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+I20240418 15:26:28.885536    35 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:26:28.915787    36 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:26:28.917534    37 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:26:28.919834    38 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:26:28.920523    39 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:26:28.921048    40 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:26:28.922667    41 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:26:28.923498    42 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240418 15:30:15.642025    23 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 15:30:15.643538    23 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+E20240418 15:30:15.645653    23 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `relationship'.
+I20240418 15:35:15.644181   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 15:35:15.651906   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 15:40:15.654628   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 15:40:15.654800   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 15:45:15.654893   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 15:45:15.655902   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 15:50:15.656255   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 15:50:15.656361   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 15:55:15.656498   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 15:55:15.656592   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:00:15.656723   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:00:15.656818   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:05:15.657055   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:05:15.657168   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:10:15.657419   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:10:15.657524   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:15:15.657774   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:15:15.657917   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:20:15.658139   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:20:15.658246   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:25:15.658483   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:25:15.658588   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:30:15.658821   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:30:15.658931   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:35:15.659051   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:35:15.659183   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:40:15.659322   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:40:15.659427   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:45:15.659559   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:45:15.659657   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:50:15.659881   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:50:15.659993   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 16:55:15.660241   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 16:55:15.660349   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:00:15.660600   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:00:15.660709   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:05:15.660974   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:05:15.661093   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:10:15.661226   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:10:15.661293   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:15:15.661504   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:15:15.661605   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:20:15.661866   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:20:15.661969   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:25:15.662178   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:25:15.662317   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:30:15.662550   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:30:15.662662   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:35:15.662900   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:35:15.663013   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:40:15.663270   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:40:15.663386   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:45:15.663527   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:45:15.663619   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:50:15.663779   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:50:15.663870   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 17:55:15.663980   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 17:55:15.664139   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:00:15.664363   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:00:15.664784   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:05:15.664916   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:05:15.665014   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:10:15.665210   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:10:15.665303   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:15:15.665441   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:15:15.665542   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:20:15.665784   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:20:15.665884   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:25:15.666131   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:25:15.666239   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:30:15.666508   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:30:15.666649   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:35:15.666844   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:35:15.666946   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:40:15.667187   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:40:15.667366   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:45:15.673663   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:45:15.673785   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:50:15.673897   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:50:15.673975   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 18:55:15.674096   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 18:55:15.674190   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 19:00:15.674388   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 19:00:15.674485   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 19:05:15.674594   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 19:05:15.674683   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 21:19:09.372437   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 21:19:09.379382   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 21:24:09.379616   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 21:24:09.379776   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 21:29:09.386412   117 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240418 21:29:09.387665   117 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240418 21:32:58.004419     1 GraphDaemon.cpp:176] Signal 15(Terminated) received, stopping this server
+I20240418 21:32:58.009306    46 GraphServer.cpp:74] nebula-graphd on graphd:9669 has been stopped
+I20240418 21:32:58.009657     1 GraphDaemon.cpp:161] The graph Daemon stopped
+I20240418 21:32:58.009671     1 GraphServer.cpp:109] The graph server has been stopped

@@ -1,0 +1,208 @@
+version: "3.9"
+
+services:
+  metad0:
+    image: docker.io/vesoft/nebula-metad:nightly
+    environment:
+      USER: root
+    command:
+      - --meta_server_addrs=metad0:9559
+      - --local_ip=metad0
+      - --ws_ip=metad0
+      - --port=9559
+      - --ws_http_port=19559
+      - --data_path=/data/meta
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://metad0:19559/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - 9559:9559
+      - 19559:19559
+      - 19560
+    volumes:
+      - ./data/meta0:/data/meta
+      - ./logs/meta0:/logs
+    networks:
+      - net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  storaged0:
+    image: docker.io/vesoft/nebula-storaged:nightly
+    environment:
+      USER: root
+      TZ: "${TZ}"
+    command:
+      - --meta_server_addrs=metad0:9559
+      - --local_ip=storaged0
+      - --ws_ip=storaged0
+      - --port=9779
+      - --ws_http_port=19779
+      - --data_path=/data/storage
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - metad0
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://storaged0:19779/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - 9779:9779
+      - 19779:19779
+      - 19780
+    volumes:
+      - ./data/storage0:/data/storage
+      - ./logs/storage0:/logs
+    networks:
+      - net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+
+  graphd:
+    image: docker.io/vesoft/nebula-graphd:nightly
+    environment:
+      USER: root
+      TZ: "${TZ}"
+    command:
+      - --meta_server_addrs=metad0:9559
+      - --port=9669
+      - --local_ip=graphd
+      - --ws_ip=graphd
+      - --ws_http_port=19669
+      - --log_dir=/logs
+      - --v=0
+      - --minloglevel=0
+    depends_on:
+      - storaged0
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://graphd:19669/status"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    ports:
+      - 9669:9669
+      - 19669:19669
+      - 19670
+    volumes:
+      - ./logs/graph:/logs
+    networks:
+      - net
+    restart: on-failure
+    cap_add:
+      - SYS_PTRACE
+  console:
+    image: docker.io/vesoft/nebula-console:nightly
+    entrypoint: ""
+    command:
+      - sh
+      - -c
+      - |
+        for i in `seq 1 60`;do
+          var=`nebula-console -addr graphd -port 9669 -u root -p nebula -e 'ADD HOSTS "storaged0":9779'`;
+          if [[ $$? == 0 ]];then
+            break;
+          fi;
+          sleep 1;
+          echo "retry to add hosts.";
+        done && tail -f /dev/null;
+
+    depends_on:
+      - graphd
+    networks:
+      - net
+  nebula-web-docker:
+    image: vesoft/nebula-graph-studio:latest
+    environment:
+      - NG_SEVER_ROOT_USER=root
+      - NG_SEVER_ROOT_PASSWORD=nebula
+      - NG_SERVER_BASE_URL=http://graphd:9669
+    ports:
+      - "7001:7001" # Port for web interface
+    depends_on:
+      - graphd
+    networks:
+      - net
+
+  chromadb:
+    image: server
+    container_name: chromadb_container
+    build:
+      context: ./chromadb
+      dockerfile: Dockerfile
+    volumes:
+      # - $HOME/chroma-data:/chroma/chroma
+      - chroma-data:/chroma/chroma
+    command: "--workers 1 --host 0.0.0.0 --port 8000 --proxy-headers --log-config ./log_config.yml --timeout-keep-alive 30"
+    environment:
+      - IS_PERSISTENT=TRUE
+      - CHROMA_SERVER_AUTH_PROVIDER=${CHROMA_SERVER_AUTH_PROVIDER}
+      - CHROMA_SERVER_AUTH_CREDENTIALS_FILE=${CHROMA_SERVER_AUTH_CREDENTIALS_FILE}
+      - CHROMA_SERVER_AUTH_CREDENTIALS=${CHROMA_SERVER_AUTH_CREDENTIALS}
+      - CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER=${CHROMA_SERVER_AUTH_CREDENTIALS_PROVIDER}
+      - CHROMA_SERVER_AUTH_TOKEN_TRANSPORT_HEADER=${CHROMA_SERVER_AUTH_TOKEN_TRANSPORT_HEADER}
+      - PERSIST_DIRECTORY=${PERSIST_DIRECTORY:-/chroma/chroma}
+      - CHROMA_OTEL_EXPORTER_ENDPOINT=${CHROMA_OTEL_EXPORTER_ENDPOINT}
+      - CHROMA_OTEL_EXPORTER_HEADERS=${CHROMA_OTEL_EXPORTER_HEADERS}
+      - CHROMA_OTEL_SERVICE_NAME=${CHROMA_OTEL_SERVICE_NAME}
+      - CHROMA_OTEL_GRANULARITY=${CHROMA_OTEL_GRANULARITY}
+      - CHROMA_SERVER_NOFILE=${CHROMA_SERVER_NOFILE}
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/v1/heartbeat"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    networks:
+      - net
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - xpack.security.enabled=false
+      # Ensure this matches the mounted volume path inside the container
+      - path.repo=/usr/share/elasticsearch/snapshots
+    ports:
+      - "9200:9200"
+    volumes:
+      - $HOME/esdata1:/usr/share/elasticsearch/data
+      # This line mounts $HOME/es_snapshots to /usr/share/elasticsearch/snapshots inside the container
+      - $HOME/es_snapshots:/usr/share/elasticsearch/snapshots
+    networks:
+      - net
+  kibana:
+    image: docker.elastic.co/kibana/kibana:8.12.1
+    container_name: kibana
+    depends_on:
+      - elasticsearch
+    ports:
+      - "5601:5601"
+    networks:
+      - net
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+      ELASTICSEARCH_HOSTS: http://elasticsearch:9200
+      XPACK_SECURITY_ENABLED: "false"
+
+volumes:
+  chroma-data:
+    driver: local
+
+networks:
+  net:
+    driver: bridge

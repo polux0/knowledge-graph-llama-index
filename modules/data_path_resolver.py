@@ -1,5 +1,6 @@
 import os
 
+
 def resolve_data_path(relative_path):
     """Resolve the absolute path to a data directory relative to this script.
 

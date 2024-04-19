@@ -1,0 +1,52 @@
+Log file created at: 2024/04/19 09:07:19
+Running on machine: acca9dc37175
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240419 09:07:19.783243     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20240419 09:07:19.786432     6 WebService.cpp:124] Web service started on HTTP[19669]
+I20240419 09:07:19.786478     1 GraphDaemon.cpp:136] Number of networking IO threads: 8
+I20240419 09:07:19.786499     1 GraphDaemon.cpp:145] Number of worker threads: 8
+I20240419 09:07:19.790038     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240419 09:07:19.790072     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20240419 09:07:19.801692    34 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.805366    34 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.808661    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.811254    36 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.814822    37 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.817070    38 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.840876    39 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.842864    40 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.845093    41 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240419 09:07:20.856868     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240419 09:07:20.856909     1 MetaClient.cpp:3269] Load leader ok
+I20240419 09:07:20.858156     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240419 09:07:20.858896     1 GraphSessionManager.cpp:337] Total of 0 sessions are loaded
+E20240419 09:07:20.859599     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+I20240419 09:07:20.859972     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240419 09:07:20.860946     1 Snowflake.cpp:17] WorkerId init success: 1
+I20240419 09:07:20.861228    45 GraphServer.cpp:63] Starting nebula-graphd on graphd:9669
+I20240419 09:07:21.229231    20 GraphService.cpp:77] Authenticating user root from 172.20.0.8:53674
+E20240419 09:07:21.233582    25 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+I20240419 09:07:40.978739    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240419 09:07:40.979820    42 MetaClient.cpp:3269] Load leader ok
+I20240419 09:08:35.664167    20 GraphService.cpp:77] Authenticating user root from 172.20.0.10:42710
+E20240419 09:08:35.669304    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+I20240419 09:08:35.672379    23 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+W20240419 09:08:35.676512    20 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240419 09:08:35.676548    20 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240419 09:08:35.677481    21 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240419 09:08:35.677515    25 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240419 09:08:35.678185    21 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240419 09:08:35.678200    23 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+I20240419 09:08:35.678710    21 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+E20240419 09:08:35.681861    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+I20240419 09:08:36.626386    24 GraphService.cpp:77] Authenticating user root from 172.20.0.10:42722
+I20240419 09:08:36.627547    25 SwitchSpaceExecutor.cpp:45] Graph switched to `test', space id: 9
+I20240419 09:08:43.341018    35 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240419 09:08:43.356122    36 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240419 09:08:43.356590    37 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240419 09:08:43.358117    38 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240419 09:08:43.358495    39 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240419 09:08:43.358798    40 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240419 09:08:43.359454    41 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779
+I20240419 09:08:43.359740    34 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.5":9779

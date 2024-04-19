@@ -1,40 +1,43 @@
+import json
+import logging
+import sys
 from pathlib import Path
-from llama_index.readers.file import PDFReader
-from llama_index.core.response.notebook_utils import display_source_node
-from llama_index.core.retrievers import RecursiveRetriever
-from llama_index.core.query_engine import RetrieverQueryEngine
-from llama_index.core import VectorStoreIndex
-from llama_index.llms.openai import OpenAI
-from llama_index.vector_stores.chroma import ChromaVectorStore
+
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
-from environment_setup import (load_environment_variables, setup_logging)
+from environment_setup import load_environment_variables, setup_logging
 from large_language_model_setup import initialize_llm
-from llama_index.core import StorageContext, load_index_from_storage
-from llama_index.core import Document
+from llama_index.core import (Document, Settings, StorageContext,
+                              VectorStoreIndex, load_index_from_storage)
 from llama_index.core.node_parser import SentenceSplitter
+from llama_index.core.query_engine import RetrieverQueryEngine
+from llama_index.core.response.notebook_utils import display_source_node
+from llama_index.core.retrievers import RecursiveRetriever
 from llama_index.core.schema import IndexNode
+from llama_index.llms.openai import OpenAI
+from llama_index.readers.file import PDFReader
+from llama_index.vector_stores.chroma import ChromaVectorStore
+
 import chromadb
-import json
 
 # technical debt - modularize
 
-import sys, logging
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
-# Elasticsearch realted
-from elasticsearch_service import ExperimentDocument, ElasticsearchClient
-
-from large_language_model_setup import get_llm_based_on_model_name_id
-from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id
-from prompts import get_template_based_on_template_id
 from datetime import datetime, timezone
+
+# Elasticsearch realted
+from elasticsearch_service import ElasticsearchClient, ExperimentDocument
+from embedding_model_modular_setup import \
+    get_embedding_model_based_on_model_name_id
+from format_message_with_prompt import format_message
+from large_language_model_setup import get_llm_based_on_model_name_id
+from prompts import get_template_based_on_template_id
 
 # Formating message related
 
-from format_message_with_prompt import format_message
 
 # Elasticsearch related
 es_client = ElasticsearchClient()
@@ -46,11 +49,11 @@ es_client = ElasticsearchClient()
 current_time = datetime.now(timezone.utc)
 
 experiment = ExperimentDocument()
-experiment.created_at = current_time.isoformat(timespec='milliseconds')
+experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables
 model_name_id = "default"
-embedding_model_id = "default" 
+embedding_model_id = "default"
 chunk_size = 256
 max_triplets_per_chunk = 15
 
@@ -71,33 +74,49 @@ docs = [Document(text=doc_text)]
 
 
 node_parser = SentenceSplitter(chunk_size=1024)
-experiment.chunk_size=1024
+experiment.chunk_size = 1024
 
 base_nodes = node_parser.get_nodes_from_documents(docs)
 # set node ids to be a constant
 for idx, node in enumerate(base_nodes):
     node.id_ = f"node-{idx}"
-    
+
 env_vars = load_environment_variables()
 
-# embedings 
-embed_model = initialize_embedding_model(hf_token=env_vars['HF_TOKEN'], embedding_model_id=embedding_model_id)
-experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embedding_model_id)
+# embedings
+embed_model = initialize_embedding_model(
+    hf_token=env_vars["HF_TOKEN"], embedding_model_id=embedding_model_id
+)
+experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
+    embedding_model_id
+)
+Settings.embed_model = embed_model
 
 # large language model
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 print("experiment.llm_used", experiment.llm_used)
 llm = initialize_llm(model_name_id)
+Settings.llm = llm
 
-remote_db = chromadb.HttpClient(host=env_vars['CHROMA_URL'], port=env_vars['CHROMA_PORT']) 
+remote_db = chromadb.HttpClient(
+    host=env_vars["CHROMA_URL"], port=env_vars["CHROMA_PORT"]
+)
 
 print("All collections in Chroma: ", remote_db.list_collections())
 
-chroma_collection = remote_db.get_or_create_collection('real_world_community_model')
-chroma_collection_parent = remote_db.get_or_create_collection("real_world_community_model_parent")
+chroma_collection = remote_db.get_or_create_collection("real_world_community_model")
+chroma_collection_parent = remote_db.get_or_create_collection(
+    "real_world_community_model_parent"
+)
 
-print("Are there embeddings inside those collections? real_world_community_model, count: ", chroma_collection.count())
-print("Are there embeddings inside those collections? real_world_community_model_parent, count: ", chroma_collection_parent.count())
+print(
+    "Are there embeddings inside those collections? real_world_community_model, count: ",
+    chroma_collection.count(),
+)
+print(
+    "Are there embeddings inside those collections? real_world_community_model_parent, count: ",
+    chroma_collection_parent.count(),
+)
 
 vector_store = ChromaVectorStore(chroma_collection=chroma_collection, ssl=False)
 
@@ -111,14 +130,24 @@ storage_context_parent = StorageContext.from_defaults(vector_store=vector_store_
 
 if chroma_collection.count() == 0:
 
-    base_index = VectorStoreIndex.from_documents(documents, storage_context=storage_context, embed_model=embed_model)
+    base_index = VectorStoreIndex.from_documents(
+        documents,
+        storage_context=storage_context,
+        embed_model=embed_model,
+        llm=llm
+    )
 
 else:
-# after collection was sucessfully created
+    # after collection was sucessfully created
 
-    base_index = VectorStoreIndex.from_vector_store(vector_store, storage_context=storage_context, embed_model=embed_model)
+    base_index = VectorStoreIndex.from_vector_store(
+        vector_store,
+        storage_context=storage_context,
+        embed_model=embed_model,
+        llm=llm
+    )
 
-base_retriever = base_index.as_retriever(similarity_top_k=2)
+base_retriever = base_index.as_retriever(similarity_top_k=2, llm=llm)
 
 
 # defining Baseline Retriever that simply fetches the top-k raw text nodes by embedding similarity
@@ -150,7 +179,7 @@ sub_chunk_sizes = [128, 256, 512]
 
 # technical debt - create service context for this
 sub_node_parsers = [
-    SentenceSplitter(chunk_size=c, chunk_overlap=c/2) for c in sub_chunk_sizes
+    SentenceSplitter(chunk_size=c, chunk_overlap=c / 2) for c in sub_chunk_sizes
 ]
 
 all_nodes = []
@@ -159,7 +188,8 @@ for base_node in base_nodes:
     for n in sub_node_parsers:
         sub_nodes = n.get_nodes_from_documents([base_node])
         sub_indices = [
-            IndexNode.from_text_node(sub_node, base_node.node_id) for sub_node in sub_nodes
+            IndexNode.from_text_node(sub_node, base_node.node_id)
+            for sub_node in sub_nodes
         ]
         all_nodes.extend(sub_indices)
 
@@ -175,20 +205,31 @@ print("Finished with making dictionaries")
 
 if chroma_collection_parent.count() == 0:
 
-    vector_index_chunk = VectorStoreIndex(all_nodes, storage_context=storage_context_parent,embed_model=embed_model)
+    vector_index_chunk = VectorStoreIndex(
+        all_nodes,
+        storage_context=storage_context_parent,
+        embed_model=embed_model,
+        llm=llm
+    )
 
-else: 
+else:
 
-# after collection was sucessfully created
-    vector_index_chunk = VectorStoreIndex.from_vector_store(vector_store_parent, storage_context=storage_context_parent, embed_model=embed_model)
+    # after collection was sucessfully created
+    vector_index_chunk = VectorStoreIndex.from_vector_store(
+        vector_store_parent,
+        storage_context=storage_context_parent,
+        embed_model=embed_model,
+        llm=llm
+    )
 
-vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k = 3)
+vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=3,
+                                                         llm=llm)
 
 retriever_chunk = RecursiveRetriever(
     "vector",
     retriever_dict={"vector": vector_retriever_chunk},
     node_dict=all_nodes_dict,
-    verbose=True
+    verbose=True,
 )
 experiment.retrieval_strategy = "RecursiveRetriever - Parent Child"
 
@@ -203,31 +244,37 @@ experiment.retrieval_strategy = "RecursiveRetriever - Parent Child"
 
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 
-def generate_response_based_on_vector_embeddings(question:str):
+
+def generate_response_based_on_vector_embeddings(question: str):
 
     experiment.question = question
     prompt_template = get_template_based_on_template_id("default")
-    experiment.prompt_template = get_template_based_on_template_id("default"),
-    print("With parent-child retriever*******************************************************************\n\n: ")
+    experiment.prompt_template = (get_template_based_on_template_id("default"),)
+    print(
+        "With parent-child retriever*******************************************************************\n\n: "
+    )
     response = query_engine_chunk.query(format_message(question, prompt_template))
     experiment.response = str(response)
-    
+
     current_time = datetime.now(timezone.utc)
 
     # Format the current time as an ISO 8601 string, including milliseconds
-    experiment.updated_at = current_time.isoformat(timespec='milliseconds')
+    experiment.updated_at = current_time.isoformat(timespec="milliseconds")
 
     es_client.save_experiment(experiment_document=experiment)
 
     print("Final response", str(response))
     return response
 
-def generate_response_based_on_vector_embeddings_with_debt(question:str):
+
+def generate_response_based_on_vector_embeddings_with_debt(question: str):
 
     experiment.question = question
     prompt_template = get_template_based_on_template_id("default")
-    experiment.prompt_template = get_template_based_on_template_id("default"),
-    print("With parent-child retriever*******************************************************************\n\n: ")
+    experiment.prompt_template = (get_template_based_on_template_id("default"),)
+    print(
+        "With parent-child retriever*******************************************************************\n\n: "
+    )
     print("Template received, vector embeddings:", prompt_template)
     message_template = format_message(question, prompt_template)
     print("!!!!!!!!!!!!!!!!Final question, vetor embeddings:", message_template)
@@ -235,11 +282,11 @@ def generate_response_based_on_vector_embeddings_with_debt(question:str):
     # logging.info(f"Logging the response nodes from a vector database: {response.source_nodes}")
     experiment.response = str(response)
     experiment.source_agent = "VDBAgent"
-    
+
     current_time = datetime.now(timezone.utc)
 
     # Format the current time as an ISO 8601 string, including milliseconds
-    experiment.updated_at = current_time.isoformat(timespec='milliseconds')
+    experiment.updated_at = current_time.isoformat(timespec="milliseconds")
 
     print("Final response", str(response))
     return response, experiment, response.source_nodes

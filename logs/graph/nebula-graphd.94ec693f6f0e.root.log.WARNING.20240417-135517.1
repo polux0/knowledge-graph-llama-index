@@ -1,0 +1,74 @@
+Log file created at: 2024/04/17 13:55:17
+Running on machine: 94ec693f6f0e
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20240417 13:55:17.806176     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+E20240417 13:55:17.980222    23 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+E20240417 14:00:00.684407    25 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+E20240417 14:00:00.688416    25 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:00:02.000171    25 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+W20240417 14:00:02.000836    21 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240417 14:00:02.000854    25 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240417 14:00:02.001112    21 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240417 14:00:02.001125    23 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240417 14:00:02.001425    21 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240417 14:00:02.001437    22 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 14:00:02.001859    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:06:15.506242    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+W20240417 14:06:15.506942    25 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240417 14:06:15.506961    21 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240417 14:06:15.507258    21 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240417 14:06:15.507272    26 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240417 14:06:15.507550    21 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240417 14:06:15.507563    23 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 14:06:15.507967    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:10:24.476121    26 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+W20240417 14:10:24.476969    25 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240417 14:10:24.476987    26 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240417 14:10:24.477342    25 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240417 14:10:24.477365    23 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240417 14:10:24.477692    25 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240417 14:10:24.477706    22 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 14:10:24.478242    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:11:48.522102    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+W20240417 14:11:48.522889    22 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240417 14:11:48.522986    22 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240417 14:11:48.523463    24 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240417 14:11:48.523488    25 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240417 14:11:48.523891    26 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240417 14:11:48.523909    22 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 14:11:48.524520    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:15:47.256311    21 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+W20240417 14:15:47.257383    23 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240417 14:15:47.257434    25 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240417 14:15:47.258023    25 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240417 14:15:47.258153    21 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240417 14:15:47.258750    26 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240417 14:15:47.258775    26 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 14:15:47.259922    23 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:19:37.401692    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+W20240417 14:19:37.402384    22 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240417 14:19:37.402397    23 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240417 14:19:37.402716    23 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240417 14:19:37.402734    22 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240417 14:19:37.403025    23 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240417 14:19:37.403038    26 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 14:19:37.403484    21 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:28:44.636850    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+W20240417 14:28:44.637591    26 TagExecutor.cpp:25] SpaceId: 9, Create tag `entity' failed: Existed!
+E20240417 14:28:44.637609    25 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+W20240417 14:28:44.637985    21 EdgeExecutor.cpp:26] SpaceId: 9, Create edge `relationship' failed: Existed!
+E20240417 14:28:44.638010    25 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+W20240417 14:28:44.638582    25 TagIndexExecutor.cpp:31] SpaceId: 9, Create index `entity_index' at tag: `entity' failed: Existed!
+E20240417 14:28:44.638608    23 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240417 14:28:44.639300    26 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240417 14:32:29.998926    22 QueryInstance.cpp:151] SyntaxError: syntax error near `test', query: DESCRIBE test;
+E20240417 14:32:34.126330    19 QueryInstance.cpp:151] SyntaxError: syntax error near `test', query: DESCRIBE test
+E20240417 14:33:11.446908    20 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: SHOW TAGS;
+E20240417 14:35:20.321061    22 QueryInstance.cpp:151] SyntaxError: syntax error near `FROM', query: MATCH (n:Label) FROM test RETURN n;
+E20240417 14:35:25.562587    22 QueryInstance.cpp:151] SyntaxError: syntax error near `FROM', query: MATCH (n:Label) FROM test RETURN n;
+E20240417 14:35:39.759794    19 QueryInstance.cpp:151] SyntaxError: syntax error near `FROM', query: MATCH (n:Label) FROM 'test' RETURN n;
+E20240417 14:36:24.539355    25 QueryInstance.cpp:151] SyntaxError: syntax error near `FROM', query: MATCH (n:Label) FROM test RETURN n;
+E20240417 14:36:31.427053    25 QueryInstance.cpp:151] SyntaxError: syntax error near `FROM', query: MATCH ()-[r]->() FROM test RETURN r;
+E20240417 14:36:36.259460    25 QueryInstance.cpp:151] SyntaxError: syntax error near `FROM', query: MATCH (n:Label) FROM test RETURN n;
+E20240417 14:37:43.391678    21 QueryInstance.cpp:151] SemanticError: `Label': Unknown tag, query: MATCH (n:Label) RETURN n;

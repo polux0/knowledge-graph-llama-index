@@ -1,0 +1,13 @@
+Log file created at: 2024/04/18 09:43:07
+Running on machine: af42de003c9f
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20240418 09:43:07.132776     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+E20240418 09:43:07.314220    21 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+E20240418 09:43:56.271488    21 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test';
+E20240418 09:43:56.273473    23 QueryInstance.cpp:151] Existed!, query: CREATE TAG entity(name string);
+E20240418 09:43:56.274199    21 QueryInstance.cpp:151] Existed!, query: CREATE EDGE relationship(relationship string);
+E20240418 09:43:56.274701    22 QueryInstance.cpp:151] Existed!, query: CREATE TAG INDEX entity_index ON entity(name(256));
+E20240418 09:43:56.277662    25 QueryInstance.cpp:151] SyntaxError: Unterminated string:  near `DESCRIBE SPACE test', query: 'DESCRIBE SPACE test
+E20240418 09:44:17.555311    26 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+E20240418 09:44:17.555766    26 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `relationship'.
