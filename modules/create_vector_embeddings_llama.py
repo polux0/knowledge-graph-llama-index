@@ -17,6 +17,7 @@ from llama_index.core.schema import IndexNode
 from llama_index.llms.openai import OpenAI
 from llama_index.readers.file import PDFReader
 from llama_index.vector_stores.chroma import ChromaVectorStore
+from get_database_name_based_on_parameters import (load_child_vector_configuration, load_parent_vector_configuration)
 
 import chromadb
 
@@ -51,11 +52,16 @@ current_time = datetime.now(timezone.utc)
 experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
-# Variables
-model_name_id = "default"
-embedding_model_id = "default"
-chunk_size = 256
-max_triplets_per_chunk = 15
+# Variables parent
+model_name_id = "mixtral"
+embedding_model_id = "cohere"
+parent_chunk_size = 1024
+parent_chunk_overlap = 0
+
+# Variables child
+child_chunk_sizes = [128, 256, 512]
+child_chunk_sizes_overlap = [64, 128, 256]
+
 
 # Load the documents, modular function previously used for knowledge graph construction
 
@@ -73,8 +79,8 @@ doc_text = "\n\n".join([d.get_content() for d in documents])
 docs = [Document(text=doc_text)]
 
 
-node_parser = SentenceSplitter(chunk_size=1024)
-experiment.chunk_size = 1024
+node_parser = SentenceSplitter(chunk_size=parent_chunk_size)
+experiment.chunk_size = parent_chunk_size
 
 base_nodes = node_parser.get_nodes_from_documents(docs)
 # set node ids to be a constant
@@ -104,9 +110,22 @@ remote_db = chromadb.HttpClient(
 
 print("All collections in Chroma: ", remote_db.list_collections())
 
-chroma_collection = remote_db.get_or_create_collection("real_world_community_model")
+parent_chroma_collection_name = load_parent_vector_configuration(embedding_model_id,
+                                                                parent_chunk_size,
+                                                                parent_chunk_overlap,
+                                                                documents_directory)
+
+child_chroma_collection_name = load_child_vector_configuration(embedding_model_id,
+                                                              child_chunk_sizes,
+                                                              child_chunk_sizes_overlap,
+                                                              documents_directory)
+
 chroma_collection_parent = remote_db.get_or_create_collection(
-    "real_world_community_model_parent"
+    parent_chroma_collection_name
+)
+
+chroma_collection = remote_db.get_or_create_collection(
+    child_chroma_collection_name
 )
 
 print(
@@ -118,7 +137,8 @@ print(
     chroma_collection_parent.count(),
 )
 
-vector_store = ChromaVectorStore(chroma_collection=chroma_collection, ssl=False)
+vector_store = ChromaVectorStore(chroma_collection=chroma_collection,
+                                 ssl=False)
 
 vector_store_parent = ChromaVectorStore(chroma_collection=chroma_collection_parent)
 # Storage context
@@ -133,8 +153,8 @@ if chroma_collection.count() == 0:
     base_index = VectorStoreIndex.from_documents(
         documents,
         storage_context=storage_context,
-        embed_model=embed_model,
-        llm=llm
+        embed_model=embed_model
+        # llm=llm
     )
 
 else:
@@ -143,8 +163,7 @@ else:
     base_index = VectorStoreIndex.from_vector_store(
         vector_store,
         storage_context=storage_context,
-        embed_model=embed_model,
-        llm=llm
+        embed_model=embed_model
     )
 
 base_retriever = base_index.as_retriever(similarity_top_k=2, llm=llm)
@@ -198,6 +217,7 @@ for base_node in base_nodes:
 
 
 print("Started making dictionaries")
+# Maybe we need to store this into database
 all_nodes_dict = {n.node_id: n for n in all_nodes}
 print("Finished with making dictionaries")
 

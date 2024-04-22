@@ -29,7 +29,7 @@ def merge_nodes(nodes_with_score1: List[NodeWithScore], nodes_with_score2: List[
     ]
                 
 def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_score: any):
-    model_name_id="default"
+    model_name_id="mixtral"
     response_mode = "compact"
 
     prompt = (    

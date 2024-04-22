@@ -26,3 +26,7 @@ llama-index-llms-openai
 huggingface_hub
 nebula3-python
 llama-index-graph-stores-nebula
+cohere
+llama-index-llms-cohere
+llama-index-embeddings-cohere
+hashlib

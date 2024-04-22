@@ -48,6 +48,7 @@ jobs:
           NEBULA_PORT=${{ secrets.NEBULA_PORT }}
           NEBULA_USERNAME=${{ secrets.NEBULA_USERNAME }}
           NEBULA_PASSWORD=${{ secrets.NEBULA_PASSWORD }}
+          COHERE_API_KEY=${{ secrets.COHERE_API_KEY}}
           EOT
           EOF
         continue-on-error: true
@@ -71,6 +72,7 @@ jobs:
             export NEBULA_PORT=${{ secrets.NEBULA_PORT }}
             export NEBULA_USERNAME=${{ secrets.NEBULA_USERNAME }}
             export NEBULA_PASSWORD=${{ secrets.NEBULA_PASSWORD }}
+            export COHERE_API_KEY=${{ secrets.COHERE_API_KEY}}
             if [ ! -d "/home/auravana/app" ]; then
               # Clone the repository if the directory doesn't exist
               git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app

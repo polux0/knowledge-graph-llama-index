@@ -66,3 +66,22 @@ E20240419 09:07:20.760874     1 MemoryUtils.cpp:167] Total memory less than untr
 I20240419 09:07:20.761251     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
 I20240419 09:07:41.506825    69 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
 I20240419 09:07:41.508309    69 MetaClient.cpp:3269] Load leader ok
+I20240419 10:49:53.818063     1 StorageDaemon.cpp:201] Signal 15(Terminated) received, stopping this server
+I20240419 10:49:53.823247     1 NebulaStore.cpp:343] Stop the raft service...
+I20240419 10:49:53.823415     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240419 10:49:53.823638     1 RaftexService.cpp:77] All partitions have stopped
+I20240419 10:49:53.823647     1 NebulaStore.cpp:346] Stop kv engine...
+I20240419 10:49:53.838220     1 AdminTaskManager.cpp:176] enter AdminTaskManager::shutdown()
+I20240419 10:49:53.838382   121 AdminTaskManager.cpp:146] Unreported-Admin-Thread stopped
+I20240419 10:49:53.846849   120 AdminTaskManager.cpp:231] detect AdminTaskManager::shutdown()
+I20240419 10:49:53.847164     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/0
+I20240419 10:49:53.853375     1 AdminTaskManager.cpp:193] exit AdminTaskManager::shutdown()
+I20240419 10:49:53.853426     1 NebulaStore.cpp:343] Stop the raft service...
+I20240419 10:49:53.853431     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240419 10:49:53.853435     1 RaftexService.cpp:77] All partitions have stopped
+I20240419 10:49:53.853438     1 NebulaStore.cpp:346] Stop kv engine...
+I20240419 10:49:53.853446     1 NebulaStore.cpp:36] Cut off the relationship with meta client
+I20240419 10:49:53.853624     1 Part.h:59] [Port: 9780, Space: 9, Part: 1] ~Part()
+I20240419 10:49:53.854074     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/9
+I20240419 10:49:53.854838     1 NebulaStore.cpp:44] ~NebulaStore()
+I20240419 10:49:53.856415     1 StorageDaemon.cpp:186] The storage Daemon stopped

@@ -1,0 +1,4 @@
+{
+    "('default', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "real_world_community_model",
+    "('cohere', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aee28a31eae0dd05339ac2119e554424cb785152122fe2cdfa73b5d3157f5"
+}

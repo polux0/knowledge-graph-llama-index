@@ -1,0 +1,4 @@
+{
+    "('default', 1024, 0, '../data/real_world_community_model')": "real_world_community_model_parent",
+    "('cohere', 1024, 0, '../data/real_world_community_model')": "c3282a8d8c7e2beb8a76fb24686bb15eefb973a9e8456572f0bde524df5d9"
+}

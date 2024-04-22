@@ -1,0 +1,541 @@
+Log file created at: 2024/04/22 07:13:25
+Running on machine: 0a5653a67a7c
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240422 07:13:25.166208     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20240422 07:13:25.177553     6 WebService.cpp:124] Web service started on HTTP[19669]
+I20240422 07:13:25.178092     1 GraphDaemon.cpp:136] Number of networking IO threads: 8
+I20240422 07:13:25.178287     1 GraphDaemon.cpp:145] Number of worker threads: 8
+I20240422 07:13:25.192504     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240422 07:13:25.192535     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20240422 07:13:25.204820    34 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.212883    34 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.232683    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.255961    36 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.271188    37 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.277493    38 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.320390    39 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.330972    40 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.340080    41 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.4":9559
+I20240422 07:13:26.361572     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240422 07:13:26.361640     1 MetaClient.cpp:3269] Load leader ok
+I20240422 07:13:26.363185     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240422 07:13:26.364392     1 GraphSessionManager.cpp:337] Total of 4 sessions are loaded
+E20240422 07:13:26.365531     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/39.000MiB
+I20240422 07:13:26.367044     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240422 07:13:26.368417     1 Snowflake.cpp:17] WorkerId init success: 1
+I20240422 07:13:26.373687    45 GraphServer.cpp:63] Starting nebula-graphd on graphd:9669
+I20240422 07:13:26.619670    25 GraphService.cpp:77] Authenticating user root from 172.20.0.8:34582
+E20240422 07:13:26.623189    22 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+I20240422 07:13:37.131386    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240422 07:13:37.131433    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:13:37.401644    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:50300
+E20240422 07:13:38.248514    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 07:13:38.248983    20 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: CREATE SPACE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 07:14:27.632297    20 GraphService.cpp:77] Authenticating user root from 172.20.0.9:40994
+I20240422 07:14:30.439842    20 GraphService.cpp:77] Authenticating user root from 172.20.0.9:43858
+I20240422 07:14:30.440078    20 GraphService.cpp:77] Authenticating user root from 172.20.0.9:43866
+I20240422 07:15:57.714545    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42256
+E20240422 07:15:58.463835    21 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 07:15:58.464468    22 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: CREATE SPACE IF NOT EXISTS 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75(vid_type=FIXED_STRING(256)); USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75;
+I20240422 07:17:36.333811    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:35558
+E20240422 07:17:37.760082    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 07:17:37.760805    22 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: CREATE SPACE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 07:17:52.976691    23 GraphService.cpp:77] Authenticating user root from 172.20.0.9:43980
+I20240422 07:17:54.981424    23 GraphService.cpp:77] Authenticating user root from 172.20.0.9:43988
+I20240422 07:23:12.564980    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:34740
+E20240422 07:23:13.630136    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '_5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 07:23:13.630759    24 QueryInstance.cpp:151] SyntaxError: syntax error near `_5c3e570', query: CREATE SPACE IF NOT EXISTS _5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1, replica_factor=1, vid_type='FIXED_STRING(256)'); USE _5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75;
+I20240422 07:25:17.408174    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:33830
+E20240422 07:25:18.135767    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 07:25:18.136255    25 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: CREATE SPACE IF NOT EXISTS test2(vid_type=FIXED_STRING(256)); USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75;
+I20240422 07:25:54.670468    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:40868
+E20240422 07:25:55.707298    25 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 07:25:55.709014    24 SwitchSpaceExecutor.cpp:45] Graph switched to `test2', space id: 12
+I20240422 07:25:55.710069    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:40882
+E20240422 07:25:55.710433    20 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+I20240422 07:25:57.878564    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240422 07:25:57.878584    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:26:07.897712    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 4 space
+I20240422 07:26:07.897735    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:27:15.320716    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:45016
+E20240422 07:27:16.380442    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 07:27:16.381263    21 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: CREATE SPACE IF NOT EXISTS 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75(vid_type=FIXED_STRING(256)); USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75;
+I20240422 07:28:30.938524    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:38174
+E20240422 07:28:31.883245    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '_5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 07:28:31.883733    21 QueryInstance.cpp:151] SyntaxError: syntax error near `_5c3e570', query: CREATE SPACE IF NOT EXISTS _5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75(vid_type=FIXED_STRING(256)); USE _5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75;
+I20240422 07:29:03.338522    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:49498
+E20240422 07:29:04.333570    21 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '_5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 07:29:04.335501    20 SwitchSpaceExecutor.cpp:45] Graph switched to `test3', space id: 13
+I20240422 07:29:04.336716    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:49510
+E20240422 07:29:04.337249    24 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+I20240422 07:29:08.097383    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 4 space
+I20240422 07:29:08.097404    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:29:17.552490    22 GraphService.cpp:77] Authenticating user root from 172.20.0.9:43980
+I20240422 07:29:17.552779    22 GraphService.cpp:77] Authenticating user root from 172.20.0.9:50470
+I20240422 07:29:18.116966    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 5 space
+I20240422 07:29:18.116984    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:29:34.425662    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:56418
+E20240422 07:29:35.457463    25 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '_5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 07:29:35.459180    25 SwitchSpaceExecutor.cpp:45] Graph switched to `test4', space id: 14
+I20240422 07:29:35.460203    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:56440
+E20240422 07:29:35.460681    22 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+I20240422 07:29:38.154743    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 5 space
+I20240422 07:29:38.154764    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:29:48.173861    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 6 space
+I20240422 07:29:48.173892    42 MetaClient.cpp:3269] Load leader ok
+E20240422 07:30:14.944510    22 QueryInstance.cpp:151] SyntaxError: syntax error near `'', query: CLEAR SPACE 'test1'
+E20240422 07:31:41.908301    25 QueryInstance.cpp:151] SyntaxError: syntax error near `[IF EXIS', query: DROP SPACE [IF EXISTS] test;
+I20240422 07:31:58.310495    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 4 space
+I20240422 07:31:58.310515    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:32:08.322865    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 2 space
+I20240422 07:32:08.322882    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:32:18.334033    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 07:32:18.334051    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:32:28.353240    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 07:32:28.353289    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:32:38.370133    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 07:32:38.370194    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:33:40.413759    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:53350
+E20240422 07:33:41.632395    25 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '_5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 07:33:41.634478    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:53364
+E20240422 07:33:41.635000    25 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+I20240422 07:33:48.452545    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 07:33:48.452569    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:34:08.487022    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 2 space
+I20240422 07:34:08.487087    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:34:11.390261    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:34304
+E20240422 07:34:12.450585    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE '_5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 07:34:12.453099    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:34316
+E20240422 07:34:12.453464    21 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+I20240422 07:34:18.505357    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 2 space
+I20240422 07:34:18.505388    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:34:38.529729    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240422 07:34:38.529768    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:37:44.878644    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:43258
+I20240422 07:38:25.772554    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47328
+E20240422 07:38:26.920738    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 07:38:26.923027    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47352
+E20240422 07:38:26.923377    21 QueryInstance.cpp:151] SyntaxError: syntax error near `5c3e570f', query: USE 5c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+I20240422 07:38:28.766896    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240422 07:38:28.766917    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:38:48.798183    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 4 space
+I20240422 07:38:48.798213    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:42:29.016419    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240422 07:42:29.016438    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:42:39.034557    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240422 07:42:39.034577    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:42:49.054556    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 2 space
+I20240422 07:42:49.054582    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:42:59.077613    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 2 space
+I20240422 07:42:59.077636    42 MetaClient.cpp:3269] Load leader ok
+E20240422 07:43:01.984964    24 QueryInstance.cpp:151] SyntaxError: syntax error near `, test4;', query: DROP SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c, test4;
+I20240422 07:43:09.093195    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 07:43:09.093248    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:43:19.106582    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 07:43:19.106638    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:43:21.754355    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42306
+E20240422 07:43:22.708926    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 07:43:22.711102    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42322
+E20240422 07:43:22.711627    25 UseValidator.cpp:28] Unknown space: ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 : SpaceNotFound: SpaceName `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75`
+E20240422 07:43:22.711643    25 QueryInstance.cpp:151] SpaceNotFound: SpaceName `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75`, query: USE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+I20240422 07:43:29.123371    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 07:43:29.123442    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:43:39.141551    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 07:43:39.141611    42 MetaClient.cpp:3269] Load leader ok
+I20240422 07:43:49.160444    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 07:43:49.160501    42 MetaClient.cpp:3269] Load leader ok
+I20240422 08:00:05.047871    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36136
+E20240422 08:00:06.256922    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 08:00:06.257941    20 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 08:00:06.257962    21 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 08:00:06.258970    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36160
+I20240422 08:00:06.259516    25 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+I20240422 08:07:03.512784    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36694
+E20240422 08:07:04.197454    21 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 08:07:04.198232    24 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 08:07:04.198261    22 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 08:07:04.199396    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36698
+I20240422 08:07:04.200259    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+I20240422 09:16:11.894956    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:55802
+E20240422 09:16:12.664657    25 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 09:16:12.673941    22 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 09:16:12.673987    22 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 09:16:12.675410    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:55816
+I20240422 09:16:12.677695    24 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+I20240422 09:31:39.641798    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42092
+E20240422 09:31:41.192770    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 09:31:41.199748    25 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 09:31:41.199780    24 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 09:31:41.201054    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42104
+I20240422 09:31:41.201614    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+I20240422 09:35:20.002458    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47104
+E20240422 09:35:21.038750    25 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 09:35:21.040732    24 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 09:35:21.040788    25 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 09:35:21.042016    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47134
+I20240422 09:35:21.042693    22 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+E20240422 09:35:30.212474    24 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 09:35:30.212524    24 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-7182730038946885947:("Is");
+E20240422 09:35:30.488651    25 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 09:35:30.488735    25 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-7182730038946885947:("Is");
+E20240422 09:35:31.516985    25 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 09:35:31.517071    25 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-7182730038946885947:("Is");
+I20240422 09:41:36.612413    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:51434
+E20240422 09:41:39.488819    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 09:41:39.491792    21 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 09:41:39.491828    22 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 09:41:39.493316    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:51466
+I20240422 09:41:39.494227    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+E20240422 09:41:42.736737    23 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 09:41:42.742947    23 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-2502145764789059431:("Is");
+E20240422 09:41:43.214205    23 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 09:41:43.214293    23 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-2502145764789059431:("Is");
+E20240422 09:41:45.203116    23 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 09:41:45.203254    23 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-2502145764789059431:("Is");
+I20240422 10:32:58.685082    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:35408
+I20240422 10:34:25.959301    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48508
+E20240422 10:34:27.129926    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 10:34:27.137255    22 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 10:34:27.137296    21 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 10:34:27.138924    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48536
+I20240422 10:34:27.139461    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+E20240422 10:34:28.368479    23 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:34:28.368573    23 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-6233811669300971563:("Is");
+E20240422 10:34:29.191148    22 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:34:29.191231    22 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-6233811669300971563:("Is");
+E20240422 10:34:31.022637    23 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:34:31.022727    23 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-6233811669300971563:("Is");
+I20240422 10:35:27.300585    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:46474
+E20240422 10:35:28.500316    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 10:35:28.501276    23 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 10:35:28.501299    25 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 10:35:28.502343    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:46490
+I20240422 10:35:28.502903    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+E20240422 10:35:29.098165    25 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:35:29.098242    25 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-2170159893778759200:("Is");
+E20240422 10:35:30.059193    21 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:35:30.059312    21 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-2170159893778759200:("Is");
+E20240422 10:35:31.566573    22 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:35:31.566658    22 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-2170159893778759200:("Is");
+I20240422 10:35:59.688382    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:59916
+E20240422 10:36:00.829676    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 10:36:00.830817    24 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 10:36:00.830849    24 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 10:36:00.831904    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:59930
+I20240422 10:36:00.832446    22 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 18
+E20240422 10:36:01.448556    22 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:36:01.448637    22 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-4981183705932733908:("Is");
+E20240422 10:36:02.305724    24 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:36:02.305815    24 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-4981183705932733908:("Is");
+E20240422 10:36:03.198894    22 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 10:36:03.198985    22 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-4981183705932733908:("Is");
+E20240422 10:36:56.648124    25 QueryInstance.cpp:151] SyntaxError: syntax error near `;', query: DROP SPACE;
+I20240422 10:37:10.429404    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:60880
+E20240422 10:37:12.186950    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 10:37:12.195255    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 19
+I20240422 10:37:13.732237    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 10:37:13.732296    42 MetaClient.cpp:3269] Load leader ok
+I20240422 10:37:22.210883    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:55492
+I20240422 10:37:22.212986    22 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 19
+I20240422 10:37:22.867890    41 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:22.872143    34 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:22.873692    35 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:22.877182    36 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:22.877522    37 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:22.877802    38 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:22.903241    39 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:22.905121    40 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.20.0.6":9779
+I20240422 10:37:23.753194    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 10:37:23.753238    42 MetaClient.cpp:3269] Load leader ok
+I20240422 10:37:33.767601    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 10:37:33.767655    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:06:35.531374    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:06:35.532508    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:06:45.544108    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:06:45.544140    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:06:55.554237    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:06:55.554270    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:07:14.317174    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:58056
+E20240422 11:07:17.794816    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+E20240422 11:07:17.799814    25 UseValidator.cpp:28] Unknown space: ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 : SpaceNotFound: SpaceName `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75`
+E20240422 11:07:17.799834    25 QueryInstance.cpp:151] SpaceNotFound: SpaceName `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75`, query: USE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75;
+E20240422 11:07:17.800114    20 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG entity(name string);
+E20240422 11:07:17.800498    20 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE EDGE relationship(relationship string);
+I20240422 11:07:25.599890    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:07:25.600090    42 MetaClient.cpp:3269] Load leader ok
+E20240422 11:07:27.801941    23 QueryInstance.cpp:151] SemanticError: Space was not chosen., query: CREATE TAG INDEX entity_index ON entity(name(256));
+I20240422 11:07:45.639261    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 11:07:45.639323    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:08:43.276193    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:38410
+E20240422 11:08:45.047070    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+W20240422 11:08:45.053781    25 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240422 11:08:45.053808    25 QueryInstance.cpp:151] Existed!, query: CREATE SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240422 11:08:45.055276    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:54892
+I20240422 11:08:45.056751    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 20
+E20240422 11:08:46.839455    22 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 11:08:46.839545    22 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-3115553021856500791:("Is");
+E20240422 11:08:47.514816    22 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 11:08:47.514904    22 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-3115553021856500791:("Is");
+E20240422 11:08:49.344075    24 MutateValidator.cpp:61] No schema found for entity : TagNotFound: TagName `entity`
+E20240422 11:08:49.344179    24 QueryInstance.cpp:151] SemanticError: No schema found for `entity', query: INSERT VERTEX `entity`(name)   VALUES "Society":("Society");INSERT VERTEX `entity`(name)   VALUES "Complex system":("Complex system");INSERT EDGE `relationship`(`relationship`)   VALUES "Society"->"Complex system"@-3115553021856500791:("Is");
+I20240422 11:09:35.753080    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:09:35.753216    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:09:38.712144    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42810
+E20240422 11:09:40.534862    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 11:09:45.782400    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:09:45.782608    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:09:50.545599    19 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 21
+I20240422 11:09:55.812752    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:09:55.812820    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:10:00.555997    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48590
+I20240422 11:10:00.558351    25 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 21
+I20240422 11:10:05.831826    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 11:10:05.831879    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:10:55.902740    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:10:55.903203    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:11:02.452908    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47920
+E20240422 11:11:05.105064    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 11:11:05.924259    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:11:05.924283    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:11:15.113191    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 22
+I20240422 11:11:15.941140    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:11:15.941186    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:11:25.131884    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:41038
+I20240422 11:11:25.133754    19 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 22
+I20240422 11:11:25.955740    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 11:11:25.955757    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:15:24.471747    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:34476
+I20240422 11:16:23.024040    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:49362
+I20240422 11:16:26.264891    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:16:26.265060    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:16:36.278156    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:16:36.278185    42 MetaClient.cpp:3269] Load leader ok
+W20240422 11:16:44.651340    19 SpaceExecutor.cpp:116] Get space ID failed when prepare text index: ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75
+W20240422 11:16:44.652149    19 SpaceExecutor.cpp:125] Drop space `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75' failed: SpaceNotFound: Space not existed!
+E20240422 11:16:44.652222    21 QueryInstance.cpp:151] SpaceNotFound: Space not existed!, query: DROP SPACE ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75;
+I20240422 11:16:46.291038    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:16:46.291081    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:16:53.614414    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:49466
+I20240422 11:17:52.463286    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:43300
+I20240422 11:19:57.489328    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36518
+I20240422 11:21:06.258900    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42112
+I20240422 11:25:20.079602    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:50942
+E20240422 11:25:21.989604    19 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 11:25:26.842051    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:25:26.842398    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:25:32.007757    25 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 23
+I20240422 11:25:36.869207    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:25:36.869268    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:25:42.028288    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:43716
+I20240422 11:25:42.030375    24 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 23
+I20240422 11:25:46.898162    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 11:25:46.898226    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:31:37.239231    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:31:37.239363    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:31:40.212338    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42024
+E20240422 11:31:41.907415    20 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 11:31:47.266842    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:31:47.266906    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:31:51.911682    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 24
+I20240422 11:31:57.279723    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:31:57.279776    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:32:01.931089    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:44966
+I20240422 11:32:01.933357    22 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 24
+I20240422 11:32:07.307396    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 11:32:07.307700    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:34:07.431099    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:34:07.431768    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:34:07.823143    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:46340
+E20240422 11:34:09.490183    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 11:34:17.457828    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:34:17.457891    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:34:19.498785    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 25
+I20240422 11:34:27.469911    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:34:27.469978    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:34:37.505311    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 11:34:37.505364    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:35:17.550822    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:35:17.551666    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:35:18.725133    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:56456
+I20240422 11:35:27.564741    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:35:27.564793    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:35:33.740749    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:58288
+E20240422 11:35:35.303153    19 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75';
+I20240422 11:35:37.585402    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:35:37.585453    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:35:45.308168    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 11:35:47.604876    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240422 11:35:47.604918    42 MetaClient.cpp:3269] Load leader ok
+I20240422 11:35:55.327167    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48438
+I20240422 11:35:55.329223    24 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 11:35:57.621472    42 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240422 11:35:57.621526    42 MetaClient.cpp:3269] Load leader ok
+I20240422 14:28:29.040107    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:60390
+I20240422 14:28:30.033069    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:60408
+I20240422 14:28:30.040777    19 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:31:21.418619    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47714
+I20240422 14:31:22.147773    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47732
+I20240422 14:31:22.148877    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:31:46.105011    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:60098
+I20240422 14:31:47.087949    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:60110
+I20240422 14:31:47.088789    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:32:04.166062    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:41522
+I20240422 14:32:04.903775    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:41536
+I20240422 14:32:04.904513    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:33:05.509497    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:38400
+I20240422 14:33:06.514251    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:38414
+I20240422 14:33:06.515203    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:34:21.607117    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:33880
+I20240422 14:34:22.704037    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:33900
+I20240422 14:34:22.704960    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:37:22.334193    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48068
+I20240422 14:37:23.137972    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48074
+I20240422 14:37:23.138952    24 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:38:29.236932    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:38746
+I20240422 14:38:30.269860    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:38754
+I20240422 14:38:30.270644    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 14:40:41.534198    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:45338
+I20240422 14:40:42.266850    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:45354
+I20240422 14:40:42.267598    18 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:00:47.550815    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:57902
+I20240422 15:00:48.693118    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:57920
+I20240422 15:00:48.694079    22 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:02:57.859927    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42280
+I20240422 15:02:58.639146    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42286
+I20240422 15:02:58.645881    19 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:04:45.542047    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:52948
+I20240422 15:04:47.084729    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:52956
+I20240422 15:04:47.085705    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:06:06.264784    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:53416
+I20240422 15:06:07.343320    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:53444
+I20240422 15:06:07.344293    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:06:59.561815    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:50758
+I20240422 15:07:00.390480    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:50770
+I20240422 15:07:00.391559    19 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:13:39.559366    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:59298
+I20240422 15:13:40.891765    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:59322
+I20240422 15:13:40.892547    24 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:19:47.834228    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36928
+I20240422 15:19:48.588130    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36942
+I20240422 15:19:48.589030    23 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:21:58.900851    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:45550
+I20240422 15:21:59.802433    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:45562
+I20240422 15:21:59.803290    19 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:23:29.640501    19 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:23:29.641098    19 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+E20240422 15:23:29.643406    19 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `relationship'.
+I20240422 15:26:08.000927    43 GraphSessionManager.cpp:209] ClientSession 1713743887973975 has expired
+I20240422 15:26:08.000973    43 GraphSessionManager.cpp:209] ClientSession 1713770017402759 has expired
+I20240422 15:26:08.000982    43 GraphSessionManager.cpp:209] ClientSession 1713769844505787 has expired
+I20240422 15:26:08.000985    43 GraphSessionManager.cpp:209] ClientSession 1713745298155197 has expired
+I20240422 15:26:08.000988    43 GraphSessionManager.cpp:209] ClientSession 1713743887525309 has expired
+I20240422 15:26:09.505482    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48476
+I20240422 15:26:10.375952    19 GraphService.cpp:77] Authenticating user root from 172.20.0.1:48496
+I20240422 15:26:10.376778    25 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:28:08.087543    43 GraphSessionManager.cpp:209] ClientSession 1713770157724749 has expired
+I20240422 15:28:29.642822  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:28:29.642935  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 15:29:18.494750    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36524
+I20240422 15:29:19.383911    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36534
+I20240422 15:29:19.384987    19 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:30:08.207595    43 GraphSessionManager.cpp:209] ClientSession 1713770256349717 has expired
+I20240422 15:33:29.643064  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:33:29.643157  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 15:36:08.568066    43 GraphSessionManager.cpp:209] ClientSession 1713770592600633 has expired
+I20240422 15:37:08.630987    43 GraphSessionManager.cpp:209] ClientSession 1713770717452716 has expired
+I20240422 15:38:08.682982    43 GraphSessionManager.cpp:209] ClientSession 1713770754717533 has expired
+I20240422 15:38:29.643376  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:38:29.643461  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 15:39:08.744264    43 GraphSessionManager.cpp:209] ClientSession 1713770835372978 has expired
+I20240422 15:39:08.744356    43 GraphSessionManager.cpp:209] ClientSession 1713770070444745 has expired
+I20240422 15:41:08.870235    43 GraphSessionManager.cpp:209] ClientSession 1713770910995365 has expired
+I20240422 15:41:08.870364    43 GraphSessionManager.cpp:209] ClientSession 1713770943397298 has expired
+I20240422 15:42:08.934262    43 GraphSessionManager.cpp:209] ClientSession 1713770974486292 has expired
+I20240422 15:43:29.643587  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:43:29.643685  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 15:46:09.182392    43 GraphSessionManager.cpp:209] ClientSession 1713771220488759 has expired
+I20240422 15:46:09.182520    43 GraphSessionManager.cpp:209] ClientSession 1713771251466912 has expired
+I20240422 15:48:29.643919  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:48:29.644062  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 15:50:09.382093    43 GraphSessionManager.cpp:209] ClientSession 1713771505863442 has expired
+I20240422 15:50:09.382234    43 GraphSessionManager.cpp:209] ClientSession 1713771464967273 has expired
+I20240422 15:51:14.854633    24 GraphService.cpp:77] Authenticating user root from 172.20.0.1:49804
+I20240422 15:51:15.634400    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:49822
+I20240422 15:51:15.635239    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:53:29.644186  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:53:29.644276  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 15:54:06.274883    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42488
+I20240422 15:54:07.203015    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42492
+I20240422 15:54:07.203780    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:55:09.674196    43 GraphSessionManager.cpp:209] ClientSession 1713771801855386 has expired
+I20240422 15:56:29.272796    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42800
+I20240422 15:56:30.795603    23 GraphService.cpp:77] Authenticating user root from 172.20.0.1:42818
+I20240422 15:56:30.796396    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 15:58:29.644395  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 15:58:29.644491  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:03:29.644735  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:03:29.644855  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:08:29.645099  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:08:29.645205  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:11:10.507412    43 GraphSessionManager.cpp:209] ClientSession 1713772072180580 has expired
+I20240422 16:11:10.507504    43 GraphSessionManager.cpp:209] ClientSession 1713772070778317 has expired
+I20240422 16:13:29.645447  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:13:29.645558  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:18:10.860566    43 GraphSessionManager.cpp:209] ClientSession 1713772490080901 has expired
+I20240422 16:18:10.860669    43 GraphSessionManager.cpp:209] ClientSession 1713772489551042 has expired
+I20240422 16:18:29.645807  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:18:29.645936  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:23:29.646294  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:23:29.646406  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:28:29.646625  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:28:29.646739  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:33:29.646850  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:33:29.646934  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:38:29.647202  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:38:29.647317  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:43:29.647466  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:43:29.647552  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:48:29.647776  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:48:29.647886  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 16:53:29.648114  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 16:53:29.648244  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 20:36:47.251778    43 GraphSessionManager.cpp:209] ClientSession 1713776637778220 has expired
+I20240422 20:36:47.251909    43 GraphSessionManager.cpp:209] ClientSession 1713776637076661 has expired
+I20240422 20:37:03.848927  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 20:37:03.848989  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 20:37:50.777546    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36276
+I20240422 20:37:51.849494    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36286
+I20240422 20:37:51.850731    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 20:42:03.849099  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 20:42:03.849186  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 20:42:47.636597    20 GraphService.cpp:77] Authenticating user root from 172.20.0.1:53794
+I20240422 20:42:49.031081    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:56372
+I20240422 20:42:49.032738    20 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 20:43:47.674321    43 GraphSessionManager.cpp:209] ClientSession 1713777566880271 has expired
+I20240422 20:43:47.674444    43 GraphSessionManager.cpp:209] ClientSession 1713777565459191 has expired
+I20240422 20:46:47.857731    43 GraphSessionManager.cpp:209] ClientSession 1713777785258321 has expired
+I20240422 20:46:47.857862    43 GraphSessionManager.cpp:209] ClientSession 1713777786208137 has expired
+I20240422 20:47:03.849298  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 20:47:03.849344  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 20:50:48.074270    43 GraphSessionManager.cpp:209] ClientSession 1713778166868008 has expired
+I20240422 20:50:48.074354    43 GraphSessionManager.cpp:209] ClientSession 1713778161732396 has expired
+I20240422 20:52:03.849447  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 20:52:03.849520  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 20:57:03.849632  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 20:57:03.849721  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 21:02:03.849843  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 21:02:03.849881  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240422 21:05:38.674773    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:36812
+I20240422 21:06:43.720276    21 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47950
+I20240422 21:06:45.653414    18 GraphService.cpp:77] Authenticating user root from 172.20.0.1:47958
+I20240422 21:06:45.658464    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+I20240422 21:07:03.849993  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 21:07:03.850291  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+E20240422 21:07:30.659658    19 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `relationship'.
+I20240422 21:10:29.152541    25 GraphService.cpp:77] Authenticating user root from 172.20.0.1:57326
+I20240422 21:10:30.953895    22 GraphService.cpp:77] Authenticating user root from 172.20.0.1:34358
+I20240422 21:10:30.954710    21 SwitchSpaceExecutor.cpp:45] Graph switched to `ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75', space id: 26
+E20240422 21:11:07.223080    18 LabelIndexSeek.cpp:56] SemanticError: No valid index for label `relationship'.
+I20240422 21:12:04.888207  6581 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240422 21:12:04.888372  6581 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!

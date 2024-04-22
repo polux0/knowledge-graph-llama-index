@@ -22,7 +22,10 @@ def load_environment_variables():
         "CHROMA_PORT": os.getenv("CHROMA_PORT"),
         "ELASTIC_URL": os.getenv("ELASTIC_URL"),
         "ELASTIC_PORT": os.getenv("ELASTIC_PORT"),
+        "COHERE_API_KEY": os.getenv("COHERE_API_KEY"),
     }
+
+
 def setup_logging():
     """Set up logging to output to standard output with INFO level."""
     logging.basicConfig(stream=sys.stdout, level=logging.INFO)

@@ -1,0 +1,4 @@
+{
+    "('default', 256, 15, '../data/real_world_community_model')": "neo4j",
+    "('cohere', 256, 15, '../data/real_world_community_model_1st_half')": "ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75"
+}
