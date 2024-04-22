@@ -39,3 +39,5 @@ neo4j/
 .env
 # Env file for local development
 .env.local
+# Env file for production development
+.env.production
