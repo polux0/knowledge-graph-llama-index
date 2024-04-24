@@ -155,15 +155,6 @@ def generate_response_based_on_knowledge_graph_with_debt(query: str):
     # technical debt - tree_summarize
     experiment.retrieval_strategy = "tree_summarize"
     experiment.source_agent = "KGAgent"
-    # to delete
-    # embedding_model_id = "default"
-    # embed_model = initialize_embedding_model(
-    #     env_vars["HF_TOKEN"], embedding_model_id=embedding_model_id
-    # )
-    # experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
-    #     embedding_model_id
-    # )
-    # Settings.embed_model = embed_model
     response, source_nodes = query_knowledge_graph(index,
                                                    query,
                                                    template,
