@@ -27,9 +27,8 @@ jobs:
           chmod -R 777 /usr/share/snapshots/elasticsearch $HOME/es_snapshots
           # chown -R root:root $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
           chown -R 1000:1000 $HOME/es_snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1
-
           # Make snapshot scripts executable
-          chmod +x ./scripts/elasticsearch/create_snapshot.sh ./scripts/elasticsearch/setup_repository.sh ./scripts/elasticsearch/create_snapshot_with_cleanup.sh ./scripts/elasticsearch/restore_from_a_snapshot.sh
+          chmod +x /home/auravana/app/scripts/elasticsearch/create_snapshot.sh /home/auravana/app/scripts/elasticsearch/setup_repository.sh /home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh /home/auravana/app/scripts/elasticsearch/restore_from_a_snapshot.sh
 
           cat <<EOT > /home/auravana/app/.env
           HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
