@@ -1,6 +1,7 @@
 
 import json
 import hashlib
+import os
 
 class GraphDatabaseNameNotFoundError(Exception):
     pass
@@ -43,10 +44,12 @@ def generate_hashed_name(search_key, length=61):
 
 # Function to save dictionary to a file with pretty printing
 def save_graph_parameters(graph_params):
+    env = os.getenv('ENV', 'local')
+    filename = 'graph_parameters.json' if env == 'local' else 'graph_parameters_remote.json'
     try:
         # Convert tuple keys to strings
         json_ready_dict = {str(key): value for key, value in graph_params.items()}
-        with open('graph_parameters.json', 'w') as file:
+        with open(filename, 'w') as file:
             json.dump(json_ready_dict, file, indent=4)
         print("File saved successfully.")
     except Exception as e:
@@ -55,8 +58,10 @@ def save_graph_parameters(graph_params):
 
 # Function to load dictionary from a file
 def load_graph_parameters():
+    env = os.getenv('ENV', 'local')
+    filename = 'graph_parameters.json' if env == 'local' else 'graph_parameters_remote.json'
     try:
-        with open('graph_parameters.json', 'r') as file:
+        with open(filename, 'r') as file:
             # Here we need to convert keys back to tuples if you plan to use them as such in Python
             loaded_data = json.load(file)
             return {eval(key): value for key, value in loaded_data.items()}
@@ -81,14 +86,16 @@ vector_child_parameters = {
 
 
 def get_graph_database_name(
+        large_language_model_id,
         embedding_model_id,
         chunk_size,
         max_triplets_per_chunk,
         document_source
 ):
-    parameters_tuple = (embedding_model_id, chunk_size, max_triplets_per_chunk,
+    parameters_tuple = (large_language_model_id, embedding_model_id,
+                        chunk_size, max_triplets_per_chunk,
                         document_source)
-    database_name = graph_parameters.get(parameters_tuple)   
+    database_name = graph_parameters.get(parameters_tuple)
     if database_name is None:
         raise GraphDatabaseNameNotFoundError(f"No database name found for graph_parameters: {parameters_tuple}")   
     return database_name
@@ -126,13 +133,15 @@ def get_child_vector_database_name(
     return database_name
 
 
-def update_graph_database_name(embedding_model_id,
+def update_graph_database_name(large_language_model_id,
+                               embedding_model_id,
                                chunk_size,
                                max_triplets_per_chunk,
                                document_source,
                                new_database_name):
     global graph_parameters
-    parameters_tuple = (embedding_model_id,
+    parameters_tuple = (large_language_model_id,
+                        embedding_model_id,
                         chunk_size,
                         max_triplets_per_chunk,
                         document_source)
@@ -172,11 +181,12 @@ def update_child_vector_database_name(embedding_model_id,
 def load_parent_vector_configuration(embedding_model_id, parent_chunk_size,
                                      parent_chunk_overlap,
                                      parent_path):
-    config_file_path = 'vector_parent_parameters.json'
+    env = os.getenv('ENV', 'local')
+    filename = 'vector_parent_parameters.json' if env == 'local' else 'vector_parent_parameters_remote.json'
     search_key = str((embedding_model_id, parent_chunk_size,
                       parent_chunk_overlap, parent_path))
     try:
-        with open(config_file_path, 'r') as file:
+        with open(filename, 'r') as file:
             config = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print("Error while trying to load parent vector configuration: ", e)
@@ -192,7 +202,7 @@ def load_parent_vector_configuration(embedding_model_id, parent_chunk_size,
         parent_name = generate_hashed_name(search_key)
         config[search_key] = parent_name
         try:
-            with open(config_file_path, 'w') as file:
+            with open(filename, 'w') as file:
                 json.dump(config, file, indent=4)
             print("New parent configuration created successfully.")
             return parent_name
@@ -203,11 +213,12 @@ def load_parent_vector_configuration(embedding_model_id, parent_chunk_size,
 
 def load_child_vector_configuration(model_name_id, child_chunk_sizes,
                                     child_chunk_sizes_overlap, child_path):
-    config_file_path = 'vector_child_parameters.json'
+    env = os.getenv('ENV', 'local')
+    filename = 'vector_child_parameters.json' if env == 'local' else 'vector_child_parameters_remote.json'
     search_key = str((model_name_id, child_chunk_sizes,
                       child_chunk_sizes_overlap, child_path))
     try:
-        with open(config_file_path, 'r') as file:
+        with open(filename, 'r') as file:
             config = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError) as e:
         print("Error while trying to load child vector configuration: ", e)
@@ -223,7 +234,7 @@ def load_child_vector_configuration(model_name_id, child_chunk_sizes,
         child_name = generate_hashed_name(search_key)
         config[search_key] = child_name
         try:
-            with open(config_file_path, 'w') as file:
+            with open(filename, 'w') as file:
                 json.dump(config, file, indent=4)
             print("New child configuration created successfully.")
             return child_name
@@ -237,9 +248,11 @@ def save_parent_configuration(embedding_model_id, parent_chunk_size,
     key = str((embedding_model_id, parent_chunk_size, parent_chunk_overlap,
                parent_path))
     parent_name = hash(key)
+    env = os.getenv('ENV', 'local')
+    filename = 'vector_parent_parameters.json' if env == 'local' else 'vector_parent_parameters_remote.json'
     try:
         # Load existing data
-        with open('vector_parent_parameters.json', 'r') as file:
+        with open(filename, 'r') as file:
             config = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         config = {}
@@ -248,7 +261,7 @@ def save_parent_configuration(embedding_model_id, parent_chunk_size,
     if key not in config:
         config[key] = parent_name
         try:
-            with open('vector_parent_parameters.json', 'w') as file:
+            with open(filename, 'w') as file:
                 json.dump(config, file, indent=4)
             print("Parent configuration file updated successfully.")
         except Exception as e:
@@ -262,9 +275,11 @@ def save_child_configuration(model_name_id, child_chunk_sizes,
     key = str((model_name_id, child_chunk_sizes, child_chunk_sizes_overlap,
                child_path))
     child_name = hash(key)
+    env = os.getenv('ENV', 'local')
+    filename = 'vector_child_parameters.json' if env == 'local' else 'vector_child_parameters_remote.json'
     try:
         # Load existing data
-        with open('vector_child_parameters.json', 'r') as file:
+        with open(filename, 'r') as file:
             config = json.load(file)
     except (FileNotFoundError, json.JSONDecodeError):
         config = {}
@@ -273,7 +288,7 @@ def save_child_configuration(model_name_id, child_chunk_sizes,
     if key not in config:
         config[key] = child_name
         try:
-            with open('vector_child_parameters.json', 'w') as file:
+            with open(filename, 'w') as file:
                 json.dump(config, file, indent=4)
             print("Child configuration file updated successfully.")
         except Exception as e:

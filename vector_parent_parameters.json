@@ -1,4 +1,5 @@
 {
-    "('default', 1024, 0, '../data/real_world_community_model')": "real_world_community_model_parent",
-    "('cohere', 1024, 0, '../data/real_world_community_model')": "c3282a8d8c7e2beb8a76fb24686bb15eefb973a9e8456572f0bde524df5d9"
+    "('sfrembeddingmistral', 1024, 0, '../data/real_world_community_model')": "adc0eddccc472a201df94d1b3530e848e62c06ab948e6fedfd0bd303b2e18",
+    "('cohere', 1024, 0, '../data/real_world_community_model')": "c3282a8d8c7e2beb8a76fb24686bb15eefb973a9e8456572f0bde524df5d9",
+    "('default', 1024, 0, '../data/real_world_community_model')": "d9357a367aab7a746e772197c96a8513ed1e2c3a36f6ecb96c6de6cdecb8f"
 }

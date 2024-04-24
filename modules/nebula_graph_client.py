@@ -25,29 +25,33 @@ class NebulaGraphClient:
         self.pool.close()
 
     def _create_hash(self,
+                     large_language_model_id,
                      embedding_model_id,
                      chunk_size,
                      max_triplets_per_chunk,
                      document_source):
         # Concatenate the string representations of the variables
-        string_to_hash = f"{embedding_model_id}{chunk_size}{max_triplets_per_chunk}{document_source}"
+        string_to_hash = f"{large_language_model_id}{embedding_model_id}{chunk_size}{max_triplets_per_chunk}{document_source}"
         # Hash the concatenated string
         hashed_string = hashlib.sha256(string_to_hash.encode()).hexdigest()
         return hashed_string
 
     def create_space_if_not_exists(self,
+                                   large_language_model_id,
                                    embedding_model_id,
                                    chunk_size,
                                    max_triplets_per_chunk,
                                    document_source):
         try:
-            space_name = get_graph_database_name(embedding_model_id,
+            space_name = get_graph_database_name(large_language_model_id,
+                                                 embedding_model_id,
                                                  chunk_size,
                                                  max_triplets_per_chunk,
                                                  document_source)
             print(f"Using existing Nebula space: {space_name}")
         except GraphDatabaseNameNotFoundError:
-            space_name = self._create_new_space(embedding_model_id,
+            space_name = self._create_new_space(large_language_model_id,
+                                                embedding_model_id,
                                                 chunk_size,
                                                 max_triplets_per_chunk,
                                                 document_source)
@@ -55,11 +59,12 @@ class NebulaGraphClient:
         return space_name
 
     def _create_new_space(self,
+                          large_language_model_id,
                           embedding_model_id,
                           chunk_size,
                           max_triplets_per_chunk,
                           document_source):
-        new_space_name = self._replace_leading_digits(self._create_hash(embedding_model_id,
+        new_space_name = self._replace_leading_digits(self._create_hash(large_language_model_id, embedding_model_id,
                                            chunk_size,
                                            max_triplets_per_chunk,
                                            document_source))
@@ -67,7 +72,8 @@ class NebulaGraphClient:
         self.create_space(space_name=new_space_name)
         # Assuming space creation is successful,
         # update the parameters in dictionary
-        update_graph_database_name(embedding_model_id,
+        update_graph_database_name(large_language_model_id, 
+                                   embedding_model_id,
                                    chunk_size,
                                    max_triplets_per_chunk,
                                    document_source,

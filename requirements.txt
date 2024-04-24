@@ -28,5 +28,4 @@ nebula3-python
 llama-index-graph-stores-nebula
 cohere
 llama-index-llms-cohere
-llama-index-embeddings-cohere
-hashlib
+llama-index-embeddings-cohere   

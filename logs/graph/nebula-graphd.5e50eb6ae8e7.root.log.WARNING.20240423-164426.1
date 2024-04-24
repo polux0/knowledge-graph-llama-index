@@ -1,0 +1,9 @@
+Log file created at: 2024/04/23 16:44:26
+Running on machine: 5e50eb6ae8e7
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+E20240423 16:44:26.221177     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+E20240423 16:44:26.443434    26 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+E20240423 16:45:03.705538    26 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'f262ec9da6262d3966a0cc1389063fbfc0a0c7a077470879c58c54c4b67e7c9a';
+W20240423 16:45:03.727713    26 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240423 16:45:03.727766    26 QueryInstance.cpp:151] Existed!, query: CREATE SPACE f262ec9da6262d3966a0cc1389063fbfc0a0c7a077470879c58c54c4b67e7c9a (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))

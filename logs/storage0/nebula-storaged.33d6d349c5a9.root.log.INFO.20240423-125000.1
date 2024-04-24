@@ -1,0 +1,118 @@
+Log file created at: 2024/04/23 12:50:00
+Running on machine: 33d6d349c5a9
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240423 12:50:00.349622     1 StorageDaemon.cpp:132] localhost = "storaged0":9779
+I20240423 12:50:00.350111     1 StorageDaemon.cpp:147] data path= /data/storage
+I20240423 12:50:00.362660     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240423 12:50:00.362737     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 1
+I20240423 12:50:00.362880     1 FileBasedClusterIdMan.cpp:53] Get clusterId: 2525445105384512363
+I20240423 12:50:00.376235    48 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:01.381428    48 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.394760    48 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.397986    54 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.409912    55 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.428390    56 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.437881    57 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.451079    58 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.464114    59 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.489365    60 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.492440    61 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.496461    62 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.538239    63 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.556725    64 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.559509    65 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.561698    66 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.562732    67 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.563594    68 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.20.0.2":9559
+I20240423 12:50:02.591562     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240423 12:50:02.594194     1 MetaClient.cpp:3269] Load leader ok
+I20240423 12:50:02.596848     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240423 12:50:02.597118     1 StorageServer.cpp:250] Init schema manager
+I20240423 12:50:02.597321     1 StorageServer.cpp:253] Init index manager
+I20240423 12:50:02.597506     1 StorageServer.cpp:256] Init kvstore
+I20240423 12:50:02.597692     1 NebulaStore.cpp:48] Start the raft service...
+I20240423 12:50:02.615547     1 NebulaSnapshotManager.cpp:25] Send snapshot is rate limited to 10485760 for each part by default
+I20240423 12:50:02.667040     1 RaftexService.cpp:46] Start raft service on 9780
+I20240423 12:50:02.667174     1 NebulaStore.cpp:82] Scan the local path, and init the spaces_
+I20240423 12:50:02.667232     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/41"
+I20240423 12:50:02.668444     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/43"
+I20240423 12:50:02.668933    76 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240423 12:50:02.668978    76 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240423 12:50:02.668985    76 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240423 12:50:02.669245    76 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240423 12:50:02.669528     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/0"
+I20240423 12:50:02.669545     1 NebulaStore.cpp:90] Scan path "/data/storage/nebula/39"
+I20240423 12:50:02.669637    77 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240423 12:50:02.669662    77 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240423 12:50:02.669667    77 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240423 12:50:02.669832    77 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240423 12:50:02.676664    78 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240423 12:50:02.676942    78 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240423 12:50:02.677028    78 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240423 12:50:02.679280    78 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240423 12:50:02.768050    78 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/39/data
+I20240423 12:50:02.797782    76 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/41/data
+I20240423 12:50:02.824074    77 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/43/data
+I20240423 12:50:02.824191     1 NebulaStore.cpp:117] Load space 41 from disk
+I20240423 12:50:02.824203     1 NebulaStore.cpp:117] Load space 43 from disk
+I20240423 12:50:02.824208     1 NebulaStore.cpp:117] Load space 39 from disk
+I20240423 12:50:02.824261     1 NebulaStore.cpp:220] Load space 39 from disk
+I20240423 12:50:02.824268     1 NebulaStore.cpp:229] Need to open 1 parts of space 39
+I20240423 12:50:02.827137    70 NebulaStore.cpp:252] Load part 39, 1 from disk
+I20240423 12:50:02.827466     1 NebulaStore.cpp:286] Load space 39 complete
+I20240423 12:50:02.827524     1 NebulaStore.cpp:220] Load space 41 from disk
+I20240423 12:50:02.827530     1 NebulaStore.cpp:229] Need to open 1 parts of space 41
+I20240423 12:50:02.828356    72 NebulaStore.cpp:252] Load part 41, 1 from disk
+I20240423 12:50:02.828400     1 NebulaStore.cpp:286] Load space 41 complete
+I20240423 12:50:02.828447     1 NebulaStore.cpp:220] Load space 43 from disk
+I20240423 12:50:02.828451     1 NebulaStore.cpp:229] Need to open 1 parts of space 43
+I20240423 12:50:02.831634    70 NebulaStore.cpp:252] Load part 43, 1 from disk
+I20240423 12:50:02.837388     1 NebulaStore.cpp:286] Load space 43 complete
+I20240423 12:50:02.837435     1 NebulaStore.cpp:292] Init data from partManager for "storaged0":9779
+I20240423 12:50:02.837452     1 NebulaStore.cpp:399] Data space 39 has existed!
+I20240423 12:50:02.837478     1 NebulaStore.cpp:451] [Space: 39, Part: 1] has existed!
+I20240423 12:50:02.837484     1 NebulaStore.cpp:399] Data space 41 has existed!
+I20240423 12:50:02.837489     1 NebulaStore.cpp:451] [Space: 41, Part: 1] has existed!
+I20240423 12:50:02.837493     1 NebulaStore.cpp:399] Data space 43 has existed!
+I20240423 12:50:02.837497     1 NebulaStore.cpp:451] [Space: 43, Part: 1] has existed!
+I20240423 12:50:02.837513     1 NebulaStore.cpp:75] Register handler...
+I20240423 12:50:02.837519     1 StorageServer.cpp:259] Init LogMonitor
+I20240423 12:50:02.837651     1 StorageServer.cpp:126] Starting Storage HTTP Service
+I20240423 12:50:02.838654     1 StorageServer.cpp:130] Http Thread Pool started
+I20240423 12:50:02.888772   131 WebService.cpp:124] Web service started on HTTP[19779]
+I20240423 12:50:02.889075     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_bytes_for_level_base=268435456
+I20240423 12:50:02.889084     1 RocksEngineConfig.cpp:371] Emplace rocksdb option max_write_buffer_number=4
+I20240423 12:50:02.889089     1 RocksEngineConfig.cpp:371] Emplace rocksdb option write_buffer_size=67108864
+I20240423 12:50:02.889366     1 RocksEngineConfig.cpp:371] Emplace rocksdb option block_size=8192
+I20240423 12:50:02.962553     1 RocksEngine.cpp:107] open rocksdb on /data/storage/nebula/0/data
+I20240423 12:50:02.965790     1 AdminTaskManager.cpp:22] max concurrent subtasks: 10
+I20240423 12:50:02.965983     1 AdminTaskManager.cpp:40] exit AdminTaskManager::init()
+I20240423 12:50:02.966030   152 AdminTaskManager.cpp:224] waiting for incoming task
+E20240423 12:50:03.030835     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/130.999MiB
+I20240423 12:50:03.031368     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240423 12:50:22.743198    69 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240423 12:50:22.743824    69 MetaClient.cpp:3269] Load leader ok
+I20240423 12:53:55.745801     1 StorageDaemon.cpp:201] Signal 15(Terminated) received, stopping this server
+I20240423 12:53:55.747529     1 NebulaStore.cpp:343] Stop the raft service...
+I20240423 12:53:55.747555     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240423 12:53:55.747565     1 RaftexService.cpp:77] All partitions have stopped
+I20240423 12:53:55.747712     1 NebulaStore.cpp:346] Stop kv engine...
+I20240423 12:53:55.751085     1 AdminTaskManager.cpp:176] enter AdminTaskManager::shutdown()
+I20240423 12:53:55.751152   153 AdminTaskManager.cpp:146] Unreported-Admin-Thread stopped
+I20240423 12:53:55.769042   152 AdminTaskManager.cpp:231] detect AdminTaskManager::shutdown()
+I20240423 12:53:55.769224     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/0
+I20240423 12:53:55.771188     1 AdminTaskManager.cpp:193] exit AdminTaskManager::shutdown()
+I20240423 12:53:55.771234     1 NebulaStore.cpp:343] Stop the raft service...
+I20240423 12:53:55.771241     1 RaftexService.cpp:67] Stopping the raftex service on port 9780
+I20240423 12:53:55.771245     1 RaftexService.cpp:77] All partitions have stopped
+I20240423 12:53:55.771252     1 NebulaStore.cpp:346] Stop kv engine...
+I20240423 12:53:55.771267     1 NebulaStore.cpp:36] Cut off the relationship with meta client
+I20240423 12:53:55.771688     1 Part.h:59] [Port: 9780, Space: 43, Part: 1] ~Part()
+I20240423 12:53:55.771943     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/43
+I20240423 12:53:55.772557     1 Part.h:59] [Port: 9780, Space: 39, Part: 1] ~Part()
+I20240423 12:53:55.772783     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/39
+I20240423 12:53:55.773254     1 Part.h:59] [Port: 9780, Space: 41, Part: 1] ~Part()
+I20240423 12:53:55.773483     1 RocksEngine.h:247] Release rocksdb on /data/storage/nebula/41
+I20240423 12:53:55.774139     1 NebulaStore.cpp:44] ~NebulaStore()
+I20240423 12:53:55.774374     1 StorageDaemon.cpp:186] The storage Daemon stopped

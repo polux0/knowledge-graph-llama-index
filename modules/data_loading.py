@@ -11,4 +11,3 @@ def load_documents(directory_path):
     """
     data_dir = resolve_data_path(directory_path)
     return SimpleDirectoryReader(data_dir).load_data()
-    

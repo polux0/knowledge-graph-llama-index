@@ -18,6 +18,7 @@ from llama_index.llms.openai import OpenAI
 from llama_index.readers.file import PDFReader
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from get_database_name_based_on_parameters import (load_child_vector_configuration, load_parent_vector_configuration)
+import os
 
 import chromadb
 
@@ -104,21 +105,26 @@ print("experiment.llm_used", experiment.llm_used)
 llm = initialize_llm(model_name_id)
 Settings.llm = llm
 
+print("Trying to connect to chromaDB client...")
 remote_db = chromadb.HttpClient(
-    host=env_vars["CHROMA_URL"], port=env_vars["CHROMA_PORT"]
+    host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
-
+print("Sucessfully connected to chromaDB client...")
 print("All collections in Chroma: ", remote_db.list_collections())
+
 
 parent_chroma_collection_name = load_parent_vector_configuration(embedding_model_id,
                                                                 parent_chunk_size,
                                                                 parent_chunk_overlap,
                                                                 documents_directory)
 
+print("Parent chroma collection name: ", parent_chroma_collection_name)
 child_chroma_collection_name = load_child_vector_configuration(embedding_model_id,
                                                               child_chunk_sizes,
                                                               child_chunk_sizes_overlap,
                                                               documents_directory)
+
+print("Child chroma collection name: ", child_chroma_collection_name)
 
 chroma_collection_parent = remote_db.get_or_create_collection(
     parent_chroma_collection_name
@@ -298,6 +304,15 @@ def generate_response_based_on_vector_embeddings_with_debt(question: str):
     print("Template received, vector embeddings:", prompt_template)
     message_template = format_message(question, prompt_template)
     print("!!!!!!!!!!!!!!!!Final question, vetor embeddings:", message_template)
+    # to delete
+    # embedding_model_id = "default"
+    # embed_model = initialize_embedding_model(
+    #     env_vars["HF_TOKEN"], embedding_model_id=embedding_model_id
+    # )
+    # experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
+    #     embedding_model_id
+    # )
+    # Settings.embed_model = embed_model
     response = query_engine_chunk.query(message_template)
     # logging.info(f"Logging the response nodes from a vector database: {response.source_nodes}")
     experiment.response = str(response)

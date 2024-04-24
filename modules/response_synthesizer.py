@@ -32,7 +32,7 @@ def get_synthesized_response_based_on_nodes_with_score(query: str, nodes_with_sc
     model_name_id="mixtral"
     response_mode = "compact"
 
-    prompt = (    
+    prompt = (
     "Context information is below.\n"
     "---------------------\n"
     "{context_str}\n"

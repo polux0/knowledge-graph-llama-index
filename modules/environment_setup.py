@@ -3,13 +3,15 @@ import logging
 import sys
 from dotenv import load_dotenv
 
+
 def load_environment_variables():
     """Load environment variables from a .env file.
 
     Returns:
         dict: A dictionary containing the loaded environment variables.
     """
-    load_dotenv()  # Load environment variables from .env file
+    # load_dotenv()
+    load_dotenv()
     return {
         "HF_TOKEN": os.getenv("HUGGING_FACE_API_KEY"),
         "HF_TOKEN_ANOTHER": os.getenv("HUGGING_FACE_API_KEY_ANOTHER"),

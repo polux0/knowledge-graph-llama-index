@@ -1,0 +1,51 @@
+Log file created at: 2024/04/24 08:34:33
+Running on machine: fdcbc74593d8
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240424 08:34:33.356503     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20240424 08:34:33.364957     7 WebService.cpp:124] Web service started on HTTP[19669]
+I20240424 08:34:33.365063     1 GraphDaemon.cpp:136] Number of networking IO threads: 8
+I20240424 08:34:33.365079     1 GraphDaemon.cpp:145] Number of worker threads: 8
+I20240424 08:34:33.371730     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240424 08:34:33.372092     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20240424 08:34:33.387262    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.404409    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.412012    36 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.414507    37 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.416676    38 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.419680    39 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.446749    40 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.448751    41 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.450660    42 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.30.0.3":9559
+I20240424 08:34:34.462289     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 0 space
+I20240424 08:34:34.462316     1 MetaClient.cpp:3269] Load leader ok
+I20240424 08:34:34.463510     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240424 08:34:34.464016     1 GraphSessionManager.cpp:337] Total of 0 sessions are loaded
+E20240424 08:34:34.464639     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+I20240424 08:34:34.465065     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240424 08:34:34.465677     1 Snowflake.cpp:17] WorkerId init success: 1
+I20240424 08:34:34.466256    46 GraphServer.cpp:63] Starting nebula-graphd on graphd:9669
+I20240424 08:34:34.755471    24 GraphService.cpp:77] Authenticating user root from 172.30.0.9:53298
+E20240424 08:34:34.762187    23 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+I20240424 08:34:54.784884    43 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 4 space
+I20240424 08:34:54.784934    43 MetaClient.cpp:3269] Load leader ok
+I20240424 08:36:04.525611    23 GraphService.cpp:77] Authenticating user root from 172.30.0.10:56170
+E20240424 08:36:06.327080    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'b45d525bef5657d21e4d45179ffeb27d97e6f4d22ba99a1303fb92312da5cc31';
+W20240424 08:36:06.329079    25 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240424 08:36:06.329106    24 QueryInstance.cpp:151] Existed!, query: CREATE SPACE b45d525bef5657d21e4d45179ffeb27d97e6f4d22ba99a1303fb92312da5cc31 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240424 08:36:06.330664    20 GraphService.cpp:77] Authenticating user root from 172.30.0.10:56184
+I20240424 08:36:06.331445    24 SwitchSpaceExecutor.cpp:45] Graph switched to `b45d525bef5657d21e4d45179ffeb27d97e6f4d22ba99a1303fb92312da5cc31', space id: 44
+I20240424 08:36:07.003584    39 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:07.011683    40 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:07.012531    41 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:07.013711    42 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:07.014073    35 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:07.014400    36 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:07.015022    37 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:07.015293    38 ThriftClientManager-inl.h:67] resolve "storaged0":9779 as "172.30.0.6":9779
+I20240424 08:36:09.991767    26 FunctionUdfManager.cpp:93] Load UDF so library: /home/nebula/dev/nebula/udf/
+E20240424 08:36:09.994107    26 FunctionUdfManager.cpp:41] UDF Folder doesn't Exist!
+I20240424 08:38:49.487686     1 GraphDaemon.cpp:176] Signal 15(Terminated) received, stopping this server
+I20240424 08:38:49.490465    46 GraphServer.cpp:74] nebula-graphd on graphd:9669 has been stopped
+I20240424 08:38:49.490552     1 GraphDaemon.cpp:161] The graph Daemon stopped
+I20240424 08:38:49.490563     1 GraphServer.cpp:109] The graph server has been stopped

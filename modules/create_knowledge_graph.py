@@ -2,15 +2,13 @@ import os
 from datetime import datetime, timezone
 
 from data_loading import load_documents
-from data_path_resolver import resolve_data_path
+from data_path_resolver import resolve_data_path, create_data_path
 from dotenv import load_dotenv
 # Elasticsearch realted
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from embedding_model_modular_setup import (
     get_embedding_model_based_on_model_name_id, initialize_embedding_model)
 from environment_setup import load_environment_variables, setup_logging
-from get_database_name_based_on_parameters import (get_graph_database_name,
-                                                   update_graph_database_name)
 from large_language_model_setup import (get_llm_based_on_model_name_id,
                                         initialize_llm)
 from llama_index.core import (KnowledgeGraphIndex, Settings, StorageContext,
@@ -20,9 +18,13 @@ from nebula_graph_client import NebulaGraphClient
 from prompts import get_template_based_on_template_id
 from querying import query_knowledge_graph
 from service_context_setup import create_service_context
+from visualize_graph import generate_network_graph
 
+# load_dotenv()
 load_dotenv()
 
+
+print("NEBULA URL: ", os.getenv("NEBULA_URL"))
 client = NebulaGraphClient(
     [(os.getenv("NEBULA_URL"), int(os.getenv("NEBULA_PORT")))],
     os.getenv("NEBULA_USERNAME"),
@@ -51,17 +53,15 @@ model_name_id = "mixtral"
 embedding_model_id = "cohere"
 chunk_size = 256
 max_triplets_per_chunk = 15
-documents_directory = "../data/real_world_community_model_1st_half"
+documents_directory = "../data/real_world_community_model"
 
 # Initialize LLM and Embedding model
 llm = initialize_llm(model_name_id)
 Settings.llm = llm
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
-
 embed_model = initialize_embedding_model(
     env_vars["HF_TOKEN"], embedding_model_id=embedding_model_id
 )
-print("This is embedding model: ", embed_model)
 experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
     embedding_model_id
 )
@@ -77,16 +77,8 @@ database_name = ""
 created_database_name = ""
 
 try:
-    persistence_directory = resolve_data_path(
-        "../persistence/real_world_community_model_15_triplets_per_chunk_nebula"
-    )
-except Exception as e:
-    print("An error occurred while resolving the data path:", e)
-    persistence_directory = ""
-    
-# Attempt to create the database if it does not exist
-try:
-    database_name = client.create_space_if_not_exists(embedding_model_id,
+    database_name = client.create_space_if_not_exists(model_name_id,
+                                                      embedding_model_id,
                                                       chunk_size,
                                                       max_triplets_per_chunk,
                                                       documents_directory
@@ -95,6 +87,14 @@ try:
 except Exception as e:
     print(f"Error while creating space: {e}")
 
+try:
+    # Use the database_name variable instead of the hardcoded string.
+    persistence_directory = resolve_data_path(f"../persistence/{database_name}")
+except Exception as e:
+    print("An error occurred while resolving the data path:", e)
+    # Also replace here when creating the data path
+    create_data_path(f"../persistence/{database_name}")
+    
 # Have to modify this path:
 
 os.environ["NEBULA_USER"] = os.getenv("NEBULA_USERNAME")
@@ -106,8 +106,16 @@ edge_types, rel_prop_names = ["relationship"], [
 ]  # default, could be omit if create from an empty kg
 tags = ["entity"]
 
+graph_store = NebulaGraphStore(
+    space_name=database_name,
+    edge_types=edge_types,
+    rel_prop_names=rel_prop_names,
+    tags=tags,
+)
+
 try:
-    storage_context = StorageContext.from_defaults(persist_dir=persistence_directory)
+    storage_context = StorageContext.from_defaults(persist_dir=resolve_data_path(f"../persistence/{database_name}"),
+                                                   graph_store=graph_store)
     index = load_index_from_storage(
         storage_context=storage_context,
         service_context=service_context,
@@ -122,14 +130,6 @@ except:
     index_loaded = False
     print("Index not found, constructing one...")
 if not index_loaded:
-    print("Here is the database name: ", database_name)
-    graph_store = NebulaGraphStore(
-        space_name=database_name,
-        edge_types=edge_types,
-        rel_prop_names=rel_prop_names,
-        tags=tags,
-    )
-
     storage_context = StorageContext.from_defaults(graph_store=graph_store)
     index = KnowledgeGraphIndex.from_documents(
         documents,
@@ -139,9 +139,11 @@ if not index_loaded:
         # edge_types=edge_types,
         # rel_prop_names=rel_prop_names,
         # tags=tags,
-        llm=llm,
+        # llm=llm,
         show_progress=True
-    )   
+    )
+    index.storage_context.persist(persist_dir=resolve_data_path(f"../persistence/{database_name}"))
+    generate_network_graph(index, database_name)
 # technical debt
 
 
@@ -153,6 +155,15 @@ def generate_response_based_on_knowledge_graph_with_debt(query: str):
     # technical debt - tree_summarize
     experiment.retrieval_strategy = "tree_summarize"
     experiment.source_agent = "KGAgent"
+    # to delete
+    # embedding_model_id = "default"
+    # embed_model = initialize_embedding_model(
+    #     env_vars["HF_TOKEN"], embedding_model_id=embedding_model_id
+    # )
+    # experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
+    #     embedding_model_id
+    # )
+    # Settings.embed_model = embed_model
     response, source_nodes = query_knowledge_graph(index,
                                                    query,
                                                    template,

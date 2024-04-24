@@ -1,4 +1,4 @@
 {
-    "('default', 256, 15, '../data/real_world_community_model')": "neo4j",
-    "('cohere', 256, 15, '../data/real_world_community_model_1st_half')": "ac3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75"
+    "('mixtral', 'sfrembeddingmistral', 256, 15, '../data/real_world_community_model')": "f262ec9da6262d3966a0cc1389063fbfc0a0c7a077470879c58c54c4b67e7c9a",
+    "('mixtral', 'default', 256, 15, '../data/real_world_community_model')": "b45d525bef5657d21e4d45179ffeb27d97e6f4d22ba99a1303fb92312da5cc31"
 }
