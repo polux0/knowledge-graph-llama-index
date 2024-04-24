@@ -304,7 +304,6 @@ def generate_response_based_on_vector_embeddings_with_debt(question: str):
     print("Template received, vector embeddings:", prompt_template)
     message_template = format_message(question, prompt_template)
     print("!!!!!!!!!!!!!!!!Final question, vetor embeddings:", message_template)
-    # Settings.embed_model = embed_model
     response = query_engine_chunk.query(message_template)
     # logging.info(f"Logging the response nodes from a vector database: {response.source_nodes}")
     experiment.response = str(response)

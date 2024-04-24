@@ -155,7 +155,6 @@ def generate_response_based_on_knowledge_graph_with_debt(query: str):
     # technical debt - tree_summarize
     experiment.retrieval_strategy = "tree_summarize"
     experiment.source_agent = "KGAgent"
-    # Settings.embed_model = embed_model
     response, source_nodes = query_knowledge_graph(index,
                                                    query,
                                                    template,
