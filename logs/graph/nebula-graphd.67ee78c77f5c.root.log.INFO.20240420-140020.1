@@ -1,0 +1,84 @@
+Log file created at: 2024/04/20 14:00:20
+Running on machine: 67ee78c77f5c
+Running duration (h:mm:ss): 0:00:00
+Log line format: [IWEF]yyyymmdd hh:mm:ss.uuuuuu threadid file:line] msg
+I20240420 14:00:20.464285     1 GraphDaemon.cpp:122] Starting Graph HTTP Service
+I20240420 14:00:20.476374     7 WebService.cpp:124] Web service started on HTTP[19669]
+I20240420 14:00:20.476433     1 GraphDaemon.cpp:136] Number of networking IO threads: 8
+I20240420 14:00:20.476521     1 GraphDaemon.cpp:145] Number of worker threads: 8
+I20240420 14:00:20.486255     1 MetaClient.cpp:80] Create meta client to "metad0":9559
+I20240420 14:00:20.486296     1 MetaClient.cpp:81] root path: /usr/local/nebula, data path size: 0
+I20240420 14:00:20.498481    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.504909    35 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.514946    36 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.524370    37 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.529994    38 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.560429    39 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.594553    40 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.597265    41 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.598349    42 ThriftClientManager-inl.h:67] resolve "metad0":9559 as "172.19.0.3":9559
+I20240420 14:00:21.601099     1 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240420 14:00:21.601135     1 MetaClient.cpp:3269] Load leader ok
+I20240420 14:00:21.603685     1 MetaClient.cpp:162] Register time task for heartbeat!
+I20240420 14:00:21.611042     1 GraphSessionManager.cpp:337] Total of 0 sessions are loaded
+E20240420 14:00:21.620440     1 MemoryUtils.cpp:167] Total memory less than untracked 50 Mib, MemoryTracker limit is not set properly,  Current memory stats:MemoryStats: 8589934592.000GiB/40.000MiB
+I20240420 14:00:21.623883     1 MemoryUtils.cpp:171] MemoryTracker set static ratio: 0.8
+I20240420 14:00:21.627710     1 Snowflake.cpp:17] WorkerId init success: 1
+I20240420 14:00:21.629050    46 GraphServer.cpp:63] Starting nebula-graphd on graphd:9669
+I20240420 14:00:21.825277    21 GraphService.cpp:77] Authenticating user root from 172.19.0.9:49328
+E20240420 14:00:21.829648    25 QueryInstance.cpp:151] Existed!, query: ADD HOSTS "storaged0":9779
+I20240420 14:00:32.073884    43 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240420 14:00:32.073909    43 MetaClient.cpp:3269] Load leader ok
+I20240420 14:06:25.053156    26 GraphService.cpp:77] Authenticating user root from 172.19.0.1:38476
+I20240420 14:39:42.658782    24 GraphService.cpp:77] Authenticating user root from 172.19.0.1:34108
+E20240420 14:39:43.346268    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+E20240420 14:39:43.346849    26 QueryInstance.cpp:151] SyntaxError: syntax error near `');', query: CREATE SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c (partition_num=1, replica_factor=1, vid_type='FIXED_STRING(256)');
+I20240420 14:52:19.927568    21 GraphService.cpp:77] Authenticating user root from 172.19.0.1:35360
+E20240420 14:52:20.843066    21 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test1';
+E20240420 14:52:20.843454    24 QueryInstance.cpp:151] SyntaxError: syntax error near `');', query: CREATE SPACE test1 (partition_num=1, replica_factor=1, vid_type='FIXED_STRING(256)');
+I20240420 14:59:19.895812    26 GraphService.cpp:77] Authenticating user root from 172.19.0.1:52186
+E20240420 14:59:20.778651    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test1';
+E20240420 14:59:20.779158    24 QueryInstance.cpp:151] SyntaxError: syntax error near `')', query: CREATE SPACE test1 (partition_num=1,replica_factor=1, vid_type='FIXED_STRING(256)')
+I20240420 15:02:27.006248    24 GraphService.cpp:77] Authenticating user root from 172.19.0.1:44062
+E20240420 15:02:27.661988    26 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test1';
+E20240420 15:02:27.671974    23 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+I20240420 15:02:36.141121    43 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 1 space
+I20240420 15:02:36.141219    43 MetaClient.cpp:3269] Load leader ok
+I20240420 15:02:46.160022    43 MetaClient.cpp:3263] Load leader of "storaged0":9779 in 3 space
+I20240420 15:02:46.160044    43 MetaClient.cpp:3269] Load leader ok
+I20240420 15:03:54.255548    23 GraphService.cpp:77] Authenticating user root from 172.19.0.8:46520
+I20240420 15:04:01.027727    23 GraphService.cpp:77] Authenticating user root from 172.19.0.8:40436
+I20240420 15:04:01.028010    23 GraphService.cpp:77] Authenticating user root from 172.19.0.8:40438
+I20240420 15:07:50.566021    24 GraphService.cpp:77] Authenticating user root from 172.19.0.1:58956
+E20240420 15:07:51.250612    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'test1';
+W20240420 15:07:51.251456    22 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240420 15:07:51.251483    21 QueryInstance.cpp:151] Existed!, query: CREATE SPACE test1 (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240420 15:10:04.081962    21 GraphService.cpp:77] Authenticating user root from 172.19.0.1:35452
+E20240420 15:10:04.990186    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+W20240420 15:10:04.990831    24 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240420 15:10:04.990859    22 QueryInstance.cpp:151] Existed!, query: CREATE SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240420 15:11:50.238149    21 GraphService.cpp:77] Authenticating user root from 172.19.0.1:48386
+E20240420 15:11:50.910782    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+W20240420 15:11:50.911492    22 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240420 15:11:50.911521    22 QueryInstance.cpp:151] Existed!, query: CREATE SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240420 15:16:21.115272    24 GraphService.cpp:77] Authenticating user root from 172.19.0.1:47752
+E20240420 15:16:22.030040    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+W20240420 15:16:22.030778    24 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240420 15:16:22.030803    22 QueryInstance.cpp:151] Existed!, query: CREATE SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240420 16:55:54.214339    21 GraphService.cpp:77] Authenticating user root from 172.19.0.1:55606
+E20240420 16:55:54.849371    22 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+W20240420 16:55:54.856806    22 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240420 16:55:54.856832    24 QueryInstance.cpp:151] Existed!, query: CREATE SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240420 17:47:42.426856    23 GraphService.cpp:77] Authenticating user root from 172.19.0.1:35468
+E20240420 17:47:43.343470    24 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+W20240420 17:47:43.344260    26 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240420 17:47:43.344297    26 QueryInstance.cpp:151] Existed!, query: CREATE SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240420 17:56:18.947278    26 GraphService.cpp:77] Authenticating user root from 172.19.0.1:52114
+E20240420 17:56:23.974607    21 QueryInstance.cpp:151] SyntaxError: syntax error near `LIKE', query: SHOW SPACES LIKE 'df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c';
+W20240420 17:56:23.975486    23 SpaceExecutor.cpp:26] Create space fail: Existed!
+E20240420 17:56:23.975517    23 QueryInstance.cpp:151] Existed!, query: CREATE SPACE df2c71fc323a4f1bef88e481fd4ab4381b54f04f26bad71aa235b5ec00b45b8c (partition_num=1,replica_factor=1, vid_type=FIXED_STRING(256))
+I20240420 17:58:42.105134     1 GraphDaemon.cpp:176] Signal 15(Terminated) received, stopping this server
+I20240420 17:58:42.112004    42 Acceptor.cpp:527] Dropping all connections from Acceptor=0x798401e41328 in thread 0x79840722e280
+I20240420 17:58:42.114420    46 GraphServer.cpp:74] nebula-graphd on graphd:9669 has been stopped
+I20240420 17:58:42.114843     1 GraphDaemon.cpp:161] The graph Daemon stopped
+I20240420 17:58:42.114907     1 GraphServer.cpp:109] The graph server has been stopped

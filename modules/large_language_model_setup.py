@@ -17,7 +17,7 @@ def initialize_llm(model_name_id):
     Returns:
         Union[OpenAI, HuggingFaceInferenceAPI]: The initialized language model.
     """
-    if model_name_id == 'gpt-4':
+    if model_name_id.startswith('gpt'):
         # For OpenAI, use the model_name_id directly as the model name
         return OpenAI(model=model_name_id, api_key=env_vars['OPEN_API_KEY'])
     else:

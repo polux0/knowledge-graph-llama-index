@@ -1,0 +1,5 @@
+{
+    "('sfrembeddingmistral', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aff96a07e1c4a5c931937b87149e54b4f5e0162d1b13c8c722631bbfbb913",
+    "('cohere', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aee28a31eae0dd05339ac2119e554424cb785152122fe2cdfa73b5d3157f5",
+    "('default', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aaaaaad5cc3bbb937162887206c1b1da3ade9662423f43e0ff9f95d9c32a2"
+}
