@@ -1,5 +1,10 @@
 {
     "('sfrembeddingmistral', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aff96a07e1c4a5c931937b87149e54b4f5e0162d1b13c8c722631bbfbb913",
     "('cohere', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aee28a31eae0dd05339ac2119e554424cb785152122fe2cdfa73b5d3157f5",
-    "('default', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aaaaaad5cc3bbb937162887206c1b1da3ade9662423f43e0ff9f95d9c32a2"
+    "('default', [128, 256, 512], [64, 128, 256], '../data/real_world_community_model')": "aaaaaad5cc3bbb937162887206c1b1da3ade9662423f43e0ff9f95d9c32a2",
+    "('cohere', [128, 256, 512], [64, 128, 256], '../data/documentation')": "e35d6850cccd5d8ce0c842dfa2a1c1b4e6672a2669a6abe531828c9f4914a",
+    "('cohere', [128, 256, 512], [64, 128, 256], '../data/flow_and_rwcm')": "af3cfa61b8698a751ab501c0baea1cc6dacf9e30f7c3acb9f1eea42195bf8",
+    "('default', [128, 256, 512], [64, 128, 256], '../data/flow_and_rwcm')": "f6f7ef66ad8bace39bd12a4b08f04f3924a53d7ad68ebe204ff0a66cb4859",
+    "('sfrembeddingmistral', [128, 256, 512], [64, 128, 256], '../data/flow_and_rwcm')": "aae82b5ab63a2e758fc5b594ca536fd6ef184deaa3719a4d40c465456ac1c",
+    "('instructor', [128, 256, 512], [64, 128, 256], '../data/flow_and_rwcm')": "aaa0637d51a25cc177243038db1bbcf97c5f63bdf94c4cb57d01858e16aa8"
 }

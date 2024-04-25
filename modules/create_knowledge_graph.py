@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timezone
 
-from data_loading import load_documents
+from data_loading import load_documents, load_documents_with_iterations
 from data_path_resolver import resolve_data_path, create_data_path
 from dotenv import load_dotenv
 # Elasticsearch realted
@@ -53,7 +53,7 @@ model_name_id = "mixtral"
 embedding_model_id = "cohere"
 chunk_size = 256
 max_triplets_per_chunk = 15
-documents_directory = "../data/real_world_community_model"
+documents_directory = "../data/documentation"
 
 # Initialize LLM and Embedding model
 llm = initialize_llm(model_name_id)

@@ -11,3 +11,20 @@ def load_documents(directory_path):
     """
     data_dir = resolve_data_path(directory_path)
     return SimpleDirectoryReader(data_dir).load_data()
+
+
+def load_documents_with_iterations(directory_path):
+    """Load documents from the specified directory.
+
+    Args:
+        directory_path (str): The path to the directory containing documents.
+
+    Returns:
+        list: A list of documents loaded from the directory.
+    """
+    data_dir = resolve_data_path(directory_path)
+    reader = SimpleDirectoryReader(
+        input_dir=data_dir,
+        recursive=True,
+    )
+    return reader

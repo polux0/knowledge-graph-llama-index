@@ -1,8 +1,9 @@
 import logging
 
 from embedding_models import EMBEDDING_MODELS
-from langchain_community.embeddings import HuggingFaceInferenceAPIEmbeddings
-# from llama_index.embeddings.cohereai import CohereEmbedding
+from llama_index.embeddings.huggingface import (
+            HuggingFaceInferenceAPIEmbedding,
+)
 from llama_index.embeddings.cohere import CohereEmbedding
 from huggingface_hub import login
 from environment_setup import load_environment_variables
@@ -10,17 +11,18 @@ import os
 env_vars = load_environment_variables()
 
 
-def initialize_embedding_model(hf_token, embedding_model_id):
+def initialize_embedding_model(embedding_model_id):
     """Initialize the embedding model using Langchain Embedding.
 
     Args:
-        hf_token (str): The Hugging Face API token.
+        embedding_model_id (str): Hugging face embedding model name
 
     Returns:
-        LangchainEmbedding: The initialized embedding model.
+        HuggingFaceInferenceAPIEmbedding: The initialized embedding model.
     """
     # technical debt, move to embedding_models.py
-    login(token=env_vars['HF_TOKEN'])
+    hugging_face_token = env_vars['HF_TOKEN'] 
+    login(token=hugging_face_token)
     if embedding_model_id in EMBEDDING_MODELS:
         if embedding_model_id == 'cohere':
             os.environ["COHERE_API_KEY"] = env_vars['COHERE_API_KEY']
@@ -32,10 +34,13 @@ def initialize_embedding_model(hf_token, embedding_model_id):
             return model_name
         else:
             model_name = EMBEDDING_MODELS[embedding_model_id]
+            return HuggingFaceInferenceAPIEmbedding(model_name=model_name,
+                                                    token=hugging_face_token)
     else:
         logging.error(f"Invalid embedding_model_id: {embedding_model_id}. Falling back to default embedding model name.")
         model_name = EMBEDDING_MODELS["default"]
-    return HuggingFaceInferenceAPIEmbeddings(model_name=model_name, api_key=hf_token)
+    return HuggingFaceInferenceAPIEmbedding(model_name=model_name,
+                                            token=hugging_face_token)
 
 
 def get_embedding_model_based_on_model_name_id(model_name_id: str):
