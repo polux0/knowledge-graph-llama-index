@@ -47,6 +47,9 @@ jobs:
           NEBULA_PORT=${{ secrets.NEBULA_PORT }}
           NEBULA_USERNAME=${{ secrets.NEBULA_USERNAME }}
           NEBULA_PASSWORD=${{ secrets.NEBULA_PASSWORD }}
+          REDIS_URL=${{ secrets.REDIS_URL }}
+          REDIS_PORT=${{ secrets.REDIS_PORT }}
+          REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
           COHERE_API_KEY=${{ secrets.COHERE_API_KEY}}
           ENV=${{ secrets.ENV}}
           EOT
@@ -72,6 +75,9 @@ jobs:
             export NEBULA_PORT=${{ secrets.NEBULA_PORT }}
             export NEBULA_USERNAME=${{ secrets.NEBULA_USERNAME }}
             export NEBULA_PASSWORD=${{ secrets.NEBULA_PASSWORD }}
+            export REDIS_URL=${{ secrets.REDIS_URL }}
+            export REDIS_PORT=${{ secrets.REDIS_PORT }}
+            export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             export COHERE_API_KEY=${{ secrets.COHERE_API_KEY}}
             export ENV=${{ secrets.ENV}}
             if [ ! -d "/home/auravana/app" ]; then
