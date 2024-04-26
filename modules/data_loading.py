@@ -1,5 +1,7 @@
 from llama_index.core import SimpleDirectoryReader
 from data_path_resolver import resolve_data_path
+
+
 def load_documents(directory_path):
     """Load documents from the specified directory.
 
@@ -27,5 +29,5 @@ def load_documents_with_filnames_as_ids(directory_path):
         input_dir=data_dir,
         recursive=True,
         filename_as_id=True
-    )
+    ).load_data()
     return reader
