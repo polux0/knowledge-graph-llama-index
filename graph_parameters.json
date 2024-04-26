@@ -1,9 +1,3 @@
 {
-    "('mixtral', 'sfrembeddingmistral', 256, 15, '../data/real_world_community_model')": "f262ec9da6262d3966a0cc1389063fbfc0a0c7a077470879c58c54c4b67e7c9a",
-    "('mixtral', 'default', 256, 15, '../data/real_world_community_model')": "b45d525bef5657d21e4d45179ffeb27d97e6f4d22ba99a1303fb92312da5cc31",
-    "('mixtral', 'cohere', 256, 15, '../data/real_world_community_model')": "f7f658ca636520a8f783357b1c53eb2b5ca6a3438b7abe502f54b41cc73355ac",
-    "('mixtral', 'cohere', 256, 15, '../data/documentation')": "ace7f58d7a1ea3876dc08038df812aa0c93972b713e32c9458e4deaeccad7ee9",
-    "('mixtral', 'cohere', 256, 15, '../data/real_world_community_model_1st_half')": "a59d0e7b90da6f29f8ada07865f31fe8e5bd33a7fc81c3bffa141ae7fd3ee99f",
-    "('mixtral', 'sfrembeddingmistral', 256, 15, '../data/real_world_community_model_1st_half')": "adccfea3f5604f295c4e940cb592a4e819261cc413b478a4d77dc336a68b9452",
     "('default', 'default', 256, 15, '../data/real_world_community_model_1st_half')": "a2b25a1930dd5bfc5fc66b224049960ac20747ff8677b4292382663c5593fdbd"
 }
