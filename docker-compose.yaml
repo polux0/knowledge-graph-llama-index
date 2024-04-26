@@ -221,8 +221,6 @@ services:
         condition: service_healthy
       chromadb:
         condition: service_healthy
-      redis:
-        condition: service_healthy
     container_name: app_container
     volumes:
       - .:/usr/src/app
