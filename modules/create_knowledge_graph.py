@@ -18,6 +18,7 @@ from llama_index.graph_stores.nebula import NebulaGraphStore
 from nebula_graph_client import NebulaGraphClient
 from prompts import get_template_based_on_template_id
 from querying import query_knowledge_graph
+# from redis_document_manager import RedisDocumentManager
 from service_context_setup import create_service_context
 from visualize_graph import generate_network_graph
 
@@ -50,8 +51,8 @@ env_vars = load_environment_variables()
 setup_logging()
 
 # variables
-model_name_id = "mixtral"
-embedding_model_id = "cohere"
+model_name_id = "default"
+embedding_model_id = "default"
 chunk_size = 256
 max_triplets_per_chunk = 15
 documents_directory = "../data/real_world_community_model_1st_half"
@@ -104,6 +105,18 @@ except Exception as e:
 
 # Redis integration will be here:
 
+# redis_document_manager = RedisDocumentManager(host=os.getenv("REDIS_URL"),
+#                                               port=os.getenv("REDIS_PORT"),
+#                                               database_name=database_name
+#                                               )
+
+# redis_document_manager.get_or_create_database(document=documents[0])
+
+# documents_to_embed = redis_document_manager.get_all_documents()
+
+# if documents_to_embed.count() == 0:
+#     documents_to_insert = 
+    #Insert documents into database
 
 
 
