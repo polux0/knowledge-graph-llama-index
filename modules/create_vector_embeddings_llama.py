@@ -55,7 +55,7 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
-model_name_id = "mixtral"
+model_name_id = "default"
 embedding_model_id = "default"
 parent_chunk_size = 1024
 parent_chunk_overlap = 0
@@ -67,7 +67,7 @@ child_chunk_sizes_overlap = [64, 128, 256]
 
 # Load the documents, modular function previously used for knowledge graph construction
 
-documents_directory = "../data/flow_and_rwcm"
+documents_directory = "../data/documentation"
 
 documents = load_documents(documents_directory)
 
