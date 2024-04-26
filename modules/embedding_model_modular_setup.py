@@ -21,7 +21,7 @@ def initialize_embedding_model(embedding_model_id):
         HuggingFaceInferenceAPIEmbedding: The initialized embedding model.
     """
     # technical debt, move to embedding_models.py
-    hugging_face_token = env_vars['HF_TOKEN'] 
+    hugging_face_token = env_vars['HF_TOKEN']
     login(token=hugging_face_token)
     if embedding_model_id in EMBEDDING_MODELS:
         if embedding_model_id == 'cohere':

@@ -30,4 +30,6 @@ cohere
 llama-index-llms-cohere
 llama-index-embeddings-cohere
 # redis related
+#redis
+llama-index-storage-kvstore-redis
 llama-index-storage-docstore-redis
