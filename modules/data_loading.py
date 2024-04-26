@@ -13,7 +13,7 @@ def load_documents(directory_path):
     return SimpleDirectoryReader(data_dir).load_data()
 
 
-def load_documents_with_iterations(directory_path):
+def load_documents_with_filnames_as_ids(directory_path):
     """Load documents from the specified directory.
 
     Args:
@@ -26,5 +26,6 @@ def load_documents_with_iterations(directory_path):
     reader = SimpleDirectoryReader(
         input_dir=data_dir,
         recursive=True,
+        filename_as_id=True
     )
     return reader

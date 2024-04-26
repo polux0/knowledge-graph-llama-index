@@ -1,7 +1,7 @@
 import os
 from datetime import datetime, timezone
 
-from data_loading import load_documents, load_documents_with_iterations
+from data_loading import load_documents, load_documents_with_filnames_as_ids
 from data_path_resolver import resolve_data_path, create_data_path
 from dotenv import load_dotenv
 # Elasticsearch realted
@@ -9,6 +9,7 @@ from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from embedding_model_modular_setup import (
     get_embedding_model_based_on_model_name_id, initialize_embedding_model)
 from environment_setup import load_environment_variables, setup_logging
+from get_document_by_id import get_document_by_id
 from large_language_model_setup import (get_llm_based_on_model_name_id,
                                         initialize_llm)
 from llama_index.core import (KnowledgeGraphIndex, Settings, StorageContext,
@@ -53,23 +54,29 @@ model_name_id = "mixtral"
 embedding_model_id = "cohere"
 chunk_size = 256
 max_triplets_per_chunk = 15
-documents_directory = "../data/documentation"
+documents_directory = "../data/real_world_community_model_1st_half"
 
 # Initialize LLM and Embedding model
 llm = initialize_llm(model_name_id)
 Settings.llm = llm
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
-embed_model = initialize_embedding_model(
-    env_vars["HF_TOKEN"], embedding_model_id=embedding_model_id
-)
+embed_model = initialize_embedding_model(embedding_model_id=embedding_model_id)
 experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
     embedding_model_id
 )
 Settings.embed_model = embed_model
 # Load documents
-documents = load_documents(directory_path=documents_directory)
-
+print("Loading documents...")
+documents = load_documents_with_filnames_as_ids(
+    directory_path=documents_directory
+)
 # Setup the service context
+specific_document = get_document_by_id(documents, "/home/equinox/Desktop/development/knowledge-graph-llama-index/src/modules/../data/real_world_community_model_1st_half/Aurvana System Overiew - 73 - 84-1-6.pdf_part_0")
+if specific_document:
+    print("Document found:", specific_document)
+else:
+    print("No document found with the specified ID.")
+
 service_context = create_service_context(llm, chunk_size, embed_model, True)
 experiment.chunk_size = chunk_size
 
