@@ -101,6 +101,14 @@ except Exception as e:
     print("An error occurred while resolving the data path:", e)
     # Also replace here when creating the data path
     create_data_path(f"../persistence/{database_name}")
+
+# Redis integration will be here:
+
+
+
+
+
+# Redis integration will be here:
     
 # Have to modify this path:
 
