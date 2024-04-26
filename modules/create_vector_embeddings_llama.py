@@ -1,32 +1,24 @@
-import json
 import logging
 import sys
-from pathlib import Path
 
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
 from environment_setup import load_environment_variables, setup_logging
 from large_language_model_setup import initialize_llm
 from llama_index.core import (Document, Settings, StorageContext,
-                              VectorStoreIndex, load_index_from_storage)
-from llama_index.embeddings.openai import OpenAIEmbedding
+                              VectorStoreIndex)
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.query_engine import RetrieverQueryEngine
-from llama_index.core.response.notebook_utils import display_source_node
 from llama_index.core.retrievers import RecursiveRetriever
 from llama_index.core.schema import IndexNode
-from llama_index.llms.openai import OpenAI
-from llama_index.readers.file import PDFReader
 from llama_index.vector_stores.chroma import ChromaVectorStore
-from get_database_name_based_on_parameters import (load_child_vector_configuration, load_parent_vector_configuration)
+from get_database_name_based_on_parameters import (
+    load_child_vector_configuration,
+    load_parent_vector_configuration
+)
 from llama_index.core.ingestion import IngestionPipeline
-from llama_index.core.storage.docstore import SimpleDocumentStore
 from llama_index.storage.kvstore.redis import RedisKVStore as RedisCache
 from llama_index.core.ingestion import IngestionCache
-# from llama_index.core.ingestion.cache import RedisCache
-from llama_index.embeddings.huggingface import (
-            HuggingFaceInferenceAPIEmbedding,
-)
 import os
 
 import chromadb
