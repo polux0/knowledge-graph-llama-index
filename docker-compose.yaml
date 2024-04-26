@@ -210,6 +210,8 @@ services:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_DATABASES=1
+    networks:
+      - net
   app:
     build: .
     depends_on:
@@ -218,6 +220,8 @@ services:
       metad0:
         condition: service_healthy
       chromadb:
+        condition: service_healthy
+      redis:
         condition: service_healthy
     container_name: app_container
     volumes:
