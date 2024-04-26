@@ -71,11 +71,11 @@ documents = load_documents_with_filnames_as_ids(
     directory_path=documents_directory
 )
 # Setup the service context
-specific_document = get_document_by_id(documents, "/home/equinox/Desktop/development/knowledge-graph-llama-index/src/modules/../data/real_world_community_model_1st_half/Aurvana System Overiew - 73 - 84-1-6.pdf_part_0")
-if specific_document:
-    print("Document found:", specific_document)
-else:
-    print("No document found with the specified ID.")
+# specific_document = get_document_by_id(documents, "/home/equinox/Desktop/development/knowledge-graph-llama-index/src/modules/../data/real_world_community_model_1st_half/Aurvana System Overiew - 73 - 84-1-6.pdf_part_0")
+# if specific_document:
+#     print("Document found:", specific_document)
+# else:
+#     print("No document found with the specified ID.")
 
 service_context = create_service_context(llm, chunk_size, embed_model, True)
 experiment.chunk_size = chunk_size
