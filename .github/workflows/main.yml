@@ -22,7 +22,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
 
           # Ensure required directories exist and set permissions
-          mkdir -p /usr/share/snapshots/elasticsearch $HOME/es_snapshots/ $HOME/neo4j/data $HOME/neo4j/logs $HOME/neo4j/import $HOME/neo4j/plugins $HOME/chroma-data $HOME/esdata1
+          mkdir -p /usr/share/snapshots/elasticsearch $HOME/es_snapshots/ $HOME/neo4j/data $HOME/neo4j/logs $HOME/neo4j/import $HOME/neo4j/plugins $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/nebula/data/meta0 $HOME/nebula/logs/meta0 $HOME/nebula/data/storage0 $HOME/nebula/logs/storage0 $HOME/nebula/logs/graph
           # Set permissions for Elasticsearch snapshots
           chmod -R 777 /usr/share/snapshots/elasticsearch $HOME/es_snapshots
           # chown -R root:root $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1

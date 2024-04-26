@@ -9,6 +9,7 @@ from environment_setup import load_environment_variables, setup_logging
 from large_language_model_setup import initialize_llm
 from llama_index.core import (Document, Settings, StorageContext,
                               VectorStoreIndex, load_index_from_storage)
+from llama_index.embeddings.openai import OpenAIEmbedding
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.response.notebook_utils import display_source_node
@@ -18,6 +19,14 @@ from llama_index.llms.openai import OpenAI
 from llama_index.readers.file import PDFReader
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from get_database_name_based_on_parameters import (load_child_vector_configuration, load_parent_vector_configuration)
+from llama_index.core.ingestion import IngestionPipeline
+from llama_index.core.storage.docstore import SimpleDocumentStore
+from llama_index.storage.kvstore.redis import RedisKVStore as RedisCache
+from llama_index.core.ingestion import IngestionCache
+# from llama_index.core.ingestion.cache import RedisCache
+from llama_index.embeddings.huggingface import (
+            HuggingFaceInferenceAPIEmbedding,
+)
 import os
 
 import chromadb
@@ -55,7 +64,7 @@ experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
 model_name_id = "mixtral"
-embedding_model_id = "cohere"
+embedding_model_id = "instructor"
 parent_chunk_size = 1024
 parent_chunk_overlap = 0
 
@@ -66,19 +75,14 @@ child_chunk_sizes_overlap = [64, 128, 256]
 
 # Load the documents, modular function previously used for knowledge graph construction
 
-documents_directory = "../data/real_world_community_model"
+documents_directory = "../data/documentation"
 
 documents = load_documents(documents_directory)
 
 # load the documents, example from llama documentation
 
-# loader = PDFReader()
-# documents = loader.load_data(file=Path("./data/real_world_community_model/Aurvana System Overiew - 73 - 84.pdf"))
-
-
 doc_text = "\n\n".join([d.get_content() for d in documents])
 docs = [Document(text=doc_text)]
-
 
 node_parser = SentenceSplitter(chunk_size=parent_chunk_size)
 experiment.chunk_size = parent_chunk_size
@@ -91,9 +95,7 @@ for idx, node in enumerate(base_nodes):
 env_vars = load_environment_variables()
 
 # embedings
-embed_model = initialize_embedding_model(
-    hf_token=env_vars["HF_TOKEN"], embedding_model_id=embedding_model_id
-)
+embed_model = initialize_embedding_model(embedding_model_id=embedding_model_id)
 experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
     embedding_model_id
 )
@@ -113,16 +115,21 @@ print("Sucessfully connected to chromaDB client...")
 print("All collections in Chroma: ", remote_db.list_collections())
 
 
-parent_chroma_collection_name = load_parent_vector_configuration(embedding_model_id,
-                                                                parent_chunk_size,
-                                                                parent_chunk_overlap,
-                                                                documents_directory)
+parent_chroma_collection_name = load_parent_vector_configuration(
+    embedding_model_id,
+    parent_chunk_size,
+    parent_chunk_overlap,
+    documents_directory
+)
 
 print("Parent chroma collection name: ", parent_chroma_collection_name)
-child_chroma_collection_name = load_child_vector_configuration(embedding_model_id,
-                                                              child_chunk_sizes,
-                                                              child_chunk_sizes_overlap,
-                                                              documents_directory)
+
+child_chroma_collection_name = load_child_vector_configuration(
+    embedding_model_id,
+    child_chunk_sizes,
+    child_chunk_sizes_overlap,
+    documents_directory
+)
 
 print("Child chroma collection name: ", child_chroma_collection_name)
 
@@ -130,45 +137,73 @@ chroma_collection_parent = remote_db.get_or_create_collection(
     parent_chroma_collection_name
 )
 
-chroma_collection = remote_db.get_or_create_collection(
+chroma_collection_child = remote_db.get_or_create_collection(
     child_chroma_collection_name
 )
 
-print(
-    "Are there embeddings inside those collections? real_world_community_model, count: ",
-    chroma_collection.count(),
+print(f"Are there embeddings inside collection {chroma_collection_parent.name} ?",
+      f"count: {chroma_collection_parent.count()}")
+
+print(f"Are there embeddings inside collection {chroma_collection_child.name} ?",
+      f"count: {chroma_collection_child.count()}")
+
+vector_store_parent = ChromaVectorStore(
+    chroma_collection=chroma_collection_parent
 )
-print(
-    "Are there embeddings inside those collections? real_world_community_model_parent, count: ",
-    chroma_collection_parent.count(),
+vector_store_child = ChromaVectorStore(
+    chroma_collection=chroma_collection_child,
+    ssl=False
 )
 
-vector_store = ChromaVectorStore(chroma_collection=chroma_collection,
-                                 ssl=False)
-
-vector_store_parent = ChromaVectorStore(chroma_collection=chroma_collection_parent)
+# Storage context parent
+storage_context_parent = StorageContext.from_defaults(
+    vector_store=vector_store_parent
+)
 # Storage context
-storage_context = StorageContext.from_defaults(vector_store=vector_store)
+storage_context_child = StorageContext.from_defaults(vector_store=vector_store_child)
 
-storage_context_parent = StorageContext.from_defaults(vector_store=vector_store_parent)
+# Ingestion for parent documents
+ingest_cache_parent = IngestionCache(
+    cache=RedisCache.from_host_and_port(host=os.getenv("REDIS_URL"),
+                                        port=os.getenv("REDIS_PORT")),
+    collection=parent_chroma_collection_name,
+)
 
 # necessary to create a collection for the first time
+if chroma_collection_parent.count() == 0:
 
-if chroma_collection.count() == 0:
-
-    base_index = VectorStoreIndex.from_documents(
-        documents,
-        storage_context=storage_context,
-        embed_model=embed_model
-        # llm=llm
+    pipeline = IngestionPipeline(
+        transformations=[
+            SentenceSplitter(chunk_size=parent_chunk_size,
+                             chunk_overlap=parent_chunk_overlap),
+            embed_model,
+            ],
+        vector_store=vector_store_parent,
+        cache=ingest_cache_parent,
+        # docstore=SimpleDocumentStore(),
     )
+    pipeline.run(documents=documents)
+
+    base_index = VectorStoreIndex.from_vector_store(
+        vector_store=vector_store_parent,
+        storage_context=storage_context_parent,
+        embed_model=embed_model,
+    )
+
+    # to be deleted
+    # base_index = VectorStoreIndex.from_documents(
+    #     documents,
+    #     storage_context=storage_context,
+    #     embed_model=embed_model
+    #     # llm=llm
+    # )
 
 else:
     # after collection was sucessfully created
 
     base_index = VectorStoreIndex.from_vector_store(
-        vector_store,
-        storage_context=storage_context,
+        vector_store_parent,
+        storage_context=storage_context_parent,
         embed_model=embed_model
     )
 
@@ -204,7 +239,8 @@ sub_chunk_sizes = [128, 256, 512]
 
 # technical debt - create service context for this
 sub_node_parsers = [
-    SentenceSplitter(chunk_size=c, chunk_overlap=c / 2) for c in sub_chunk_sizes
+    SentenceSplitter(chunk_size=c, chunk_overlap=c / 2)
+    for c in sub_chunk_sizes
 ]
 
 all_nodes = []
@@ -221,29 +257,53 @@ for base_node in base_nodes:
     original_node = IndexNode.from_text_node(base_node, base_node.node_id)
     all_nodes.append(original_node)
 
-
-print("Started making dictionaries")
+print("Started making dictionaries...")
 # Maybe we need to store this into database
 all_nodes_dict = {n.node_id: n for n in all_nodes}
-print("Finished with making dictionaries")
+print("Finished with making dictionaries...")
+
+# Ingest cache #2
+
+ingest_cache_child = IngestionCache(
+    cache=RedisCache.from_host_and_port(host=os.getenv("REDIS_URL"),
+                                        port=os.getenv("REDIS_PORT")),
+    collection=child_chroma_collection_name,
+)
 
 # necessary to create a collection for the first time
 
-if chroma_collection_parent.count() == 0:
+if chroma_collection_child.count() == 0:
 
-    vector_index_chunk = VectorStoreIndex(
-        all_nodes,
-        storage_context=storage_context_parent,
-        embed_model=embed_model,
-        llm=llm
+    pipeline2 = IngestionPipeline(
+        transformations=[
+            embed_model,
+            ],
+        vector_store=vector_store_child,
+        cache=ingest_cache_child,
+        # docstore=SimpleDocumentStore(),
     )
+    print("Pipeline2 has finished with the embeddings")
+    pipeline2.run(documents=all_nodes)
+
+    vector_index_chunk = VectorStoreIndex.from_vector_store(
+        vector_store=vector_store_child,
+        storage_context=storage_context_child,
+        embed_model=embed_model,
+    )
+    # Will be deleted
+    # vector_index_chunk = VectorStoreIndex(
+    #     all_nodes,
+    #     storage_context=storage_context_parent,
+    #     embed_model=embed_model,
+    #     llm=llm
+    # )
 
 else:
 
     # after collection was sucessfully created
     vector_index_chunk = VectorStoreIndex.from_vector_store(
-        vector_store_parent,
-        storage_context=storage_context_parent,
+        vector_store_child,
+        storage_context=storage_context_child,
         embed_model=embed_model,
         llm=llm
     )

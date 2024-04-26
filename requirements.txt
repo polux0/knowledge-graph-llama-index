@@ -28,4 +28,6 @@ nebula3-python
 llama-index-graph-stores-nebula
 cohere
 llama-index-llms-cohere
-llama-index-embeddings-cohere   
+llama-index-embeddings-cohere
+# redis related
+llama-index-storage-docstore-redis
