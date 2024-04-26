@@ -60,7 +60,7 @@ child_chunk_sizes_overlap = [64, 128, 256]
 
 # Load the documents, modular function previously used for knowledge graph construction
 
-documents_directory = "../data/real_world_community_model_1st_half"
+documents_directory = "../data/documentation"
 
 documents = load_documents(documents_directory)
 
