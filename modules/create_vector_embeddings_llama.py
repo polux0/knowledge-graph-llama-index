@@ -3,7 +3,7 @@ import sys
 
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
-from environment_setup import load_environment_variables, setup_logging
+from environment_setup import load_environment_variables
 from large_language_model_setup import initialize_llm
 from llama_index.core import (Document, Settings, StorageContext,
                               VectorStoreIndex)
