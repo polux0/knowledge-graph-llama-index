@@ -80,14 +80,11 @@ jobs:
             export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             export COHERE_API_KEY=${{ secrets.COHERE_API_KEY}}
             export ENV=${{ secrets.ENV}}
-            if [ ! -d "/home/auravana/app" ]; then
-              # Clone the repository if the directory doesn't exist
-              git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app
-            else
-              # Pull the latest changes if the repository is already cloned
-              cd /home/auravana/app
-              git pull
+            # Delete the directory if it exists and clone the repository anew
+            if [ -d "/home/auravana/app" ]; then
+              rm -rf /home/auravana/app
             fi
+            git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app
             cd /home/auravana/app
             docker-compose down && docker-compose up --build -d
           EOF
