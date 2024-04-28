@@ -60,7 +60,7 @@ child_chunk_sizes_overlap = [64, 128, 256]
 
 # Load the documents, modular function previously used for knowledge graph construction
 
-documents_directory = "../data/documentation"
+documents_directory = "../data/real_world_community_model_1st_half"
 
 documents = load_documents(documents_directory)
 
@@ -100,14 +100,14 @@ print("Sucessfully connected to chromaDB client...")
 print("All collections in Chroma: ", remote_db.list_collections())
 
 
-parent_chroma_collection_name = load_parent_vector_configuration(
-    embedding_model_id,
-    parent_chunk_size,
-    parent_chunk_overlap,
-    documents_directory
-)
+# parent_chroma_collection_name = load_parent_vector_configuration(
+#     embedding_model_id,
+#     parent_chunk_size,
+#     parent_chunk_overlap,
+#     documents_directory
+# )
 
-print("Parent chroma collection name: ", parent_chroma_collection_name)
+# print("Parent chroma collection name: ", parent_chroma_collection_name)
 
 child_chroma_collection_name = load_child_vector_configuration(
     embedding_model_id,
@@ -118,97 +118,75 @@ child_chroma_collection_name = load_child_vector_configuration(
 
 print("Child chroma collection name: ", child_chroma_collection_name)
 
-chroma_collection_parent = remote_db.get_or_create_collection(
-    parent_chroma_collection_name
-)
+# chroma_collection_parent = remote_db.get_or_create_collection(
+#     parent_chroma_collection_name
+# )
 
 chroma_collection_child = remote_db.get_or_create_collection(
     child_chroma_collection_name
 )
 
-print(f"Are there embeddings inside collection {chroma_collection_parent.name} ?",
-      f"count: {chroma_collection_parent.count()}")
+# print(f"Are there embeddings inside collection {chroma_collection_parent.name} ?",
+#       f"count: {chroma_collection_parent.count()}")
 
 print(f"Are there embeddings inside collection {chroma_collection_child.name} ?",
       f"count: {chroma_collection_child.count()}")
 
-vector_store_parent = ChromaVectorStore(
-    chroma_collection=chroma_collection_parent
-)
+# vector_store_parent = ChromaVectorStore(
+#     chroma_collection=chroma_collection_parent
+# )
 vector_store_child = ChromaVectorStore(
     chroma_collection=chroma_collection_child,
     ssl=False
 )
 
 # Storage context parent
-storage_context_parent = StorageContext.from_defaults(
-    vector_store=vector_store_parent
-)
+# storage_context_parent = StorageContext.from_defaults(
+#     vector_store=vector_store_parent
+# )
 # Storage context
 storage_context_child = StorageContext.from_defaults(vector_store=vector_store_child)
 
 # Ingestion for parent documents
-ingest_cache_parent = IngestionCache(
-    cache=RedisCache.from_host_and_port(host=os.getenv("REDIS_URL"),
-                                        port=os.getenv("REDIS_PORT")),
-    collection=parent_chroma_collection_name,
-)
-
-# necessary to create a collection for the first time
-if chroma_collection_parent.count() == 0:
-
-    pipeline = IngestionPipeline(
-        transformations=[
-            SentenceSplitter(chunk_size=parent_chunk_size,
-                             chunk_overlap=parent_chunk_overlap),
-            embed_model,
-            ],
-        vector_store=vector_store_parent,
-        cache=ingest_cache_parent,
-        # docstore=SimpleDocumentStore(),
-    )
-    pipeline.run(documents=documents)
-
-    base_index = VectorStoreIndex.from_vector_store(
-        vector_store=vector_store_parent,
-        storage_context=storage_context_parent,
-        embed_model=embed_model,
-    )
-
-    # to be deleted
-    # base_index = VectorStoreIndex.from_documents(
-    #     documents,
-    #     storage_context=storage_context,
-    #     embed_model=embed_model
-    #     # llm=llm
-    # )
-
-else:
-    # after collection was sucessfully created
-
-    base_index = VectorStoreIndex.from_vector_store(
-        vector_store_parent,
-        storage_context=storage_context_parent,
-        embed_model=embed_model
-    )
-
-base_retriever = base_index.as_retriever(similarity_top_k=2, llm=llm)
-
-
-# defining Baseline Retriever that simply fetches the top-k raw text nodes by embedding similarity
-
-# retrievals = base_retriever.retrieve(
-#     "Can you tell me about the key domains of Real World Community Model"
+# ingest_cache_parent = IngestionCache(
+#     cache=RedisCache.from_host_and_port(host=os.getenv("REDIS_URL"),
+#                                         port=os.getenv("REDIS_PORT")),
+#     collection=parent_chroma_collection_name,
 # )
 
-# # to print all nodes that are retrieved ( debugging purposes )
+# necessary to create a collection for the first time
+# if chroma_collection_parent.count() == 0:
 
-# print("Retrievals, length: ", len(retrievals))
+#     pipeline = IngestionPipeline(
+#         transformations=[
+#             SentenceSplitter(chunk_size=parent_chunk_size,
+#                              chunk_overlap=parent_chunk_overlap),
+#             embed_model,
+#             ],
+#         vector_store=vector_store_parent,
+#         cache=ingest_cache_parent,
+#         # docstore=SimpleDocumentStore(),
+#     )
+#     pipeline.run(documents=documents)
 
-# for n in retrievals:
-#     display_source_node(n, source_length=1500)
+#     base_index = VectorStoreIndex.from_vector_store(
+#         vector_store=vector_store_parent,
+#         storage_context=storage_context_parent,
+#         embed_model=embed_model,
+#     )
+# else:
+#     # after collection was sucessfully created
 
-query_engine_base = RetrieverQueryEngine.from_args(base_retriever, llm=llm)
+#     base_index = VectorStoreIndex.from_vector_store(
+#         vector_store_parent,
+#         storage_context=storage_context_parent,
+#         embed_model=embed_model
+#     )
+
+# base_retriever = base_index.as_retriever(similarity_top_k=2, llm=llm)
+
+
+# query_engine_base = RetrieverQueryEngine.from_args(base_retriever, llm=llm)
 
 # response = query_engine_base.query(
 #     "Can you tell me about the key domains of Real World Community Model"
@@ -258,7 +236,7 @@ ingest_cache_child = IngestionCache(
 # necessary to create a collection for the first time
 
 if chroma_collection_child.count() == 0:
-
+    print("Ingestion pipeline has started...")
     pipeline2 = IngestionPipeline(
         transformations=[
             embed_model,
@@ -267,7 +245,7 @@ if chroma_collection_child.count() == 0:
         cache=ingest_cache_child,
         # docstore=SimpleDocumentStore(),
     )
-    print("Pipeline2 has finished with the embeddings")
+    print("Ingestion pipeline has finished...")
     pipeline2.run(documents=all_nodes)
 
     vector_index_chunk = VectorStoreIndex.from_vector_store(
