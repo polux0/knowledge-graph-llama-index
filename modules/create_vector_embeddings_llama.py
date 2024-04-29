@@ -42,7 +42,7 @@ es_client = ElasticsearchClient()
 
 # Initialize Experiment
 
-# Get the current time in UTC, making it timezone-aware
+# Get the current time in UTC, making it timezone-aware#
 current_time = datetime.now(timezone.utc)
 
 experiment = ExperimentDocument()
