@@ -1,6 +1,7 @@
 import logging
 import sys
 
+from custom_ingestion_pipeline import CustomIngestionPipeline
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
 from environment_setup import load_environment_variables
@@ -16,7 +17,7 @@ from get_database_name_based_on_parameters import (
     load_child_vector_configuration,
     load_parent_vector_configuration
 )
-from llama_index.core.ingestion import IngestionPipeline
+# from llama_index.core.ingestion import IngestionPipeline
 from llama_index.storage.kvstore.redis import RedisKVStore as RedisCache
 from llama_index.core.ingestion import IngestionCache
 import os
@@ -237,7 +238,7 @@ ingest_cache_child = IngestionCache(
 
 if chroma_collection_child.count() == 0:
     print("Ingestion pipeline has started...")
-    pipeline2 = IngestionPipeline(
+    pipeline2 = CustomIngestionPipeline(
         transformations=[
             embed_model,
             ],
@@ -245,9 +246,8 @@ if chroma_collection_child.count() == 0:
         cache=ingest_cache_child,
         # docstore=SimpleDocumentStore(),
     )
-    print("Ingestion pipeline has finished...")
     pipeline2.run(documents=all_nodes)
-
+    print("Ingestion pipeline has finished...")
     vector_index_chunk = VectorStoreIndex.from_vector_store(
         vector_store=vector_store_child,
         storage_context=storage_context_child,
