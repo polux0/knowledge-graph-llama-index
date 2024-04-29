@@ -247,7 +247,10 @@ if chroma_collection_child.count() == 0:
         # docstore=SimpleDocumentStore(),
     )
     pipeline2.run(documents=all_nodes,
-                  show_progress=True)
+                  show_progress=True,
+                  rate_calls=4,
+                  rate_period=60
+                  )
     print("Ingestion pipeline has finished...")
     vector_index_chunk = VectorStoreIndex.from_vector_store(
         vector_store=vector_store_child,
