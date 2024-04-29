@@ -49,7 +49,7 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
-model_name_id = "default"
+model_name_id = "mixtral"
 embedding_model_id = "default"
 parent_chunk_size = 1024
 parent_chunk_overlap = 0
@@ -246,7 +246,8 @@ if chroma_collection_child.count() == 0:
         cache=ingest_cache_child,
         # docstore=SimpleDocumentStore(),
     )
-    pipeline2.run(documents=all_nodes)
+    pipeline2.run(documents=all_nodes,
+                  show_progress=True)
     print("Ingestion pipeline has finished...")
     vector_index_chunk = VectorStoreIndex.from_vector_store(
         vector_store=vector_store_child,
