@@ -21,7 +21,9 @@ from get_database_name_based_on_parameters import (
 from llama_index.storage.kvstore.redis import RedisKVStore as RedisCache
 from llama_index.core.ingestion import IngestionCache
 import os
-
+from llama_index.core.indices.query.query_transform.base import (
+    StepDecomposeQueryTransform,
+)
 import chromadb
 
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -106,8 +108,6 @@ print("All collections in Chroma: ", remote_db.list_collections())
 #     parent_chunk_overlap,
 #     documents_directory
 # )
-
-# print("Parent chroma collection name: ", parent_chroma_collection_name)
 
 child_chroma_collection_name = load_child_vector_configuration(
     embedding_model_id,
