@@ -13,6 +13,9 @@ from hashlib import sha256
 import re
 from ratelimit import limits, sleep_and_retry
 from functools import wraps
+import logging
+
+logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(levelname)s - %(message)s')
 
 
 class DocstoreStrategy(str, Enum):
@@ -30,6 +33,7 @@ class CustomIngestionPipeline(IngestionPipeline):
             @sleep_and_retry
             @limits(calls=calls, period=period)
             def wrapper(*args, **kwargs):
+                logging.debug(f"Rate limited function {func.__name__} called with {calls} calls per {period} seconds")
                 return func(*args, **kwargs)
             return wrapper
         return decorator
@@ -168,7 +172,7 @@ class CustomIngestionPipeline(IngestionPipeline):
             rate_period=60,
             **kwargs):
         decorated_run_transformations = self.rate_limiter(rate_calls,rate_period)(self.run_transformations)
-        print("Applying custom transformations...")
+        logging.info("Applying custom transformations with rate limiting...")
         return decorated_run_transformations(
             nodes,
             transformations,

@@ -35,6 +35,7 @@ jobs:
       - name: Deploy to Digital Ocean
         run: |
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
+            export HUGGING_FACE_INFERENCE_ENDPOINT=${{ secrets.HUGGING_FACE_INFERENCE_ENDPOINT }}
             export HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
             export HUGGING_FACE_API_KEY_ANOTHER=${{ secrets.HUGGING_FACE_API_KEY_ANOTHER }}
             export NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
@@ -64,6 +65,7 @@ jobs:
             cd /home/auravana/app
 
             cat <<EOT > .env
+            HUGGING_FACE_INFERENCE_ENDPOINT=${{ secrets.HUGGING_FACE_INFERENCE_ENDPOINT }}
             HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
             HUGGING_FACE_API_KEY_ANOTHER=${{ secrets.HUGGING_FACE_API_KEY_ANOTHER }}
             NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
