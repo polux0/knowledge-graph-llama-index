@@ -87,7 +87,7 @@ jobs:
             REDIS_PASSWORD=${REDIS_PASSWORD}
             COHERE_API_KEY=${COHERE_API_KEY}
             ENV=${ENV}
-            EOT
+       EOT
 
             # Start Docker containers
             docker-compose down && docker-compose up --build -d
