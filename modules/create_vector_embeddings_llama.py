@@ -50,7 +50,7 @@ experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
 model_name_id = "default"
-embedding_model_id = "default"
+embedding_model_id = "e5mistral7b"
 parent_chunk_size = 1024
 parent_chunk_overlap = 0
 
@@ -99,7 +99,6 @@ remote_db = chromadb.HttpClient(
 )
 print("Sucessfully connected to chromaDB client...")
 print("All collections in Chroma: ", remote_db.list_collections())
-
 
 # parent_chroma_collection_name = load_parent_vector_configuration(
 #     embedding_model_id,
@@ -248,8 +247,8 @@ if chroma_collection_child.count() == 0:
     )
     pipeline2.run(documents=all_nodes,
                   show_progress=True,
-                  rate_calls=4,
-                  rate_period=60
+                #   rate_calls=2,
+                #   rate_period=60
                   )
     print("Ingestion pipeline has finished...")
     vector_index_chunk = VectorStoreIndex.from_vector_store(
