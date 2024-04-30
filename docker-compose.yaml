@@ -217,8 +217,7 @@ services:
     depends_on:
       graphd:
         condition: service_healthy
-      storaged0:
-        condition: service_healthy
+      storaged0: {}
       metad0:
         condition: service_healthy
       chromadb:
