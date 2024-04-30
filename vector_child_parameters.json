@@ -1,3 +1,5 @@
 {
-
+    "('default', [128, 256, 512], [64, 128, 256], '../data/flow_and_rwcm')": "f6f7ef66ad8bace39bd12a4b08f04f3924a53d7ad68ebe204ff0a66cb4859",
+    "('e5mistral7b', [128, 256, 512], [64, 128, 256], '../data/flow_and_rwcm')": "c92986bc9e471d25aa403b376c77f81a59cce3f5b6562274ef3bdb73c6124",
+    "('e5mistral7b', [128, 256, 512], [64, 128, 256], '../data/documentation')": "acf0773bbda3b8b6d0e40e97beb4b7bb64aebddf6d77db3d908f4d34425b3"
 }
