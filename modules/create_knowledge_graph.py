@@ -45,7 +45,6 @@ current_time = datetime.now(timezone.utc)
 experiment = ExperimentDocument()
 # Format the current time as an ISO 8601 string, including milliseconds
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
-# Load environment variables and setup logging
 # Local development 
 env_vars = load_environment_variables()
 setup_logging()
