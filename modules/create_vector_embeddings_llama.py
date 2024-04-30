@@ -50,7 +50,7 @@ experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
 model_name_id = "default"
-embedding_model_id = "e5mistral7b"
+embedding_model_id = "flow"
 parent_chunk_size = 1024
 parent_chunk_overlap = 0
 
