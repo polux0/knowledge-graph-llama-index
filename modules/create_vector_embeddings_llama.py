@@ -192,6 +192,7 @@ storage_context_child = StorageContext.from_defaults(vector_store=vector_store_c
 #     "Can you tell me about the key domains of Real World Community Model"
 # )
 
+# print("testing")
 # print("Base retrieval, response: \n")
 # print(response)
 
