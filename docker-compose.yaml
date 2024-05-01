@@ -2,7 +2,7 @@ version: "3.9"
 
 services:
   metad0:
-    image: docker.io/vesoft/nebula-metad:nightly
+    image: docker.io/vesoft/nebula-metad:latest
     environment:
       USER: root
     command:
@@ -35,7 +35,7 @@ services:
       - SYS_PTRACE
 
   storaged0:
-    image: docker.io/vesoft/nebula-storaged:nightly
+    image: docker.io/vesoft/nebula-storaged:latest
     environment:
       USER: root
       TZ: "${TZ}"
@@ -71,7 +71,7 @@ services:
       - SYS_PTRACE
 
   graphd:
-    image: docker.io/vesoft/nebula-graphd:nightly
+    image: docker.io/vesoft/nebula-graphd:latest
     environment:
       USER: root
       TZ: "${TZ}"
@@ -104,7 +104,7 @@ services:
     cap_add:
       - SYS_PTRACE
   console:
-    image: docker.io/vesoft/nebula-console:nightly
+    image: docker.io/vesoft/nebula-console:latest
     entrypoint: ""
     command:
       - sh
