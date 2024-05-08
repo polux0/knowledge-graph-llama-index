@@ -44,8 +44,7 @@ def generate_hashed_name(search_key, length=61):
 
 # Function to save dictionary to a file with pretty printing
 def save_graph_parameters(graph_params):
-    env = os.getenv('ENV', 'local')
-    filename = 'graph_parameters.json' if env == 'local' else 'graph_parameters_remote.json'
+    filename = 'graph_parameters.json'
     try:
         # Convert tuple keys to strings
         json_ready_dict = {str(key): value for key, value in graph_params.items()}
@@ -58,8 +57,7 @@ def save_graph_parameters(graph_params):
 
 # Function to load dictionary from a file
 def load_graph_parameters():
-    env = os.getenv('ENV', 'local')
-    filename = 'graph_parameters.json' if env == 'local' else 'graph_parameters_remote.json'
+    filename = 'graph_parameters.json'
     try:
         with open(filename, 'r') as file:
             # Here we need to convert keys back to tuples if you plan to use them as such in Python
@@ -181,8 +179,7 @@ def update_child_vector_database_name(embedding_model_id,
 def load_parent_vector_configuration(embedding_model_id, parent_chunk_size,
                                      parent_chunk_overlap,
                                      parent_path):
-    env = os.getenv('ENV', 'local')
-    filename = 'vector_parent_parameters.json' if env == 'local' else 'vector_parent_parameters_remote.json'
+    filename = 'vector_parent_parameters.json'
     search_key = str((embedding_model_id, parent_chunk_size,
                       parent_chunk_overlap, parent_path))
     try:
@@ -213,8 +210,7 @@ def load_parent_vector_configuration(embedding_model_id, parent_chunk_size,
 
 def load_child_vector_configuration(model_name_id, child_chunk_sizes,
                                     child_chunk_sizes_overlap, child_path):
-    env = os.getenv('ENV', 'local')
-    filename = 'vector_child_parameters.json' if env == 'local' else 'vector_child_parameters_remote.json'
+    filename = 'vector_child_parameters.json'
     search_key = str((model_name_id, child_chunk_sizes,
                       child_chunk_sizes_overlap, child_path))
     try:
@@ -248,8 +244,7 @@ def save_parent_configuration(embedding_model_id, parent_chunk_size,
     key = str((embedding_model_id, parent_chunk_size, parent_chunk_overlap,
                parent_path))
     parent_name = hash(key)
-    env = os.getenv('ENV', 'local')
-    filename = 'vector_parent_parameters.json' if env == 'local' else 'vector_parent_parameters_remote.json'
+    filename = 'vector_parent_parameters.json'
     try:
         # Load existing data
         with open(filename, 'r') as file:
@@ -275,8 +270,7 @@ def save_child_configuration(model_name_id, child_chunk_sizes,
     key = str((model_name_id, child_chunk_sizes, child_chunk_sizes_overlap,
                child_path))
     child_name = hash(key)
-    env = os.getenv('ENV', 'local')
-    filename = 'vector_child_parameters.json' if env == 'local' else 'vector_child_parameters_remote.json'
+    filename = 'vector_child_parameters.json'
     try:
         # Load existing data
         with open(filename, 'r') as file:
