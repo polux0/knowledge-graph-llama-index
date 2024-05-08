@@ -53,7 +53,7 @@ model_name_id = "default"
 embedding_model_id = "default"
 chunk_size = 256
 max_triplets_per_chunk = 15
-documents_directory = "../data/documentation"
+documents_directory = "../data/real_world_community_model_1st_half"
 
 # Initialize LLM and Embedding model
 llm = initialize_llm(model_name_id)
@@ -170,7 +170,7 @@ if not index_loaded:
         show_progress=True
     )
     index.storage_context.persist(persist_dir=resolve_data_path(f"../persistence/{database_name}"))
-    generate_network_graph(index, database_name)
+    #generate_network_graph(index, database_name)
 # technical debt
 
 
