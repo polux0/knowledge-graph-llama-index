@@ -5,6 +5,7 @@ from llama_index.embeddings.huggingface import (
             HuggingFaceInferenceAPIEmbedding,
 )
 from llama_index.embeddings.cohere import CohereEmbedding
+from llama_index.embeddings.openai import OpenAIEmbedding
 from huggingface_hub import login
 from environment_setup import load_environment_variables
 import os
@@ -32,13 +33,18 @@ def initialize_embedding_model(embedding_model_id):
                 input_type="search_query",
             )
             return model_name
+        if embedding_model_id == "openai-text-embedding-3-large":
+            os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+            model_name = EMBEDDING_MODELS[embedding_model_id]
+            return OpenAIEmbedding(model=model_name, embed_batch_size=10)
         else:
             model_name = EMBEDDING_MODELS[embedding_model_id]
-            return HuggingFaceInferenceAPIEmbedding(model_name=model_name,
-                                                    api_url=os.getenv("HUGGING_FACE_INFERENCE_ENDPOINT"),
-                                                    token=os.getenv("HUGGING_FACE_API_KEY"),
-                                                    api_key=hugging_face_token
-                                                    )
+            return HuggingFaceInferenceAPIEmbedding(
+                model_name=model_name,
+                api_url=os.getenv("HUGGING_FACE_INFERENCE_ENDPOINT"),
+                token=os.getenv("HUGGING_FACE_API_KEY"),
+                api_key=hugging_face_token,
+            )
     else:
         logging.error(f"Invalid embedding_model_id: {embedding_model_id}. Falling back to default embedding model name.")
         model_name = EMBEDDING_MODELS["default"]
