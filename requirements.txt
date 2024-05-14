@@ -35,3 +35,18 @@ llama-index-storage-kvstore-redis
 llama-index-storage-docstore-redis
 ratelimit
 setuptools
+# open ai embeddings
+llama-index-embeddings-openai
+# multi vector retrievals related
+langchain
+langchain_community
+tiktoken
+langchain-openai
+langchainhub
+langchain-cohere
+#langchain documents loader related
+pypdf
+# raptor related
+llama-index-packs-raptor
+
+
