@@ -30,11 +30,15 @@ cohere
 llama-index-llms-cohere
 llama-index-embeddings-cohere
 # redis related
-#redis
+redis
 llama-index-storage-kvstore-redis
 llama-index-storage-docstore-redis
 ratelimit
 setuptools
+#langchain documents loader related
+pypdf
+# langchain redis caching related
+langchain-community
 # open ai embeddings
 llama-index-embeddings-openai
 # multi vector retrievals related
@@ -44,9 +48,5 @@ tiktoken
 langchain-openai
 langchainhub
 langchain-cohere
-#langchain documents loader related
-pypdf
 # raptor related
 llama-index-packs-raptor
-
-
