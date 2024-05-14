@@ -4,7 +4,7 @@ from langchain_community.document_loaders import PyPDFDirectoryLoader
 
 
 def load_documents(directory_path):
-    """Load documents from the specified directory.
+    """Load documents from the specified directory using Llama Index.
 
     Args:
         directory_path (str): The path to the directory containing documents.

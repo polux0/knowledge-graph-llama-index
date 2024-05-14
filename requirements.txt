@@ -39,3 +39,14 @@ setuptools
 pypdf
 # langchain redis caching related
 langchain-community
+# open ai embeddings
+llama-index-embeddings-openai
+# multi vector retrievals related
+langchain
+langchain_community
+tiktoken
+langchain-openai
+langchainhub
+langchain-cohere
+# raptor related
+llama-index-packs-raptor
