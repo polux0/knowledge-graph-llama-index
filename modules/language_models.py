@@ -5,6 +5,6 @@ LANGUAGE_MODELS = {
     "llama270b": "meta-llama/Llama-2-70b-hf",
     "llama38b": "meta-llama/Llama-2-13b-hf",
     "llama3upscaledto11b": "Replete-AI/Llama-3-11.5B-V2",
-    "gpt-3.5-turbo": "gpt-3.5-turbo	",
+    "gpt-3.5-turbo": "gpt-3.5-turbo",
     "gpt-4": "gpt-4"
 }
