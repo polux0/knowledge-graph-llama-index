@@ -18,10 +18,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 # constants
-embedding_model_id = "openai-text-embedding-3-large"
-large_language_model_id = "gpt-3.5-turbo"
+
+# previously
+# embedding_model_id = "openai-text-embedding-3-large"
 # chunk_size = 2000
 # chunk_overlap = 1000
+embedding_model_id = "openai-text-embedding-3-small"
+large_language_model_id = "gpt-3.5-turbo"
 chunk_size = 1024
 chunk_overlap = 512
 
@@ -32,26 +35,13 @@ remote_db = chromadb.HttpClient(
 documents_directory = "../data/real_world_community_model_1st_half"
 documents = load_documents(documents_directory)
 
+# TODO delete after testing
+# remote_db.delete_collection(name=str("raptor"))
 collection = remote_db.get_or_create_collection("raptor")
 vector_store = ChromaVectorStore(chroma_collection=collection)
 
 embed_model = initialize_embedding_model(embedding_model_id=embedding_model_id)
 llm = initialize_llm(model_name_id=large_language_model_id)
-
-raptor_pack = RaptorPack(
-    documents,
-    embed_model=embed_model,
-    llm=llm,
-    vector_store=vector_store,
-    similarity_top_k=5,
-    mode="tree_traversal",  # needs to be researched, probably not the most optimal. Possibilities are compact and tree traveral
-    transformations=[
-        SentenceSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
-        )
-    ]
-)
 
 # Configuring summarization
 summary_prompt = (
@@ -64,21 +54,38 @@ summary_module = SummaryModule(
     llm=llm, summary_prompt=summary_prompt, num_workers=2
 )
 
-pack = RaptorPack(
-    documents, llm=llm, embed_model=embed_model, summary_module=summary_module
+if collection.count() == 0:
+    raptor_pack = RaptorPack(
+        documents,
+        embed_model=embed_model,
+        summary_module=summary_module,
+        llm=llm,
+        vector_store=vector_store,
+        similarity_top_k=5,
+        mode="tree_traversal",  # Possibilities are compact and tree traveral
+        transformations=[
+            SentenceSplitter(
+                chunk_size=chunk_size,
+                chunk_overlap=chunk_overlap
+            )
+        ]
+    )
+# Retrieval
+retriever = RaptorRetriever(
+    [],
+    embed_model=embed_model,  # used for embedding clusters
+    llm=llm,  # used for generating summaries
+    vector_store=vector_store,  # used for storage
+    similarity_top_k=5,  # top k for each layer, or overall top-k for collapsed
+    mode="tree_traversal",  # sets default mode
 )
-# Configuring retrieval
 query = "What are the domains of real world community model?"
-top_k = 5
-
-results = pack.run(query, mode="tree_traversal")
-
+results = retriever.retrieve(query, "tree_traversal")
 for result in results:
     print(f"Document: {result}")
 
-# Retrieval
 query_engine = RetrieverQueryEngine.from_args(
-    pack.retriever,
+    retriever,
     llm=llm
 )
 response = query_engine.query(query)
