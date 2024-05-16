@@ -33,7 +33,7 @@ def initialize_embedding_model(embedding_model_id):
                 input_type="search_query",
             )
             return model_name
-        if embedding_model_id == "openai-text-embedding-3-large":
+        if embedding_model_id.startswith("openai"):
             os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
             model_name = EMBEDDING_MODELS[embedding_model_id]
             return OpenAIEmbedding(model=model_name, embed_batch_size=10)
