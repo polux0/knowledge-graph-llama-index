@@ -85,7 +85,6 @@ retriever = MultiVectorRetriever(
 )
 
 # See if we have already created summaries for this collection
-id_key = ""
 # If no, create them
 if chroma_collection.count() == 0:
     print("Collection not found, creating embeddings...")
