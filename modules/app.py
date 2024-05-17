@@ -1,5 +1,6 @@
 from concurrent.futures import ThreadPoolExecutor
 
+from multi_representation_indexing import generate_response_based_on_multirepresentation_indexing_with_debt
 import streamlit as st
 from create_knowledge_graph import generate_response_based_on_knowledge_graph_with_debt
 from create_vector_embeddings_llama import generate_response_based_on_vector_embeddings_with_debt
@@ -24,14 +25,18 @@ if "initialized" not in st.session_state:
     st.session_state.vectorEmbeddingsResponse = ""
     st.session_state.raptorIndexingResponse = ""  # Initialize new response
     st.session_state.responseSynthesized = ""
+    st.session_state.multirepresentationIndexingResponse = ""  # Initialize new response1
     st.session_state.experimentKG = None
     st.session_state.experimentVDB = None
     st.session_state.experimentRI = None  # Initialize new experiment
     st.session_state.experimentSynthesized = None
+    st.session_state.experimentMRI = None  # Initialize new experiment1
     st.session_state.kg_response_value = 0
     st.session_state.ve_response_value = 0
     st.session_state.ri_response_value = 0  # Initialize new response value
+    st.session_state.mri_response_value = 0  # Initialize new response value1
     st.session_state.synthesized_response_value = 0
+
 
 # Function to reset response values
 def reset_response_values():
@@ -39,6 +44,8 @@ def reset_response_values():
     st.session_state.ve_response_value = 0
     st.session_state.ri_response_value = 0  # Reset the new response value
     st.session_state.synthesized_response_value = 0
+    st.session_state.mri_response_value = 0  # Reset the new response value1
+
 
 # Display chat messages from history on app rerun
 for message in st.session_state.messages:
@@ -68,6 +75,11 @@ if prompt := st.chat_input("What is up?"):
     #     es_client.save_experiment(experiment_document=st.session_state.experimentSynthesized)
 
     # Reset response values for the new question
+    if st.session_state.experimentMRI:
+        st.session_state.experimentMRI.satisfaction_with_answer = st.session_state.mri_response_value
+        es_client.save_experiment(
+            experiment_document=st.session_state.experimentMRI
+        )
     reset_response_values()
 
     # Display user message in chat message container
@@ -76,7 +88,7 @@ if prompt := st.chat_input("What is up?"):
     # Add user message to chat history
     st.session_state.messages.append({"role": "user", "content": prompt})
 
-    with ThreadPoolExecutor(max_workers=3) as executor:  # Increase max_workers to 3
+    with ThreadPoolExecutor(max_workers=4) as executor:  # Increase max_workers to 4
         # Schedule the functions to be executed in parallel
         # future_kg = executor.submit(
         #     generate_response_based_on_knowledge_graph_with_debt,
@@ -91,12 +103,19 @@ if prompt := st.chat_input("What is up?"):
             prompt
             )  # Add new response function
 
+        future_mri = executor.submit(
+            generate_response_based_on_multirepresentation_indexing_with_debt,
+            prompt
+            )
         # Wait for the functions to complete and retrieve results
         # responseKG, experimentKG, sourceNodesKG = future_kg.result()
         responseVE, experimentVDB, sourceNodesVDB = future_ve.result()
         responseRI, experimentRI, sourceNodesRI = future_ri.result()  # Retrieve new response
+        responseMRI, experimentMRI, sourceNodesMRI = future_mri.result() # Retrieve new response1
+
     # nodesCombined = merge_nodes(sourceNodesKG, sourceNodesVDB, sourceNodesRI)  # Combine new nodes
     # print("** Nodes combined: %s" % nodesCombined)
+
 
     # responseSynthesized, experimentSynthesized = get_synthesized_response_based_on_nodes_with_score(prompt, nodesCombined)  # Generate the synthesized response
 
@@ -108,6 +127,8 @@ if prompt := st.chat_input("What is up?"):
     st.session_state.experimentVDB = experimentVDB
     st.session_state.experimentRI = experimentRI  # Store the new experiment
     # st.session_state.experimentSynthesized = experimentSynthesized  # Store the synthesized experiment
+    st.session_state.multirepresentationIndexingResponse = responseMRI
+    st.session_state.experimentMRI = experimentMRI
 
 # Display stored responses
 # st.markdown("Knowledge Graph: ")
@@ -138,3 +159,10 @@ if st.button('👎', key="ri_dislike"):
 #     st.session_state.synthesized_response_value = 2
 # if st.button('👎', key="synthesized_dislike"):
 #     st.session_state.synthesized_response_value = 1
+
+st.markdown("Multirepresentation Indexing: ")
+st.markdown(st.session_state.multirepresentationIndexingResponse)
+if st.button('👍', key="mri_like"):
+    st.session_state.mri_response_value = 2
+if st.button('👎', key="mri_dislike"):
+    st.session_state.mri_response_value = 1
