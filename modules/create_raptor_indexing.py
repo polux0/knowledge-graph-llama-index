@@ -1,5 +1,5 @@
 from data_loading import load_documents
-from embedding_model_modular_setup import initialize_embedding_model
+from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id, initialize_embedding_model
 from format_message_with_prompt import format_message
 from large_language_model_setup import get_llm_based_on_model_name_id, initialize_llm
 from llama_index.core.node_parser import SentenceSplitter
@@ -40,7 +40,8 @@ remote_db = chromadb.HttpClient(
     host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
 
-documents_directory = "../data/whole_documentation"
+# Documents_directory = "../data/whole_documentation"
+documents_directory = "../data/real_world_community_model_1st_half"
 documents = load_documents(documents_directory)
 
 # Logging variables
@@ -55,7 +56,11 @@ embed_model = initialize_embedding_model(embedding_model_id=embedding_model_id)
 llm = initialize_llm(model_name_id=large_language_model_id)
 
 # Logging variables
+experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
+    embedding_model_id
+)
 experiment.llm_used = get_llm_based_on_model_name_id(large_language_model_id)
+
 
 # Configuring summarization
 summary_prompt = (

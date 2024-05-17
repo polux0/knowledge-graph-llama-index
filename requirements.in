@@ -1,0 +1,51 @@
+llama-index===0.10.20
+pyvis 
+Ipython 
+langchain 
+pypdf
+python-dotenv
+huggingface_hub
+neo4j
+langchain-community
+llama-index-llms-huggingface
+llama-index-graph-stores-neo4j
+llama-index-embeddings-huggingface
+llama-index-vector-stores-chroma
+llama-index-embeddings-langchain
+chromadb
+matplotlib
+# streamlit related
+streamlit
+protobuf
+importlib-metadata
+cachetools
+# elasticsearch related
+elasticsearch
+llama-index-llms-openai
+huggingface_hub
+nebula3-python
+llama-index-graph-stores-nebula
+cohere
+llama-index-llms-cohere
+llama-index-embeddings-cohere
+# redis related
+redis
+llama-index-storage-kvstore-redis
+llama-index-storage-docstore-redis
+ratelimit
+setuptools
+#langchain documents loader related
+pypdf
+# langchain redis caching related
+langchain-community
+# open ai embeddings
+llama-index-embeddings-openai
+# multi vector retrievals related
+langchain
+langchain_community
+tiktoken
+langchain-openai
+langchainhub
+langchain-cohere
+# raptor related
+llama-index-packs-raptor
