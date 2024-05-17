@@ -64,7 +64,7 @@ chroma_client = chromadb.HttpClient(
 )
 
 # TODO delete after testing
-chroma_client.delete_collection(name=chroma_collection_name)
+# chroma_client.delete_collection(name=chroma_collection_name)
 
 # Logging variables
 experiment.chunk_size = ""
