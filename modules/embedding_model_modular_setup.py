@@ -36,7 +36,13 @@ def initialize_embedding_model(embedding_model_id):
         if embedding_model_id.startswith("openai"):
             os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
             model_name = EMBEDDING_MODELS[embedding_model_id]
-            return OpenAIEmbedding(model=model_name, embed_batch_size=10)
+            return OpenAIEmbedding(
+                model=model_name,
+                embed_batch_size=42,
+                show_progress=True,
+                request_timeout=10.0,
+                retry_min_seconds=10,
+                )
         else:
             model_name = EMBEDDING_MODELS[embedding_model_id]
             return HuggingFaceInferenceAPIEmbedding(
