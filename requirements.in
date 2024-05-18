@@ -49,3 +49,4 @@ langchainhub
 langchain-cohere
 # raptor related
 llama-index-packs-raptor
+langchain-text-splitters
