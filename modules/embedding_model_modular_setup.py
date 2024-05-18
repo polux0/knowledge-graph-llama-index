@@ -38,10 +38,11 @@ def initialize_embedding_model(embedding_model_id):
             model_name = EMBEDDING_MODELS[embedding_model_id]
             return OpenAIEmbedding(
                 model=model_name,
-                embed_batch_size=42,
+                embed_batch_size=10,
                 show_progress=True,
-                request_timeout=10.0,
-                retry_min_seconds=10,
+                request_timeout=20.0,
+                retry_min_seconds=20,
+                max_retries=5,
                 )
         else:
             model_name = EMBEDDING_MODELS[embedding_model_id]
