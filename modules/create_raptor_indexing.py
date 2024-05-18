@@ -48,7 +48,7 @@ documents = load_documents(documents_directory)
 experiment.chunk_size = chunk_size
 
 # TODO delete after testing
-remote_db.delete_collection(name=str("raptor"))
+# remote_db.delete_collection(name=str("raptor"))
 collection = remote_db.get_or_create_collection("raptor")
 vector_store = ChromaVectorStore(chroma_collection=collection)
 

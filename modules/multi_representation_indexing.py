@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 # Prompts
 from large_language_model_setup import get_llm_based_on_model_name_id
 from prompts import get_template_based_on_template_id
+# Langchain
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 load_dotenv()
 repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -34,7 +36,7 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 
 chroma_collection_name = "summaries-rwcm"
 redis_namespace = "parent-documents-rwcm"
-chunk_size = 1024
+chunk_size = 4000
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
@@ -67,7 +69,7 @@ chroma_client = chromadb.HttpClient(
 # chroma_client.delete_collection(name=chroma_collection_name)
 
 # Logging variables
-experiment.chunk_size = ""
+experiment.chunk_size = chunk_size
 
 # The storage layer for the parent documents
 redis_store = RedisStore(
@@ -77,11 +79,11 @@ redis_store = RedisStore(
 
 # Get the documents
 documents_directory = "../data/real_world_community_model_1st_half"
-documents = load_documents_langchain(documents_directory)
+all_documents = load_documents_langchain(documents_directory)
 
 # Split the documents into chunks
-# text_splitter = RecursiveCharacterTextSplitter(chunk_size=10000)
-# docs = text_splitter.split_documents(docs)
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size)
+documents = text_splitter.split_documents(all_documents)
 
 chain = (
     {"document": lambda x: x.page_content}
@@ -113,13 +115,14 @@ retriever = MultiVectorRetriever(
 doc_ids = []
 experiment.retrieval_strategy = f"MultiVectorRetriever, mode: Similarity search" # There is another method - mmr
 
+# Check if redis cache is empty
+pattern = f"{redis_namespace}*"
+keys = list(redis_store.yield_keys(prefix=pattern))
 # See if we have already created summaries for this collection
 # If no, create them
-if chroma_collection.count() == 0:
+if chroma_collection.count() == 0 and len(keys) == 0:
     print("Collection not found, creating embeddings...")
     summaries = chain.batch(documents, {"max_concurrency": 5})
-    # previously
-    # doc_ids = [str(uuid.uuid4()) for _ in documents]
     doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
     # Documents linked to summaries
     summary_docs = [
@@ -127,38 +130,19 @@ if chroma_collection.count() == 0:
         for i, s in enumerate(summaries)
     ]
     retriever.vectorstore.add_documents(summary_docs)
+    retriever.docstore.mset(list(zip(doc_ids, documents)))
     # adding the original chunks to the vectorstore as well
     # for i, doc in enumerate(documents):
     #     doc.metadata[id_key] = doc_ids[i]
     #     retriever.vectorstore.add_documents(documents)
 
-
-# If yes, load them
-# else:
-#     summaries = chroma_collection.get()
-#     print("Chroma collection is found...")
-
-pattern = f"{redis_namespace}*"
-# Keys that we are looking for to understand if the cache is empty
-keys = list(redis_store.yield_keys(prefix=pattern))
-if len(keys) == 0:
-    # redis_store.mset(list(zip(doc_ids, documents)))
-    retriever.docstore.mset(list(zip(doc_ids, documents)))
-else:
-    print("Cache in Redis is found...")
-
-# Testing purposes
-# retriever = MultiVectorRetriever(
-#     vectorstore=vectorstore,
-#     byte_store=redis_store,
-#     id_key=id_key,
-# )
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
+question1 = "Domains of real world community model"
 sub_docs = vectorstore.similarity_search(question, k=3)
 print("subdocs: \n", sub_docs)
 
-retrieved_docs = retriever.get_relevant_documents(question, n_results=1)
+retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
 # retrieved_docs[0].page_content[0:500]
 print("retrieved docs: \n", retrieved_docs)
 print("retrieved documents, length: " + str(len(retrieved_docs)))

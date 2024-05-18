@@ -38,7 +38,7 @@ def initialize_embedding_model(embedding_model_id):
             model_name = EMBEDDING_MODELS[embedding_model_id]
             return OpenAIEmbedding(
                 model=model_name,
-                embed_batch_size=2,
+                embed_batch_size=4,
                 show_progress=True,
                 request_timeout=20.0,
                 retry_min_seconds=20,
