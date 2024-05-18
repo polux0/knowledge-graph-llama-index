@@ -40,8 +40,8 @@ remote_db = chromadb.HttpClient(
     host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
 
-# Documents_directory = "../data/whole_documentation"
-documents_directory = "../data/real_world_community_model_1st_half"
+documents_directory = "../data/whole_documentation"
+# documents_directory = "../data/real_world_community_model_1st_half"
 documents = load_documents(documents_directory)
 
 # Logging variables
