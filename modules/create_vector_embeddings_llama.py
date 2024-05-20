@@ -6,8 +6,7 @@ from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
 from environment_setup import load_environment_variables
 from large_language_model_setup import initialize_llm
-from llama_index.core import (Document, Settings, StorageContext,
-                              VectorStoreIndex)
+from llama_index.core import Document, Settings, StorageContext, VectorStoreIndex
 from llama_index.core.node_parser import SentenceSplitter
 from llama_index.core.query_engine import RetrieverQueryEngine
 from llama_index.core.retrievers import RecursiveRetriever
@@ -15,8 +14,9 @@ from llama_index.core.schema import IndexNode
 from llama_index.vector_stores.chroma import ChromaVectorStore
 from get_database_name_based_on_parameters import (
     load_child_vector_configuration,
-    load_parent_vector_configuration
+    load_parent_vector_configuration,
 )
+
 # from llama_index.core.ingestion import IngestionPipeline
 from llama_index.storage.kvstore.redis import RedisKVStore as RedisCache
 from llama_index.core.ingestion import IngestionCache
@@ -33,8 +33,7 @@ from datetime import datetime, timezone
 
 # Elasticsearch realted
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
-from embedding_model_modular_setup import \
-    get_embedding_model_based_on_model_name_id
+from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id
 from format_message_with_prompt import format_message
 from large_language_model_setup import get_llm_based_on_model_name_id
 from prompts import get_template_based_on_template_id
@@ -113,7 +112,7 @@ child_chroma_collection_name = load_child_vector_configuration(
     embedding_model_id,
     child_chunk_sizes,
     child_chunk_sizes_overlap,
-    documents_directory
+    documents_directory,
 )
 
 print("Child chroma collection name: ", child_chroma_collection_name)
@@ -129,15 +128,16 @@ chroma_collection_child = remote_db.get_or_create_collection(
 # print(f"Are there embeddings inside collection {chroma_collection_parent.name} ?",
 #       f"count: {chroma_collection_parent.count()}")
 
-print(f"Are there embeddings inside collection {chroma_collection_child.name} ?",
-      f"count: {chroma_collection_child.count()}")
+print(
+    f"Are there embeddings inside collection {chroma_collection_child.name} ?",
+    f"count: {chroma_collection_child.count()}",
+)
 
 # vector_store_parent = ChromaVectorStore(
 #     chroma_collection=chroma_collection_parent
 # )
 vector_store_child = ChromaVectorStore(
-    chroma_collection=chroma_collection_child,
-    ssl=False
+    chroma_collection=chroma_collection_child, ssl=False
 )
 
 # Storage context parent
@@ -203,8 +203,7 @@ sub_chunk_sizes = [128, 256, 512]
 
 # technical debt - create service context for this
 sub_node_parsers = [
-    SentenceSplitter(chunk_size=c, chunk_overlap=c / 2)
-    for c in sub_chunk_sizes
+    SentenceSplitter(chunk_size=c, chunk_overlap=c / 2) for c in sub_chunk_sizes
 ]
 
 all_nodes = []
@@ -229,8 +228,9 @@ print("Finished with making dictionaries...")
 # Ingest cache #2
 
 ingest_cache_child = IngestionCache(
-    cache=RedisCache.from_host_and_port(host=os.getenv("REDIS_URL"),
-                                        port=os.getenv("REDIS_PORT")),
+    cache=RedisCache.from_host_and_port(
+        host=os.getenv("REDIS_URL"), port=os.getenv("REDIS_PORT")
+    ),
     collection=child_chroma_collection_name,
 )
 
@@ -241,14 +241,15 @@ print("Ingestion pipeline has started...")
 pipeline2 = CustomIngestionPipeline(
     transformations=[
         embed_model,
-        ],
+    ],
     vector_store=vector_store_child,
     cache=ingest_cache_child,
     # docstore=SimpleDocumentStore(),
 )
-pipeline2.run(documents=all_nodes,
-              show_progress=True,
-            )
+pipeline2.run(
+    documents=all_nodes,
+    show_progress=True,
+)
 print("Ingestion pipeline has finished...")
 vector_index_chunk = VectorStoreIndex.from_vector_store(
     vector_store=vector_store_child,
@@ -263,11 +264,10 @@ vector_index_chunk = VectorStoreIndex.from_vector_store(
     vector_store_child,
     storage_context=storage_context_child,
     embed_model=embed_model,
-    llm=llm
+    llm=llm,
 )
 
-vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=3,
-                                                         llm=llm)
+vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=3, llm=llm)
 
 retriever_chunk = RecursiveRetriever(
     "vector",
