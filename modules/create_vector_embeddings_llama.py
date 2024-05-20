@@ -51,10 +51,10 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
-model_name_id = "default"
-embedding_model_id = "default"
-parent_chunk_size = 1024
-parent_chunk_overlap = 0
+model_name_id = "gpt-3.5-turbo"
+embedding_model_id = "openai-text-embedding-3-large"
+parent_chunk_size = 2048
+parent_chunk_overlap = 512
 
 # Variables child
 child_chunk_sizes = [128, 256, 512]
@@ -63,7 +63,7 @@ child_chunk_sizes_overlap = [64, 128, 256]
 
 # Load the documents, modular function previously used for knowledge graph construction
 
-documents_directory = "../data/real_world_community_model_1st_half"
+documents_directory = "../data/documentation"
 
 documents = load_documents(documents_directory)
 
@@ -248,8 +248,6 @@ if chroma_collection_child.count() == 0:
     )
     pipeline2.run(documents=all_nodes,
                   show_progress=True,
-                #   rate_calls=2,
-                #   rate_period=60
                   )
     print("Ingestion pipeline has finished...")
     vector_index_chunk = VectorStoreIndex.from_vector_store(
@@ -257,13 +255,6 @@ if chroma_collection_child.count() == 0:
         storage_context=storage_context_child,
         embed_model=embed_model,
     )
-    # Will be deleted
-    # vector_index_chunk = VectorStoreIndex(
-    #     all_nodes,
-    #     storage_context=storage_context_parent,
-    #     embed_model=embed_model,
-    #     llm=llm
-    # )
 
 else:
 
@@ -296,28 +287,6 @@ experiment.retrieval_strategy = "RecursiveRetriever - Parent Child"
 #     display_source_node(node, source_length=2000)
 
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
-
-
-def generate_response_based_on_vector_embeddings(question: str):
-
-    experiment.question = question
-    prompt_template = get_template_based_on_template_id("default")
-    experiment.prompt_template = (get_template_based_on_template_id("default"),)
-    print(
-        "With parent-child retriever*******************************************************************\n\n: "
-    )
-    response = query_engine_chunk.query(format_message(question, prompt_template))
-    experiment.response = str(response)
-
-    current_time = datetime.now(timezone.utc)
-
-    # Format the current time as an ISO 8601 string, including milliseconds
-    experiment.updated_at = current_time.isoformat(timespec="milliseconds")
-
-    es_client.save_experiment(experiment_document=experiment)
-
-    print("Final response", str(response))
-    return response
 
 
 def generate_response_based_on_vector_embeddings_with_debt(question: str):
