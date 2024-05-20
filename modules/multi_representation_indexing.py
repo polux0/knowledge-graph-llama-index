@@ -28,6 +28,14 @@ from large_language_model_setup import get_llm_based_on_model_name_id
 from prompts import get_template_based_on_template_id
 # Langchain
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+# Logging
+import logging
+import sys
+
+
+# Setup logging
+logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 load_dotenv()
 repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
