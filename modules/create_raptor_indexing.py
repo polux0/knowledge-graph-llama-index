@@ -40,7 +40,7 @@ remote_db = chromadb.HttpClient(
     host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
 
-documents_directory = "../data/real_world_community_model_1st_half"
+documents_directory = "../data/documentation"
 # documents_directory = "../data/real_world_community_model_1st_half"
 documents = load_documents(documents_directory)
 
@@ -48,8 +48,8 @@ documents = load_documents(documents_directory)
 experiment.chunk_size = chunk_size
 
 # TODO delete after testing
-remote_db.delete_collection(name=str("raptor"))
-collection = remote_db.get_or_create_collection("raptor")
+# remote_db.delete_collection(name=str("raptor"))
+collection = remote_db.get_or_create_collection("raptor-whole-documentation")
 vector_store = ChromaVectorStore(chroma_collection=collection)
 
 embed_model = initialize_embedding_model(embedding_model_id=embedding_model_id)
@@ -73,23 +73,23 @@ summary_module = SummaryModule(
     llm=llm, summary_prompt=summary_prompt, num_workers=2
 )
 
-if collection.count() == 0:
-    print(f"Collection {collection} not found, creating and generating embeddings... ")
-    raptor_pack = RaptorPack(
-        documents,
-        embed_model=embed_model,
-        summary_module=summary_module,
-        llm=llm,
-        vector_store=vector_store,
-        similarity_top_k=5,
-        mode=retriever_mode,  # Possibilities are compact and tree traveral
-        transformations=[
-            SentenceSplitter(
-                chunk_size=chunk_size,
-                chunk_overlap=chunk_overlap
-            )
-        ]
-    )
+# if collection.count() == 0:
+    # print(f"Collection {collection} not found, creating and generating embeddings... ")
+raptor_pack = RaptorPack(
+    documents,
+    embed_model=embed_model,
+    summary_module=summary_module,
+    llm=llm,
+    vector_store=vector_store,
+    similarity_top_k=5,
+    mode=retriever_mode,  # Possibilities are compact and tree traveral
+    transformations=[
+        SentenceSplitter(
+            chunk_size=chunk_size,
+            chunk_overlap=chunk_overlap
+        )
+    ]
+)
 # Retrieval
 retriever = RaptorRetriever(
     [],
