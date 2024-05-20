@@ -78,7 +78,8 @@ redis_store = RedisStore(
 )
 
 # Get the documents
-documents_directory = "../data/real_world_community_model_1st_half"
+documents_directory = "../data/documentation"
+# documents_directory = "../data/real_world_community_model_1st_half"
 all_documents = load_documents_langchain(documents_directory)
 
 # Split the documents into chunks
@@ -120,21 +121,21 @@ pattern = f"{redis_namespace}*"
 keys = list(redis_store.yield_keys(prefix=pattern))
 # See if we have already created summaries for this collection
 # If no, create them
-if chroma_collection.count() == 0 and len(keys) == 0:
-    print("Collection not found, creating embeddings...")
-    summaries = chain.batch(documents, {"max_concurrency": 5})
-    doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
-    # Documents linked to summaries
-    summary_docs = [
-        Document(page_content=s, metadata={id_key: doc_ids[i]})
-        for i, s in enumerate(summaries)
-    ]
-    retriever.vectorstore.add_documents(summary_docs)
-    retriever.docstore.mset(list(zip(doc_ids, documents)))
-    # adding the original chunks to the vectorstore as well
-    # for i, doc in enumerate(documents):
-    #     doc.metadata[id_key] = doc_ids[i]
-    #     retriever.vectorstore.add_documents(documents)
+# if chroma_collection.count() == 0 and len(keys) == 0:
+print("Collection not found, creating embeddings...")
+summaries = chain.batch(documents, {"max_concurrency": 2})
+doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
+# Documents linked to summaries
+summary_docs = [
+    Document(page_content=s, metadata={id_key: doc_ids[i]})
+    for i, s in enumerate(summaries)
+]
+retriever.vectorstore.add_documents(summary_docs)
+retriever.docstore.mset(list(zip(doc_ids, documents)))
+# adding the original chunks to the vectorstore as well
+# for i, doc in enumerate(documents):
+#     doc.metadata[id_key] = doc_ids[i]
+#     retriever.vectorstore.add_documents(documents)
 
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
