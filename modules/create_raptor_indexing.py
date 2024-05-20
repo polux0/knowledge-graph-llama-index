@@ -40,7 +40,7 @@ remote_db = chromadb.HttpClient(
     host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
 
-documents_directory = "../data/whole_documentation"
+documents_directory = "../data/real_world_community_model_1st_half"
 # documents_directory = "../data/real_world_community_model_1st_half"
 documents = load_documents(documents_directory)
 
@@ -48,7 +48,7 @@ documents = load_documents(documents_directory)
 experiment.chunk_size = chunk_size
 
 # TODO delete after testing
-# remote_db.delete_collection(name=str("raptor"))
+remote_db.delete_collection(name=str("raptor"))
 collection = remote_db.get_or_create_collection("raptor")
 vector_store = ChromaVectorStore(chroma_collection=collection)
 
