@@ -236,7 +236,8 @@ services:
     # restart: always
     restart: on-failure
     # command: streamlit run ./modules/app.py
-    command: python ./modules/create_vector_embeddings_llama.py
+    # command: python ./modules/create_vector_embeddings_llama.py
+    command: python ./modules/multi_representation_indexing.py
     # command: python ./modules/delete_chroma_collections.py
     # command: python ./modules/create_knowledge_graph.py
     networks:
