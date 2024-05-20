@@ -34,9 +34,10 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 
 # Constants
 
-chroma_collection_name = "summaries-rwcm"
-redis_namespace = "parent-documents-rwcm"
-chunk_size = 4000
+chroma_collection_name = "summaries-system-overview"
+redis_namespace = "parent-documents-system-overview"
+chunk_size = 2048
+chunk_overlap = 518
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
@@ -83,7 +84,10 @@ documents_directory = "../data/documentation"
 all_documents = load_documents_langchain(documents_directory)
 
 # Split the documents into chunks
-text_splitter = RecursiveCharacterTextSplitter(chunk_size=chunk_size)
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=chunk_size,
+    chunk_overlap=chunk_overlap
+    )
 documents = text_splitter.split_documents(all_documents)
 
 chain = (
@@ -136,7 +140,7 @@ retriever.docstore.mset(list(zip(doc_ids, documents)))
 # for i, doc in enumerate(documents):
 #     doc.metadata[id_key] = doc_ids[i]
 #     retriever.vectorstore.add_documents(documents)
-
+print("Embeddings created...")
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
