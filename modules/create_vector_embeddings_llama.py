@@ -236,35 +236,35 @@ ingest_cache_child = IngestionCache(
 
 # necessary to create a collection for the first time
 
-if chroma_collection_child.count() == 0:
-    print("Ingestion pipeline has started...")
-    pipeline2 = CustomIngestionPipeline(
-        transformations=[
-            embed_model,
-            ],
-        vector_store=vector_store_child,
-        cache=ingest_cache_child,
-        # docstore=SimpleDocumentStore(),
-    )
-    pipeline2.run(documents=all_nodes,
-                  show_progress=True,
-                  )
-    print("Ingestion pipeline has finished...")
-    vector_index_chunk = VectorStoreIndex.from_vector_store(
-        vector_store=vector_store_child,
-        storage_context=storage_context_child,
-        embed_model=embed_model,
-    )
+# if chroma_collection_child.count() == 0:
+print("Ingestion pipeline has started...")
+pipeline2 = CustomIngestionPipeline(
+    transformations=[
+        embed_model,
+        ],
+    vector_store=vector_store_child,
+    cache=ingest_cache_child,
+    # docstore=SimpleDocumentStore(),
+)
+pipeline2.run(documents=all_nodes,
+              show_progress=True,
+            )
+print("Ingestion pipeline has finished...")
+vector_index_chunk = VectorStoreIndex.from_vector_store(
+    vector_store=vector_store_child,
+    storage_context=storage_context_child,
+    embed_model=embed_model,
+)
 
-else:
+# else:
 
-    # after collection was sucessfully created
-    vector_index_chunk = VectorStoreIndex.from_vector_store(
-        vector_store_child,
-        storage_context=storage_context_child,
-        embed_model=embed_model,
-        llm=llm
-    )
+# after collection was sucessfully created
+vector_index_chunk = VectorStoreIndex.from_vector_store(
+    vector_store_child,
+    storage_context=storage_context_child,
+    embed_model=embed_model,
+    llm=llm
+)
 
 vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=3,
                                                          llm=llm)
