@@ -90,6 +90,7 @@ raptor_pack = RaptorPack(
         )
     ]
 )
+print("Raptor finished with process of embeddings creation...")
 # Retrieval
 retriever = RaptorRetriever(
     [],
