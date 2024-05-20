@@ -235,7 +235,7 @@ services:
       - NEO4J_DATABASE=${NEO4J_DATABASE}
     restart: always
     # command: streamlit run ./modules/app.py
-    command: python ./modules/create_vector_embeddings_llama
+    command: python ./modules/create_vector_embeddings_llama.py
     # command: python ./modules/delete_chroma_collections.py
     # command: python ./modules/create_knowledge_graph.py
     networks:
