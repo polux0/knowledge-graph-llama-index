@@ -73,24 +73,24 @@ summary_module = SummaryModule(
     llm=llm, summary_prompt=summary_prompt, num_workers=2
 )
 
-# if collection.count() == 0:
-    # print(f"Collection {collection} not found, creating and generating embeddings... ")
-raptor_pack = RaptorPack(
-    documents,
-    embed_model=embed_model,
-    summary_module=summary_module,
-    llm=llm,
-    vector_store=vector_store,
-    similarity_top_k=5,
-    mode=retriever_mode,  # Possibilities are compact and tree traveral
-    transformations=[
-        SentenceSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
-        )
-    ]
-)
-print("Raptor finished with process of embeddings creation...")
+if collection.count() == 0:
+    print(f"Collection {collection} not found, creating and generating embeddings... ")
+    raptor_pack = RaptorPack(
+        documents,
+        embed_model=embed_model,
+        summary_module=summary_module,
+        llm=llm,
+        vector_store=vector_store,
+        similarity_top_k=5,
+        mode=retriever_mode,  # Possibilities are compact and tree traveral
+        transformations=[
+            SentenceSplitter(
+                chunk_size=chunk_size,
+                chunk_overlap=chunk_overlap
+            )
+        ]
+    )
+    print("Raptor finished with process of embeddings creation...")
 # Retrieval
 retriever = RaptorRetriever(
     [],
