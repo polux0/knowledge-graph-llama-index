@@ -115,7 +115,7 @@ print("All collections in Chroma: ", remote_db.list_collections())
 
 child_chroma_collection_name = "complete-documentation-parent-child"
 
-remote_db.delete_collection(name=child_chroma_collection_name)
+# remote_db.delete_collection(name=child_chroma_collection_name)
 
 print("Child chroma collection name: ", child_chroma_collection_name)
 
