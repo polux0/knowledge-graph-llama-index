@@ -204,13 +204,15 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - $HOME/redis/dаta:/root/redis
+      - $HOME/redis/data:/data
       - $HOME/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     environment:
       - REDIS_PASSWORD=my-password
       - REDIS_PORT=6379
       - REDIS_DATABASES=1
-
+    networks:
+      - net
 volumes:
   chroma-data:
     driver: local
