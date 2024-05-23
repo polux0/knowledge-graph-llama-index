@@ -110,7 +110,7 @@ print("All collections in Chroma: ", remote_db.list_collections())
 #     documents_directory
 # )
 
-child_chroma_collection_name = "rwcm1sthalflocaltesting"
+child_chroma_collection_name = "rwcm1sthalflocaltesting1"
 
 print("Child chroma collection name: ", child_chroma_collection_name)
 
