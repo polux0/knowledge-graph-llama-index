@@ -236,7 +236,7 @@ services:
       - NEO4J_DATABASE=${NEO4J_DATABASE}
     # restart: always
     restart: on-failure
-      command: python ./modules/create_vector_embeddings_llama.py
+    command: python ./modules/create_vector_embeddings_llama.py
     # command: python ./modules/multi_representation_indexing.py
     # command: python ./modules/create_raptor_indexing.py
     # command: streamlit run ./modules/app.py
