@@ -204,8 +204,9 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - $HOME/redis/dаta:/root/redis
+      - $HOME/redis/data:/data
       - $HOME/redis/redis.conf:/usr/local/etc/redis/redis.conf
+    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
     environment:
       - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
@@ -235,8 +236,8 @@ services:
       - NEO4J_DATABASE=${NEO4J_DATABASE}
     # restart: always
     restart: on-failure
-    command: streamlit run ./modules/app.py
-    # command: python ./modules/create_vector_embeddings_llama.py
+    # command: streamlit run ./modules/app.py
+    command: python ./modules/create_vector_embeddings_llama.py
     # command: python ./modules/multi_representation_indexing.py
     # command: python ./modules/create_raptor_indexing.py
     # command: python ./modules/delete_chroma_collections.py
