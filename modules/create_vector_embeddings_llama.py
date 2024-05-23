@@ -51,8 +51,8 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
-model_name_id = "default"
-embedding_model_id = "default"
+model_name_id = "gpt-3.5-turbo"
+embedding_model_id = "openai-text-embedding-3-large"
 parent_chunk_size = 2048
 parent_chunk_overlap = 512
 
@@ -62,8 +62,10 @@ child_chunk_sizes_overlap = [64, 128, 256]
 
 # Load the documents, modular function previously used for knowledge graph construction
 
-documents_directory = "../data/real_world_community_model_1st_half"
-
+# Smallest sample, for testing purposes
+# documents_directory = "../data/real_world_community_model_1st_half"
+# Complete documentation
+documents_directory = "../data/documentation"
 documents = load_documents(documents_directory)
 
 # load the documents, example from llama documentation
@@ -110,7 +112,7 @@ print("All collections in Chroma: ", remote_db.list_collections())
 #     documents_directory
 # )
 
-child_chroma_collection_name = "rwcm1sthalflocaltesting"
+child_chroma_collection_name = "complete-documentation-parent-child"
 
 print("Child chroma collection name: ", child_chroma_collection_name)
 
