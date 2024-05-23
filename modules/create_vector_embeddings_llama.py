@@ -26,8 +26,8 @@ from llama_index.core.indices.query.query_transform.base import (
 )
 import chromadb
 
-logging.basicConfig(stream=sys.stdout, level=logging.INFO)
-logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
+# logging.basicConfig(stream=sys.stdout, level=logging.INFO)
+# logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
 from datetime import datetime, timezone
 
@@ -51,8 +51,8 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
-model_name_id = "gpt-3.5-turbo"
-embedding_model_id = "openai-text-embedding-3-large"
+model_name_id = "default"
+embedding_model_id = "default"
 parent_chunk_size = 2048
 parent_chunk_overlap = 512
 
@@ -60,10 +60,9 @@ parent_chunk_overlap = 512
 child_chunk_sizes = [128, 256, 512]
 child_chunk_sizes_overlap = [64, 128, 256]
 
-
 # Load the documents, modular function previously used for knowledge graph construction
 
-documents_directory = "../data/documentation"
+documents_directory = "../data/real_world_community_model_1st_half"
 
 documents = load_documents(documents_directory)
 
@@ -102,102 +101,35 @@ remote_db = chromadb.HttpClient(
 print("Sucessfully connected to chromaDB client...")
 print("All collections in Chroma: ", remote_db.list_collections())
 
-# parent_chroma_collection_name = load_parent_vector_configuration(
+# Dynamic configuration
+
+# child_chroma_collection_name = load_child_vector_configuration(
 #     embedding_model_id,
-#     parent_chunk_size,
-#     parent_chunk_overlap,
+#     child_chunk_sizes,
+#     child_chunk_sizes_overlap,
 #     documents_directory
 # )
 
-child_chroma_collection_name = load_child_vector_configuration(
-    embedding_model_id,
-    child_chunk_sizes,
-    child_chunk_sizes_overlap,
-    documents_directory
-)
+child_chroma_collection_name = "rwcm1sthalflocaltesting"
 
 print("Child chroma collection name: ", child_chroma_collection_name)
-
-# chroma_collection_parent = remote_db.get_or_create_collection(
-#     parent_chroma_collection_name
-# )
 
 chroma_collection_child = remote_db.get_or_create_collection(
     child_chroma_collection_name
 )
 
-# print(f"Are there embeddings inside collection {chroma_collection_parent.name} ?",
-#       f"count: {chroma_collection_parent.count()}")
-
 print(f"Are there embeddings inside collection {chroma_collection_child.name} ?",
       f"count: {chroma_collection_child.count()}")
 
-# vector_store_parent = ChromaVectorStore(
-#     chroma_collection=chroma_collection_parent
-# )
 vector_store_child = ChromaVectorStore(
     chroma_collection=chroma_collection_child,
     ssl=False
 )
 
-# Storage context parent
-# storage_context_parent = StorageContext.from_defaults(
-#     vector_store=vector_store_parent
-# )
 # Storage context
-storage_context_child = StorageContext.from_defaults(vector_store=vector_store_child)
-
-# Ingestion for parent documents
-# ingest_cache_parent = IngestionCache(
-#     cache=RedisCache.from_host_and_port(host=os.getenv("REDIS_URL"),
-#                                         port=os.getenv("REDIS_PORT")),
-#     collection=parent_chroma_collection_name,
-# )
-
-# necessary to create a collection for the first time
-# if chroma_collection_parent.count() == 0:
-
-#     pipeline = IngestionPipeline(
-#         transformations=[
-#             SentenceSplitter(chunk_size=parent_chunk_size,
-#                              chunk_overlap=parent_chunk_overlap),
-#             embed_model,
-#             ],
-#         vector_store=vector_store_parent,
-#         cache=ingest_cache_parent,
-#         # docstore=SimpleDocumentStore(),
-#     )
-#     pipeline.run(documents=documents)
-
-#     base_index = VectorStoreIndex.from_vector_store(
-#         vector_store=vector_store_parent,
-#         storage_context=storage_context_parent,
-#         embed_model=embed_model,
-#     )
-# else:
-#     # after collection was sucessfully created
-
-#     base_index = VectorStoreIndex.from_vector_store(
-#         vector_store_parent,
-#         storage_context=storage_context_parent,
-#         embed_model=embed_model
-#     )
-
-# base_retriever = base_index.as_retriever(similarity_top_k=2, llm=llm)
-
-
-# query_engine_base = RetrieverQueryEngine.from_args(base_retriever, llm=llm)
-
-# response = query_engine_base.query(
-#     "Can you tell me about the key domains of Real World Community Model"
-# )
-
-# print("testing")
-# print("Base retrieval, response: \n")
-# print(response)
-
-
-# Part II Chuck References: Smaller Child Chunks Reffering to Bigger Parent Chunk
+storage_context_child = StorageContext.from_defaults(
+    vector_store=vector_store_child
+)
 
 sub_chunk_sizes = [128, 256, 512]
 
@@ -237,7 +169,7 @@ ingest_cache_child = IngestionCache(
 # necessary to create a collection for the first time
 
 if chroma_collection_child.count() == 0:
-    print("Ingestion pipeline has started...")
+    print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Ingestion pipeline has started...")
     pipeline2 = CustomIngestionPipeline(
         transformations=[
             embed_model,
@@ -249,21 +181,12 @@ if chroma_collection_child.count() == 0:
     pipeline2.run(documents=all_nodes,
                   show_progress=True,
                   )
-print("Ingestion pipeline has finished...")
+    print("Ingestion pipeline has finished...")
+
 vector_index_chunk = VectorStoreIndex.from_vector_store(
     vector_store=vector_store_child,
     storage_context=storage_context_child,
     embed_model=embed_model,
-)
-
-# else:
-
-# after collection was sucessfully created
-vector_index_chunk = VectorStoreIndex.from_vector_store(
-    vector_store_child,
-    storage_context=storage_context_child,
-    embed_model=embed_model,
-    llm=llm
 )
 
 vector_retriever_chunk = vector_index_chunk.as_retriever(similarity_top_k=3,
@@ -276,17 +199,22 @@ retriever_chunk = RecursiveRetriever(
     verbose=True,
 )
 experiment.retrieval_strategy = "RecursiveRetriever - Parent Child"
+question = "Can you tell me about the key domains of Real World Community Model"
+# question = "Can you tell me more about the social system domain"
+nodes = retriever_chunk.retrieve(
+    question,
+)
+print("Parent retrievals, length: ", len(nodes))
 
-# nodes = retriever_chunk.retrieve(
-#     "Can you tell me about the key domains of Real World Community Model"
-# )
-# print("Parent retrievals, length: ", len(nodes))
+print("Displaying source node with parent retrieval: \n")
+for node in nodes:
+    print(node)
 
-# print("Displaying source node with parent retrieval")
-# for node in nodes:
-#     display_source_node(node, source_length=2000)
-
+prompt_template = get_template_based_on_template_id("default")
+message_template = format_message(question, prompt_template)
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
+response = query_engine_chunk.query(message_template)
+print("Response: ", response)
 
 
 def generate_response_based_on_vector_embeddings_with_debt(question: str):

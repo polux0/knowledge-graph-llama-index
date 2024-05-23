@@ -42,8 +42,13 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 
 # Constants
 
-chroma_collection_name = "summaries-system-overview"
-redis_namespace = "parent-documents-system-overview"
+# Production ones
+# chroma_collection_name = "summaries-system-overview"
+# redis_namespace = "parent-documents-system-overview"
+# Local ones
+chroma_collection_name = "MRIrwcm1sthalflocaltesting"
+redis_namespace = "parent-documents-MRIrwcm1sthalflocaltesting"
+
 chunk_size = 2048
 chunk_overlap = 518
 
@@ -87,8 +92,8 @@ redis_store = RedisStore(
 )
 
 # Get the documents
-documents_directory = "../data/documentation"
-# documents_directory = "../data/real_world_community_model_1st_half"
+# documents_directory = "../data/documentation"
+documents_directory = "../data/real_world_community_model_1st_half"
 all_documents = load_documents_langchain(documents_directory)
 
 # Split the documents into chunks
@@ -134,7 +139,7 @@ keys = list(redis_store.yield_keys(prefix=pattern))
 # See if we have already created summaries for this collection
 # If no, create them
 if chroma_collection.count() == 0 and len(keys) == 0:
-    print("Collection not found, creating embeddings...")
+    print("MRI Collection not found, creating embeddings...")
     summaries = chain.batch(documents, {"max_concurrency": 2})
     doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
     # Documents linked to summaries
@@ -148,7 +153,7 @@ if chroma_collection.count() == 0 and len(keys) == 0:
     # for i, doc in enumerate(documents):
     #     doc.metadata[id_key] = doc_ids[i]
     #     retriever.vectorstore.add_documents(documents)
-    print("Embeddings created...")
+    print("MRI Embeddings created...")
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
