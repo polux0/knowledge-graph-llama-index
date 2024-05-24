@@ -167,20 +167,21 @@ pattern = f"{redis_namespace}*"
 keys = list(redis_store.yield_keys(prefix=pattern))
 # See if we have already created summaries for this collection
 # If no, create them
-if chroma_collection.count() == 0 and len(keys) == 0:
-    print("MRI Collection not found, creating embeddings...")
-    # ChatGPT4o solution for processing document by document:
-    for document in documents:
-        print(f"Processing document {document.metadata}")
-        document_list = [document]
-        summaries = chain.batch(document_list, {"max_concurrency": 2})
-        doc_id = f"{redis_namespace}-{uuid.uuid4()}"
-        # Create summary document
-        summary_doc = Document(page_content=summaries[0], metadata={id_key: doc_id})
-        # Add to Chroma retriever
-        retriever.vectorstore.add_documents([summary_doc])
-        # Store the original document in Redis
-        retriever.docstore.mset([(doc_id, document)])
+
+# if chroma_collection.count() == 0 and len(keys) == 0:
+print("MRI Collection not found, creating embeddings...")
+# Solution for processing document by document:
+for document in documents:
+    print(f"Processing document {document.metadata}")
+    document_list = [document]
+    summaries = chain.batch(document_list, {"max_concurrency": 2})
+    doc_id = f"{redis_namespace}-{uuid.uuid4()}"
+    # Create summary document
+    summary_doc = Document(page_content=summaries[0], metadata={id_key: doc_id})
+    # Add to Chroma retriever
+    retriever.vectorstore.add_documents([summary_doc])
+    # Store the original document in Redis
+    retriever.docstore.mset([(doc_id, document)])
     # Our own solution
     # for document in documents:
     #     summaries = chain.batch(document, {"max_concurrency": 2})
