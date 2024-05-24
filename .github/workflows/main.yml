@@ -24,9 +24,9 @@ jobs:
           # Ensure required directories exist and set permissions
           mkdir -p /usr/share/snapshots/elasticsearch $HOME/es_snapshots/ $HOME/neo4j/data $HOME/neo4j/logs $HOME/neo4j/import $HOME/neo4j/plugins $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/redis/data $HOME/nebula/data/meta0 $HOME/nebula/logs/meta0 $HOME/nebula/data/storage0 $HOME/nebula/logs/storage0 $HOME/nebula/logs/graph
           # Set permissions for Elasticsearch snapshots
-          chmod -R 777 /usr/share/snapshots/elasticsearch $HOME/es_snapshots
-          # chown -R root:root $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/nebula
-          chown -R 1000:1000 $HOME/es_snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/nebula
+          chmod -R 777 /usr/share/snapshots/elasticsearch $HOME/es_snapshots $HOME/redis $HOME/redis/data
+          # chown -R root:root $HOME/elasticsearch/snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/redis/data $HOME/nebula
+          chown -R 1000:1000 $HOME/es_snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/redis/data $HOME/nebula
           # Make snapshot scripts executable
           chmod +x /home/auravana/app/scripts/elasticsearch/create_snapshot.sh /home/auravana/app/scripts/elasticsearch/setup_repository.sh /home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh /home/auravana/app/scripts/elasticsearch/restore_from_a_snapshot.sh
 
