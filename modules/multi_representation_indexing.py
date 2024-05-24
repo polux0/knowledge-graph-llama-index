@@ -1,5 +1,5 @@
 import uuid
-
+import re
 from data_loading import load_documents_langchain
 from embedding_model_modular_setup import initialize_embedding_model
 from format_message_with_prompt import format_message
@@ -9,6 +9,10 @@ from langchain_core.prompts import ChatPromptTemplate
 
 # from langchain_openai import ChatOpenAI
 from langchain_openai import OpenAIEmbeddings
+# from langchain_community.llms import OpenAI
+# from langchain_openai import OpenAI
+from langchain.chat_models import ChatOpenAI
+# from langchain_community.chat_models import ChatOpenAI
 from langchain_community.llms import HuggingFaceEndpoint
 
 # from langchain_community.llms import HuggingFaceEndpoint
@@ -33,6 +37,13 @@ import logging
 import sys
 
 
+def preprocess_text(text):
+    # Replace newline characters
+    text = text.replace('\n', ' ')
+    # Use a regular expression to find and replace all Unicode characters starting with \u
+    text = re.sub(r'\\u[0-9A-Fa-f]{4}', ' ', text)
+    return text
+
 # Setup logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
@@ -43,14 +54,17 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 # Constants
 
 # Production ones
-# chroma_collection_name = "summaries-system-overview"
-# redis_namespace = "parent-documents-system-overview"
+chroma_collection_name = "summaries-complete-documentation"
+redis_namespace = "parent-documents-summaries-complete-documentation"
 # Local ones
-chroma_collection_name = "MRIrwcm1sthalflocaltesting"
-redis_namespace = "parent-documents-MRIrwcm1sthalflocaltesting"
+# chroma_collection_name = "MRIsplitocaltesting"
+# redis_namespace = "parent-documents-MRIsplitlocaltesting"
 
+# Constant
 chunk_size = 2048
 chunk_overlap = 518
+model_name_id = "gpt-3.5-turbo"
+embedding_model_id = "openai-text-embedding-3-large"
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
@@ -58,7 +72,7 @@ elasticsearch_client = ElasticsearchClient()
 experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
-# Initialize large language model
+# Initialize large language model, for local testing
 llm = HuggingFaceEndpoint(
     repo_id=repository_id,
     # max_length=128,
@@ -66,12 +80,18 @@ llm = HuggingFaceEndpoint(
     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
 )
 
+# Initialize large language model, production
+llm = ChatOpenAI(
+    openai_api_key=os.getenv("OPENAI_API_KEY"),
+    model_name=model_name_id
+)
+
 # Initalize embeddings model
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
-experiment.llm_used = get_llm_based_on_model_name_id("default")
+experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 experiment.embed_model = initialize_embedding_model(embedding_model_id="openai-text-embedding-3-large")
 
 # Initialize chroma
@@ -93,9 +113,18 @@ redis_store = RedisStore(
 
 # Get the documents
 # documents_directory = "../data/documentation"
-documents_directory = "../data/real_world_community_model_1st_half"
-all_documents = load_documents_langchain(documents_directory)
+# documents_directory = "../data/real_world_community_model_1st_half"
+# documents_directory = "../data/documentation_optimal/lifestyle-system"
 
+# Production
+documents_directory = "../data/documentation_optimal"
+all_documents = load_documents_langchain(documents_directory)
+print("documents length: ", len(all_documents))
+
+
+# Preprocess the text to remove newline characters
+for doc in all_documents:
+    doc.page_content = preprocess_text(doc.page_content)
 # Split the documents into chunks
 text_splitter = RecursiveCharacterTextSplitter(
     chunk_size=chunk_size,
@@ -140,19 +169,36 @@ keys = list(redis_store.yield_keys(prefix=pattern))
 # If no, create them
 if chroma_collection.count() == 0 and len(keys) == 0:
     print("MRI Collection not found, creating embeddings...")
-    summaries = chain.batch(documents, {"max_concurrency": 2})
-    doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
-    # Documents linked to summaries
-    summary_docs = [
-        Document(page_content=s, metadata={id_key: doc_ids[i]})
-        for i, s in enumerate(summaries)
-    ]
-    retriever.vectorstore.add_documents(summary_docs)
-    retriever.docstore.mset(list(zip(doc_ids, documents)))
+    # ChatGPT4o solution for processing document by document:
+    for document in documents:
+        print(f"Processing document {document.metadata}")
+        document_list = [document]
+        summaries = chain.batch(document_list, {"max_concurrency": 2})
+        doc_id = f"{redis_namespace}-{uuid.uuid4()}"
+        # Create summary document
+        summary_doc = Document(page_content=summaries[0], metadata={id_key: doc_id})
+        # Add to Chroma retriever
+        retriever.vectorstore.add_documents([summary_doc])
+        # Store the original document in Redis
+        retriever.docstore.mset([(doc_id, document)])
+    # Our own solution
+    # for document in documents:
+    #     summaries = chain.batch(document, {"max_concurrency": 2})
+    #     doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
+    #     # Documents linked to summaries
+    #     summary_docs = [
+    #         Document(page_content=s, metadata={id_key: doc_ids[i]})
+    #         for i, s in enumerate(summaries)
+    #     ]
+    #     retriever.vectorstore.add_documents(summary_docs)
+    #     retriever.docstore.mset(list(zip(doc_ids, documents)))
+    # Our own solution
+
     # adding the original chunks to the vectorstore as well
     # for i, doc in enumerate(documents):
     #     doc.metadata[id_key] = doc_ids[i]
     #     retriever.vectorstore.add_documents(documents)
+    # Our own solution
     print("MRI Embeddings created...")
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
