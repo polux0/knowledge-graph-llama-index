@@ -6,6 +6,7 @@ from dotenv import load_dotenv
 from langchain_openai import OpenAIEmbeddings
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
 from langchain_openai import OpenAIEmbeddings
+from langchain_cohere import CohereEmbeddings
 
 from data_loading import load_documents_langchain
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -49,7 +50,7 @@ embedding_model_id = "openai-text-embedding-3-large"
 chroma_collection_name = "raptor-complete-documentation-production"
 
 # Initialize LLM
-repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
+# repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 # llm = HuggingFaceEndpoint(
 #     repo_id=repository_id,
 #     temperature=0.1,
@@ -73,12 +74,14 @@ llm = ChatOpenAI(
 #     task="feature-extraction",
 #     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
 # )
+# embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Initialize ChromaDB
 chroma_client = chromadb.HttpClient(
     host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
+chroma_client.delete_collection(name=chroma_collection_name)
 # Get or create Chroma collection
 chroma_collection = chroma_client.get_or_create_collection(
     chroma_collection_name
@@ -94,15 +97,14 @@ chroma_collection = chroma_client.get_or_create_collection(
 # name of the folders: 
 folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
            'social-system', 'system-overview']
+# folders = ['lifestyle-system']
+
 
 for i in range(len(folders)):
     documents_directory = f"../data/documentation_optimal/{folders[i]}"
-    print(documents_directory)
 
     documents_pdf = load_documents_langchain(documents_directory)
-    # print("Documents: ", documents_pdf)
     documents_text = [d.page_content for d in documents_pdf]
-    # print("Documents.text: ", documents_text)
 
     # Split the documents into chunks
     chunk_size = 2000
@@ -121,25 +123,22 @@ for i in range(len(folders)):
 
     text_splitter = RecursiveCharacterTextSplitter(
         chunk_size=chunk_size,
-        chunk_overlap=chunk_overlap 
+        chunk_overlap=chunk_overlap
         )
-    documents = text_splitter.split_documents(documents_pdf)
-    # print("documents length: %s" % len(documents))
-    # print("documents splitted: ", documents)
-    # for document in documents:
-    #     print(document.page_content)
 
     texts_split = text_splitter.split_text(concatenated_content)
-    # Understand if collection is empty
-    # if chroma_collection.count() == 0:
+    # for text_split in texts_split:
+        # Understand if collection is empty
+        # if chroma_collection.count() == 0:
     print("Raptor collection not found, creating embeddings...")
-    # Build a tree
-    # Was before
-    # leaf_texts = documents_text
-    # Testing now
-    leaf_texts = texts_split
-    results = recursive_embed_cluster_summarize(leaf_texts, level=1, n_levels=3)
 
+    # leaf_texts = [text_split]
+    leaf_texts = texts_split
+    results = recursive_embed_cluster_summarize(
+        leaf_texts,
+        level=1,
+        n_levels=3
+    )
     # Initialize all_texts with leaf_texts
     all_texts = leaf_texts.copy()
 
@@ -157,6 +156,7 @@ for i in range(len(folders)):
         texts=all_texts,
         embedding=embeddings_model
         )
+print("Complete documentation embeddings created...")
 # else:
 vectorstore = Chroma(
     client=chroma_client,
