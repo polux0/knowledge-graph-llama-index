@@ -8,7 +8,7 @@ from langchain_core.output_parsers import StrOutputParser
 from sklearn.mixture import GaussianMixture
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
 from langchain_openai import OpenAIEmbeddings
-from langchain.chat_models import ChatOpenAI
+from langchain_openai import ChatOpenAI
 from langchain_cohere import CohereEmbeddings
 from langchain_community.llms import HuggingFaceEndpoint
 from ratelimit import limits, sleep_and_retry
@@ -258,7 +258,7 @@ def embed_cluster_texts(texts):
     Returns:
     - pandas.DataFrame: A DataFrame containing the original texts, their embeddings, and the assigned cluster labels.
     """
-    text_embeddings_np = embed(texts)  # Generate embeddings
+    text_embeddings_np = embed_documents_with_limit(texts)  # Generate embeddings
     cluster_labels = perform_clustering(
         text_embeddings_np, 10, 0.1
     )  # Perform clustering on the embeddings
