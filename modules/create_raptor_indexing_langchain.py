@@ -26,7 +26,6 @@ from sklearn.mixture import GaussianMixture
 import pandas as pd
 # Chroma
 from langchain_community.vectorstores import Chroma
-# from langchain.chat_models import ChatOpenAI
 # Load environment variables
 load_dotenv()
 # Rag Chain ( Langchain )
@@ -48,6 +47,14 @@ model_name_id = "gpt-3.5-turbo"
 embedding_model_id = "openai-text-embedding-3-large"
 # chroma_collection_name = "raptor-locll-test"
 chroma_collection_name = "raptor-complete-documentation-production"
+
+# Split list into parts
+def split_list_into_parts(lst, n_parts):
+    """
+    Splits a list into n_parts roughly equal parts.
+    """
+    for i in range(0, len(lst), n_parts):
+        yield lst[i:i + n_parts]
 
 # Initialize LLM
 # repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
@@ -97,7 +104,7 @@ chroma_collection = chroma_client.get_or_create_collection(
 # name of the folders: 
 folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
            'social-system', 'system-overview']
-# folders = ['lifestyle-system']
+# folders = ['system-overview']
 
 
 for i in range(len(folders)):
@@ -127,35 +134,41 @@ for i in range(len(folders)):
         )
 
     texts_split = text_splitter.split_text(concatenated_content)
+    # Add batching: 
+    batch_size = 10  # Adjust batch size according to your needs
+    texts_batches = list(split_list_into_parts(texts_split, batch_size))
+    # one by one
     # for text_split in texts_split:
         # Understand if collection is empty
         # if chroma_collection.count() == 0:
-    print("Raptor collection not found, creating embeddings...")
+    # batch by batch: 
+    for batch in texts_batches:
+        print("Raptor collection not found, creating embeddings...")
 
-    # leaf_texts = [text_split]
-    leaf_texts = texts_split
-    results = recursive_embed_cluster_summarize(
-        leaf_texts,
-        level=1,
-        n_levels=3
-    )
-    # Initialize all_texts with leaf_texts
-    all_texts = leaf_texts.copy()
-
-    # Iterate through the results to extract summaries from each level and add them to all_texts
-    for level in sorted(results.keys()):
-        # Extract summaries from the current level's DataFrame
-        summaries = results[level][1]["summaries"].tolist()
-        # Extend all_texts with the summaries from the current level
-        all_texts.extend(summaries)
-
-    # Use all_texts to build the vectorstore with Chroma
-    vectorstore = Chroma.from_texts(
-        client=chroma_client,
-        collection_name=chroma_collection_name,
-        texts=all_texts,
-        embedding=embeddings_model
+        # leaf_texts = [text_split]
+        leaf_texts = batch
+        results = recursive_embed_cluster_summarize(
+            leaf_texts,
+            level=1,
+            n_levels=3
         )
+        # Initialize all_texts with leaf_texts
+        all_texts = leaf_texts.copy()
+
+        # Iterate through the results to extract summaries from each level and add them to all_texts
+        for level in sorted(results.keys()):
+            # Extract summaries from the current level's DataFrame
+            summaries = results[level][1]["summaries"].tolist()
+            # Extend all_texts with the summaries from the current level
+            all_texts.extend(summaries)
+
+        # Use all_texts to build the vectorstore with Chroma
+        vectorstore = Chroma.from_texts(
+            client=chroma_client,
+            collection_name=chroma_collection_name,
+            texts=all_texts,
+            embedding=embeddings_model
+            )
 print("Complete documentation embeddings created...")
 # else:
 vectorstore = Chroma(
