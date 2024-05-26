@@ -25,7 +25,7 @@ from sklearn.mixture import GaussianMixture
 import pandas as pd
 # Chroma
 from langchain_community.vectorstores import Chroma
-from langchain.chat_models import ChatOpenAI
+# from langchain.chat_models import ChatOpenAI
 # Load environment variables
 load_dotenv()
 # Rag Chain ( Langchain )
@@ -37,6 +37,7 @@ from langchain_core.output_parsers import StrOutputParser
 import chromadb
 # Question and Answer chain
 from langchain.chains import RetrievalQA
+from langchain_openai import ChatOpenAI
 
 
 # Constants
