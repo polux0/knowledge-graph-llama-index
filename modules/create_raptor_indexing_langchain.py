@@ -90,42 +90,48 @@ chroma_collection = chroma_client.get_or_create_collection(
 # Local
 # documents_directory = "../data/test"
 # Production
-documents_directory = "../data/documentation_optimal"
 
-documents_pdf = load_documents_langchain(documents_directory)
-# print("Documents: ", documents_pdf)
-documents_text = [d.page_content for d in documents_pdf]
-# print("Documents.text: ", documents_text)
+# name of the folders: 
+folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
+           'social-system', 'system-overview']
 
-# Split the documents into chunks
-chunk_size = 2000
-chunk_overlap = 1000
+for i in range(len(folders)):
+    documents_directory = f"../data/documentation_optimal/{folders[i]}"
+    print(documents_directory)
 
-# Concatante the content, as it's list of strings
-d_sorted = sorted(documents_pdf, key=lambda x: x.metadata["source"])
-d_reversed = list(reversed(d_sorted))
-concatenated_content = "\n\n\n --- \n\n\n".join(
-    [doc.page_content for doc in d_reversed]
-)
+    documents_pdf = load_documents_langchain(documents_directory)
+    # print("Documents: ", documents_pdf)
+    documents_text = [d.page_content for d in documents_pdf]
+    # print("Documents.text: ", documents_text)
 
-# text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-#     chunk_size=chunk_size, chunk_overlap=chunk_overlap
-# )
+    # Split the documents into chunks
+    chunk_size = 2000
+    chunk_overlap = 1000
 
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=chunk_size,
-    chunk_overlap=chunk_overlap 
+    # Concatante the content, as it's list of strings
+    d_sorted = sorted(documents_pdf, key=lambda x: x.metadata["source"])
+    d_reversed = list(reversed(d_sorted))
+    concatenated_content = "\n\n\n --- \n\n\n".join(
+        [doc.page_content for doc in d_reversed]
     )
-documents = text_splitter.split_documents(documents_pdf)
-# print("documents length: %s" % len(documents))
-# print("documents splitted: ", documents)
-# for document in documents:
-#     print(document.page_content)
 
-texts_split = text_splitter.split_text(concatenated_content)
-# Understand if collection is empty
-if chroma_collection.count() == 0:
+    # text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+    #     chunk_size=chunk_size, chunk_overlap=chunk_overlap
+    # )
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap 
+        )
+    documents = text_splitter.split_documents(documents_pdf)
+    # print("documents length: %s" % len(documents))
+    # print("documents splitted: ", documents)
     # for document in documents:
+    #     print(document.page_content)
+
+    texts_split = text_splitter.split_text(concatenated_content)
+    # Understand if collection is empty
+    # if chroma_collection.count() == 0:
     print("Raptor collection not found, creating embeddings...")
     # Build a tree
     # Was before
@@ -151,13 +157,13 @@ if chroma_collection.count() == 0:
         texts=all_texts,
         embedding=embeddings_model
         )
-else:
-    vectorstore = Chroma(
-        client=chroma_client,
-        collection_name=chroma_collection_name,
-        embedding_function=embeddings_model
-    )
-    print("Raptor collection found, loading data from it...")
+# else:
+vectorstore = Chroma(
+    client=chroma_client,
+    collection_name=chroma_collection_name,
+    embedding_function=embeddings_model
+)
+print("Raptor collection found, loading data from it...")
 
 retriever = vectorstore.as_retriever()
 # TODO: Play around with RetrievalQA chain once we start loading embeddings from remote db
