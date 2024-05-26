@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 #Embeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
+from langchain_openai import OpenAIEmbeddings
 
 from data_loading import load_documents_langchain
 from langchain_text_splitters import RecursiveCharacterTextSplitter
@@ -24,6 +25,7 @@ from sklearn.mixture import GaussianMixture
 import pandas as pd
 # Chroma
 from langchain_community.vectorstores import Chroma
+from langchain.chat_models import ChatOpenAI
 # Load environment variables
 load_dotenv()
 # Rag Chain ( Langchain )
@@ -37,24 +39,32 @@ import chromadb
 from langchain.chains import RetrievalQA
 
 
-
 # Constants
 chunk_size = 2000
 chunk_overlap = 1000
-chroma_collection_name = "raptor-social-system-local-actual"
+model_name_id = "gpt-3.5-turbo"
+embedding_model_id = "openai-text-embedding-3-large"
+# chroma_collection_name = "raptor-locll-test"
+chroma_collection_name = "raptor-complete-documentation-production"
 
 # Initialize LLM
 repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
-llm = HuggingFaceEndpoint(
-    repo_id=repository_id,
-    temperature=0.1,
-    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+# llm = HuggingFaceEndpoint(
+#     repo_id=repository_id,
+#     temperature=0.1,
+#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+# )
+
+# Initialize large language model, production
+llm = ChatOpenAI(
+    openai_api_key=os.getenv("OPENAI_API_KEY"),
+    model_name=model_name_id
 )
 # Initialize Embedding Model
 # TODO: This should be dynamic
 
 # OpenAI embeddings
-embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
+# embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Hugging face Embeddings
 # embeddings_model = HuggingFaceEndpointEmbeddings(
@@ -62,6 +72,7 @@ embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 #     task="feature-extraction",
 #     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
 # )
+embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Initialize ChromaDB
 chroma_client = chromadb.HttpClient(
@@ -72,9 +83,14 @@ chroma_collection = chroma_client.get_or_create_collection(
     chroma_collection_name
 )
 # Get the documents
-documents_directory = "../data/documentation"
+# documents_directory = "../data/documentation"
 # documents_directory = "../data/real_world_community_model_1st_half"
 # documents_directory = "../data/flow_and_rwcm"
+# Local
+# documents_directory = "../data/test"
+# Production
+documents_directory = "../data/documentation_optimal"
+
 documents_pdf = load_documents_langchain(documents_directory)
 # print("Documents: ", documents_pdf)
 documents_text = [d.page_content for d in documents_pdf]
@@ -91,16 +107,30 @@ concatenated_content = "\n\n\n --- \n\n\n".join(
     [doc.page_content for doc in d_reversed]
 )
 
-text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
-    chunk_size=chunk_size, chunk_overlap=chunk_overlap
-)
+# text_splitter = RecursiveCharacterTextSplitter.from_tiktoken_encoder(
+#     chunk_size=chunk_size, chunk_overlap=chunk_overlap
+# )
 
-# texts_split = text_splitter.split_text(concatenated_content)
+text_splitter = RecursiveCharacterTextSplitter(
+    chunk_size=chunk_size,
+    chunk_overlap=chunk_overlap 
+    )
+documents = text_splitter.split_documents(documents_pdf)
+# print("documents length: %s" % len(documents))
+# print("documents splitted: ", documents)
+# for document in documents:
+#     print(document.page_content)
+
+texts_split = text_splitter.split_text(concatenated_content)
 # Understand if collection is empty
 if chroma_collection.count() == 0:
+    # for document in documents:
     print("Raptor collection not found, creating embeddings...")
     # Build a tree
-    leaf_texts = documents_text
+    # Was before
+    # leaf_texts = documents_text
+    # Testing now
+    leaf_texts = texts_split
     results = recursive_embed_cluster_summarize(leaf_texts, level=1, n_levels=3)
 
     # Initialize all_texts with leaf_texts
