@@ -8,11 +8,15 @@ from langchain_core.output_parsers import StrOutputParser
 from sklearn.mixture import GaussianMixture
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
 from langchain_openai import OpenAIEmbeddings
+from langchain.chat_models import ChatOpenAI
+from langchain_cohere import CohereEmbeddings
 from langchain_community.llms import HuggingFaceEndpoint
+from ratelimit import limits, sleep_and_retry
 import os
 from dotenv import load_dotenv
 
 load_dotenv()
+model_name_id = "gpt-3.5-turbo"
 
 # Embeddings model
 # embeddings_model = HuggingFaceEndpointEmbeddings(
@@ -22,13 +26,18 @@ load_dotenv()
 # ) 
 # Embeddings model
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
+# embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
+llm = ChatOpenAI(
+    openai_api_key=os.getenv("OPENAI_API_KEY"),
+    model_name=model_name_id
+)
 # Large language model
 repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
-llm = HuggingFaceEndpoint(
-    repo_id=repository_id,
-    temperature=0.1,
-    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-)
+# llm = HuggingFaceEndpoint(
+#     repo_id=repository_id,
+#     temperature=0.1,
+#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+# )
 
 RANDOM_SEED = 224  # Fixed seed for reproducibility
 
@@ -196,6 +205,28 @@ def perform_clustering(
     return all_local_clusters
 
 
+CALLS = 10
+MINUTE = 60
+
+
+@sleep_and_retry
+@limits(calls=CALLS, period=MINUTE)
+def embed_documents_with_limit(texts):
+    """
+    Generate embeddings for a list of text documents with rate limiting.
+
+    This function assumes the existence of an `embeddings_model` object with a method `embed_documents`
+    that takes a list of texts and returns their embeddings.
+
+    Parameters:
+    - texts: List[str], a list of text documents to be embedded.
+
+    Returns:
+    - List: A list of embeddings for the given text documents.
+    """
+    return embeddings_model.embed_documents(texts)
+
+
 def embed(texts):
     """
     Generate embeddings for a list of text documents.
@@ -248,6 +279,7 @@ def fmt_txt(df: pd.DataFrame) -> str:
     Returns:
     - A single string where all text documents are joined by a specific delimiter.
     """
+    print("fmt_txt debugging, df[`text`]:" + df["text"])
     unique_txt = df["text"].tolist()
     return "--- --- \n --- --- ".join(unique_txt)
 
