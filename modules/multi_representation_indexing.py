@@ -199,7 +199,9 @@ if chroma_collection.count() == 0 and len(keys) == 0:
         #     doc.metadata[id_key] = doc_ids[i]
         #     retriever.vectorstore.add_documents(documents)
         # Our own solution
-    print("MRI Embeddings created...")
+    print("MRI Embeddings have been already created...")
+    print(f"Are there embeddings inside collection {chroma_collection.name} ?",
+      f"count: {chroma_collection.count()}")
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
