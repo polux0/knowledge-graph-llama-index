@@ -7,15 +7,10 @@ from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 
-# from langchain_openai import ChatOpenAI
 from langchain_openai import OpenAIEmbeddings
-# from langchain_community.llms import OpenAI
-# from langchain_openai import OpenAI
-from langchain.chat_models import ChatOpenAI
-# from langchain_community.chat_models import ChatOpenAI
 from langchain_community.llms import HuggingFaceEndpoint
+from langchain_community.chat_models import ChatOpenAI
 
-# from langchain_community.llms import HuggingFaceEndpoint
 import os
 from langchain_community.storage import RedisStore
 from langchain_cohere import CohereEmbeddings
