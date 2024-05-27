@@ -95,7 +95,6 @@ experiment.embed_model = initialize_embedding_model(embedding_model_id="openai-t
 chroma_client = chromadb.HttpClient(
     host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
-
 # TODO delete after testing
 # chroma_client.delete_collection(name=chroma_collection_name)
 
