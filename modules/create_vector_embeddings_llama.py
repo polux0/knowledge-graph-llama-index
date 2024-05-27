@@ -173,20 +173,20 @@ ingest_cache_child = IngestionCache(
 
 # necessary to create a collection for the first time
 
-# if chroma_collection_child.count() == 0:
-print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!Ingestion pipeline has started...")
-pipeline2 = CustomIngestionPipeline(
-    transformations=[
-        embed_model,
-        ],
-    vector_store=vector_store_child,
-    cache=ingest_cache_child,
-    # docstore=SimpleDocumentStore(),
-)
-pipeline2.run(
-    documents=all_nodes,
-    show_progress=True,
-)
+if chroma_collection_child.count() == 0:
+    print("!Ingestion pipeline has started...")
+    pipeline2 = CustomIngestionPipeline(
+        transformations=[
+            embed_model,
+            ],
+        vector_store=vector_store_child,
+        cache=ingest_cache_child,
+        # docstore=SimpleDocumentStore(),
+    )
+    pipeline2.run(
+        documents=all_nodes,
+        show_progress=True,
+    )
 print("Ingestion pipeline has finished...")
 
 vector_index_chunk = VectorStoreIndex.from_vector_store(
@@ -233,14 +233,12 @@ def generate_response_based_on_vector_embeddings_with_debt(question: str):
     )
     print("Template received, vector embeddings:", prompt_template)
     message_template = format_message(question, prompt_template)
-    print("!!!!!!!!!!!!!!!!Final question, vetor embeddings:", message_template)
+    print("!Final question, vetor embeddings:", message_template)
     response = query_engine_chunk.query(message_template)
-    # logging.info(f"Logging the response nodes from a vector database: {response.source_nodes}")
     experiment.response = str(response)
     experiment.source_agent = "VDBAgent"
 
     current_time = datetime.now(timezone.utc)
-
     # Format the current time as an ISO 8601 string, including milliseconds
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
 

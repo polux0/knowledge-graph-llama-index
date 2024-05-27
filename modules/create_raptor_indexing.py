@@ -23,6 +23,10 @@ from prompts import get_template_based_on_template_id
 load_dotenv()
 
 # constants
+# local
+# embedding_model_id = "default"
+# large_language_model_id = "default"
+# production
 embedding_model_id = "openai-text-embedding-3-large"
 large_language_model_id = "gpt-3.5-turbo"
 chunk_size = 2000
@@ -42,55 +46,61 @@ remote_db = chromadb.HttpClient(
 
 documents_directory = "../data/documentation"
 # documents_directory = "../data/real_world_community_model_1st_half"
-documents = load_documents(documents_directory)
 
-# Logging variables
-experiment.chunk_size = chunk_size
+folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
+           'social-system', 'system-overview']
 
-# TODO delete after testing
-# remote_db.delete_collection(name=str("raptor-whole-documentation"))
-collection = remote_db.get_or_create_collection("raptor-whole-documentation")
-vector_store = ChromaVectorStore(chroma_collection=collection)
+for i in range(len(folders)):
+    documents_directory = f"../data/documentation_optimal/{folders[i]}"
+    documents = load_documents(documents_directory)
 
-embed_model = initialize_embedding_model(embedding_model_id=embedding_model_id)
-llm = initialize_llm(model_name_id=large_language_model_id)
+    # Logging variables
+    experiment.chunk_size = chunk_size
 
-# Logging variables
-experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
-    embedding_model_id
-)
-experiment.llm_used = get_llm_based_on_model_name_id(large_language_model_id)
+    # TODO delete after testing
+    # remote_db.delete_collection(name=str("raptor-whole-documentation"))
+    collection = remote_db.get_or_create_collection("raptor-whole-documentation")
+    vector_store = ChromaVectorStore(chroma_collection=collection)
 
+    embed_model = initialize_embedding_model(embedding_model_id=embedding_model_id)
+    llm = initialize_llm(model_name_id=large_language_model_id)
 
-# Configuring summarization
-summary_prompt = (
-    "As a professional summarizer, create a concise and comprehensive summary"
-    "of the provided text, be it an article, post, conversation, or passage"
-    "with as much detail as possible."
-)
-
-summary_module = SummaryModule(
-    llm=llm, summary_prompt=summary_prompt, num_workers=2
-)
-
-if collection.count() == 0:
-    print(f"Collection {collection} not found, creating and generating embeddings... ")
-    raptor_pack = RaptorPack(
-        documents,
-        embed_model=embed_model,
-        summary_module=summary_module,
-        llm=llm,
-        vector_store=vector_store,
-        similarity_top_k=5,
-        mode=retriever_mode,  # Possibilities are compact and tree traveral
-        transformations=[
-            SentenceSplitter(
-                chunk_size=chunk_size,
-                chunk_overlap=chunk_overlap
-            )
-        ]
+    # Logging variables
+    experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
+        embedding_model_id
     )
-    print("Raptor finished with process of embeddings creation...")
+    experiment.llm_used = get_llm_based_on_model_name_id(large_language_model_id)
+
+
+    # Configuring summarization
+    summary_prompt = (
+        "As a professional summarizer, create a concise and comprehensive summary"
+        "of the provided text, be it an article, post, conversation, or passage"
+        "with as much detail as possible."
+    )
+
+    summary_module = SummaryModule(
+        llm=llm, summary_prompt=summary_prompt, num_workers=2
+    )
+
+    if collection.count() == 0:
+        print(f"Collection {collection} not found, creating and generating embeddings... ")
+        raptor_pack = RaptorPack(
+            documents,
+            embed_model=embed_model,
+            summary_module=summary_module,
+            llm=llm,
+            vector_store=vector_store,
+            similarity_top_k=5,
+            mode=retriever_mode,  # Possibilities are compact and tree traveral
+            transformations=[
+                SentenceSplitter(
+                    chunk_size=chunk_size,
+                    chunk_overlap=chunk_overlap
+                )
+            ]
+        )
+        print("Raptor finished with process of embeddings creation...")
 # Retrieval
 retriever = RaptorRetriever(
     [],
@@ -98,7 +108,7 @@ retriever = RaptorRetriever(
     llm=llm,  # used for generating summaries
     vector_store=vector_store,  # used for storage
     similarity_top_k=5,  # top k for each layer, or overall top-k for collapsed
-    mode=retriever_mode,  # sets default mode
+    mode="compact",  # sets default mode
 )
 # Logging variables
 experiment.retrieval_strategy = f"RaptorRetriever, mode: {retriever_mode}"
