@@ -73,12 +73,12 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Initialize large language model, for local testing
-llm = HuggingFaceEndpoint(
-    repo_id=repository_id,
-    # max_length=128,
-    temperature=0.1,
-    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-)
+# llm = HuggingFaceEndpoint(
+#     repo_id=repository_id,
+#     # max_length=128,
+#     temperature=0.1,
+#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+# )
 
 # Initialize large language model, production
 llm = ChatOpenAI(
@@ -104,6 +104,7 @@ chroma_client = chromadb.HttpClient(
 
 # Logging variables
 experiment.chunk_size = chunk_size
+experiment.chunk_overlap = chunk_overlap
 
 # The storage layer for the parent documents
 redis_store = RedisStore(
@@ -119,8 +120,6 @@ redis_store = RedisStore(
 # Production
 documents_directory = "../data/documentation_optimal"
 all_documents = load_documents_langchain(documents_directory)
-print("documents length: ", len(all_documents))
-
 
 # Preprocess the text to remove newline characters
 for doc in all_documents:
@@ -168,38 +167,38 @@ keys = list(redis_store.yield_keys(prefix=pattern))
 # See if we have already created summaries for this collection
 # If no, create them
 
-# if chroma_collection.count() == 0 and len(keys) == 0:
-print("MRI Collection not found, creating embeddings...")
-# Solution for processing document by document:
-for document in documents:
-    print(f"Processing document {document.metadata}")
-    document_list = [document]
-    summaries = chain.batch(document_list, {"max_concurrency": 2})
-    doc_id = f"{redis_namespace}-{uuid.uuid4()}"
-    # Create summary document
-    summary_doc = Document(page_content=summaries[0], metadata={id_key: doc_id})
-    # Add to Chroma retriever
-    retriever.vectorstore.add_documents([summary_doc])
-    # Store the original document in Redis
-    retriever.docstore.mset([(doc_id, document)])
-    # Our own solution
-    # for document in documents:
-    #     summaries = chain.batch(document, {"max_concurrency": 2})
-    #     doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
-    #     # Documents linked to summaries
-    #     summary_docs = [
-    #         Document(page_content=s, metadata={id_key: doc_ids[i]})
-    #         for i, s in enumerate(summaries)
-    #     ]
-    #     retriever.vectorstore.add_documents(summary_docs)
-    #     retriever.docstore.mset(list(zip(doc_ids, documents)))
-    # Our own solution
+if chroma_collection.count() == 0 and len(keys) == 0:
+    print("MRI Collection not found, creating embeddings...")
+    # Solution for processing document by document:
+    for document in documents:
+        print(f"Processing document {document.metadata}")
+        document_list = [document]
+        summaries = chain.batch(document_list, {"max_concurrency": 2})
+        doc_id = f"{redis_namespace}-{uuid.uuid4()}"
+        # Create summary document
+        summary_doc = Document(page_content=summaries[0], metadata={id_key: doc_id})
+        # Add to Chroma retriever
+        retriever.vectorstore.add_documents([summary_doc])
+        # Store the original document in Redis
+        retriever.docstore.mset([(doc_id, document)])
+        # Our own solution
+        # for document in documents:
+        #     summaries = chain.batch(document, {"max_concurrency": 2})
+        #     doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
+        #     # Documents linked to summaries
+        #     summary_docs = [
+        #         Document(page_content=s, metadata={id_key: doc_ids[i]})
+        #         for i, s in enumerate(summaries)
+        #     ]
+        #     retriever.vectorstore.add_documents(summary_docs)
+        #     retriever.docstore.mset(list(zip(doc_ids, documents)))
+        # Our own solution
 
-    # adding the original chunks to the vectorstore as well
-    # for i, doc in enumerate(documents):
-    #     doc.metadata[id_key] = doc_ids[i]
-    #     retriever.vectorstore.add_documents(documents)
-    # Our own solution
+        # adding the original chunks to the vectorstore as well
+        # for i, doc in enumerate(documents):
+        #     doc.metadata[id_key] = doc_ids[i]
+        #     retriever.vectorstore.add_documents(documents)
+        # Our own solution
     print("MRI Embeddings created...")
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
@@ -220,10 +219,6 @@ print("Printing final answer", response)
 def generate_response_based_on_multirepresentation_indexing_with_debt(question: str):
 
     experiment.question = question
-    # prompt_template = get_template_based_on_template_id("default")
-    # experiment.prompt_template = (
-    #     get_template_based_on_template_id("default"),
-    # )
     experiment.prompt_template = " "
     qa_chain = RetrievalQA.from_chain_type(llm,
                                            retriever=retriever,
