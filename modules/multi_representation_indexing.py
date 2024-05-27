@@ -49,15 +49,15 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 # Constants
 
 # Production ones
-# chroma_collection_name = "summaries-complete-documentation"
-# redis_namespace = "parent-documents-summaries-complete-documentation"
+chroma_collection_name = "summaries-complete-documentation1"
+redis_namespace = "parent-documents-summaries-complete-documentation1"
 # Local ones
-chroma_collection_name = "MRITESTTTTTTTTTTT1"
-redis_namespace = "parent-documents-MRITESTTTTTTTTTTT1"
+# chroma_collection_name = "MRITESTTTTTTTTTTT1"
+# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT1"
 # Local
-documents_directory = "../data/documentation_optimal/test1"
+# documents_directory = "../data/documentation_optimal/test1"
 # Production
-# documents_directory = "../data/documentation_optimal"
+documents_directory = "../data/documentation_optimal"
 chunk_size = 2048
 chunk_overlap = 518
 model_name_id = "gpt-3.5-turbo"
