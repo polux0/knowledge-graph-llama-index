@@ -12,21 +12,30 @@ from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.chat_models import ChatOpenAI
 
 import os
+
+# Redis related
 from langchain_community.storage import RedisStore
+from langchain_community.utilities.redis import get_client
+from redis import Redis
+
 from langchain_cohere import CohereEmbeddings
 from langchain_community.vectorstores import Chroma
 from langchain.retrievers.multi_vector import MultiVectorRetriever
 from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 import chromadb
+
 # Elasticsearch
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from datetime import datetime, timezone
+
 # Prompts
 from large_language_model_setup import get_llm_based_on_model_name_id
 from prompts import get_template_based_on_template_id
+
 # Langchain
 from langchain_text_splitters import RecursiveCharacterTextSplitter
+
 # Logging
 import logging
 import sys
@@ -34,10 +43,11 @@ import sys
 
 def preprocess_text(text):
     # Replace newline characters
-    text = text.replace('\n', ' ')
+    text = text.replace("\n", " ")
     # Use a regular expression to find and replace all Unicode characters starting with \u
-    text = re.sub(r'\\u[0-9A-Fa-f]{4}', ' ', text)
+    text = re.sub(r"\\u[0-9A-Fa-f]{4}", " ", text)
     return text
+
 
 # Setup logging
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
@@ -49,11 +59,11 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 # Constants
 
 # Production ones
-chroma_collection_name = "summaries-complete-documentation1"
-redis_namespace = "parent-documents-summaries-complete-documentation1"
+chroma_collection_name = "summaries-complete-documentation2"
+redis_namespace = "parent-documents-summaries-complete-documentation2"
 # Local ones
-# chroma_collection_name = "MRITESTTTTTTTTTTT1"
-# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT1"
+# chroma_collection_name = "MRITESTTTTTTTTTTT2"
+# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT2"
 # Local
 # documents_directory = "../data/documentation_optimal/test1"
 # Production
@@ -78,10 +88,7 @@ experiment.created_at = current_time.isoformat(timespec="milliseconds")
 # )
 
 # Initialize large language model, production
-llm = ChatOpenAI(
-    openai_api_key=os.getenv("OPENAI_API_KEY"),
-    model_name=model_name_id
-)
+llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name=model_name_id)
 
 # Initalize embeddings model
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
@@ -89,7 +96,9 @@ embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
-experiment.embed_model = initialize_embedding_model(embedding_model_id="openai-text-embedding-3-large")
+experiment.embed_model = initialize_embedding_model(
+    embedding_model_id="openai-text-embedding-3-large"
+)
 
 # Initialize chroma
 chroma_client = chromadb.HttpClient(
@@ -102,12 +111,22 @@ chroma_client = chromadb.HttpClient(
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
 
-# The storage layer for the parent documents
-redis_store = RedisStore(
-    redis_url=f'redis://{os.getenv("REDIS_URL")}:{os.getenv("REDIS_PORT")}',
-    namespace=redis_namespace
-)
+# redis_client = f'redis://{os.getenv("REDIS_USERNAME")}:{os.getenv("REDIS_PASSWORD")}@{os.getenv("REDIS_URL")}:{os.getenv("REDIS_PORT")}'
+# Redis client
+# client = get_client(redis_client)
 
+redis_client = Redis(
+    host=os.getenv("REDIS_URL"),
+    port=os.getenv("REDIS_PORT"),
+    password=os.getenv("REDIS_PASSWORD"),
+)
+print("redis_client: ", redis_client)
+# The storage layer for the parent documents
+# redis_store = RedisStore(
+#     redis_url=f'redis://{os.getenv("REDIS_URL")}:{os.getenv("REDIS_PORT")}',
+#     namespace=redis_namespace
+# )
+redis_store = RedisStore(client=redis_client, namespace=redis_namespace)
 all_documents = load_documents_langchain(documents_directory)
 
 # Preprocess the text to remove newline characters
@@ -115,9 +134,8 @@ for doc in all_documents:
     doc.page_content = preprocess_text(doc.page_content)
 # Split the documents into chunks
 text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size=chunk_size,
-    chunk_overlap=chunk_overlap
-    )
+    chunk_size=chunk_size, chunk_overlap=chunk_overlap
+)
 documents = text_splitter.split_documents(all_documents)
 
 chain = (
@@ -130,14 +148,12 @@ chain = (
 )
 
 # Get or create Chroma collection
-chroma_collection = chroma_client.get_or_create_collection(
-    chroma_collection_name
-)
+chroma_collection = chroma_client.get_or_create_collection(chroma_collection_name)
 # Define vector store
 vectorstore = Chroma(
     client=chroma_client,
     collection_name=chroma_collection_name,
-    embedding_function=embeddings_model
+    embedding_function=embeddings_model,
 )
 id_key = "doc_id"
 
@@ -148,7 +164,9 @@ retriever = MultiVectorRetriever(
     id_key=id_key,
 )
 doc_ids = []
-experiment.retrieval_strategy = f"MultiVectorRetriever, mode: Similarity search" # There is another method - mmr
+experiment.retrieval_strategy = (
+    f"MultiVectorRetriever, mode: Similarity search"  # There is another method - mmr
+)
 
 # Check if redis cache is empty
 pattern = f"{redis_namespace}*"
@@ -190,8 +208,10 @@ if chroma_collection.count() == 0 and len(keys) == 0:
         # Our own solution
     print("Create MRI embeddings for complete documentation...")
 print("MRI Embeddings have been already created...")
-print(f"Are there embeddings inside MRI collection {chroma_collection.name} ?",
-      f"count: {chroma_collection.count()}")
+print(
+    f"Are there embeddings inside MRI collection {chroma_collection.name} ?",
+    f"count: {chroma_collection.count()}",
+)
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
@@ -204,7 +224,7 @@ print("retrieved docs: \n", retrieved_docs)
 print("retrieved documents, length: " + str(len(retrieved_docs)))
 
 response_dictionary = qa_chain({"query": question})
-response = response_dictionary['result']
+response = response_dictionary["result"]
 print("Printing final answer", response)
 
 
@@ -212,10 +232,11 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 
     experiment.question = question
     experiment.prompt_template = " "
-    qa_chain = RetrievalQA.from_chain_type(llm,
-                                           retriever=retriever,
-                                        #    prompt=prompt_template
-                                           )
+    qa_chain = RetrievalQA.from_chain_type(
+        llm,
+        retriever=retriever,
+        #    prompt=prompt_template
+    )
     experiment.source_agent = "Multi Representation Agent"
 
     current_time = datetime.now(timezone.utc)
@@ -223,7 +244,7 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
     # Source nodes
     source_nodes = retriever.get_relevant_documents(question, n_results=3)
     response_dictionary = qa_chain({"query": question})
-    response = response_dictionary['result']
+    response = response_dictionary["result"]
     experiment.response = str(response)
 
     return response, experiment, source_nodes
