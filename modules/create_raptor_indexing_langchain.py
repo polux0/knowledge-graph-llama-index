@@ -48,7 +48,7 @@ from embedding_model_modular_setup import initialize_embedding_model
 # Constants
 chunk_size = 2000
 chunk_overlap = 1000
-model_name_id = "gpt-3.5-turbo"
+model_name_id = "default"
 embedding_model_id = "openai-text-embedding-3-large"
 # chroma_collection_name = "raptor-locll-test"
 chroma_collection_name = "raptor-complete-documentation-production"
@@ -74,19 +74,19 @@ def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
 
 # Initialize LLM
-# repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
-# llm = HuggingFaceEndpoint(
-#     repo_id=repository_id,
-#     temperature=0.1,
-#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-# )
 
 
-# Initialize large language model, production
-llm = ChatOpenAI(
-    openai_api_key=os.getenv("OPENAI_API_KEY"),
-    model_name=model_name_id
+repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
+llm = HuggingFaceEndpoint(
+    repo_id=repository_id,
+    temperature=0.1,
+    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
 )
+# Initialize large language model, production
+# llm = ChatOpenAI(
+#     openai_api_key=os.getenv("OPENAI_API_KEY"),
+#     model_name=model_name_id
+# )
 # Logging variables
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 

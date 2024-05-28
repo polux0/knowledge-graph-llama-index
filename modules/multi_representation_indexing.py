@@ -70,7 +70,7 @@ redis_namespace = "parent-documents-summaries-complete-documentation2"
 documents_directory = "../data/documentation_optimal"
 chunk_size = 2048
 chunk_overlap = 518
-model_name_id = "gpt-3.5-turbo"
+model_name_id = "default"
 embedding_model_id = "openai-text-embedding-3-large"
 
 # Elasticsearch related
@@ -80,15 +80,15 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Initialize large language model, for local testing
-# llm = HuggingFaceEndpoint(
-#     repo_id=repository_id,
-#     # max_length=128,
-#     temperature=0.1,
-#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-# )
+llm = HuggingFaceEndpoint(
+    repo_id=repository_id,
+    # max_length=128,
+    temperature=0.1,
+    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+)
 
 # Initialize large language model, production
-llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name=model_name_id)
+# llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name=model_name_id)
 
 # Initalize embeddings model
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
