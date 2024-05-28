@@ -51,7 +51,7 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Variables parent
-model_name_id = "gpt-3.5-turbo"
+model_name_id = "default"
 embedding_model_id = "openai-text-embedding-3-large"
 parent_chunk_size = 2048
 parent_chunk_overlap = 512
