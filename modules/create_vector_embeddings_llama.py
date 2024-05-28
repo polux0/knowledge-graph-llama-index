@@ -66,8 +66,13 @@ child_chunk_sizes_overlap = [64, 128, 256]
 # documents_directory = "../data/real_world_community_model_1st_half"
 # Complete documentation
 
-documents_directory = "../data/documentation_optimal"
-documents = load_documents(documents_directory)
+folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
+           'social-system', 'system-overview']
+documents = []
+for folder in folders:
+    documents_directory = f"../data/documentation_optimal/{folder}"
+    documents.extend(load_documents(documents_directory))
+print("documents length: ", len(documents))
 
 # load the documents, example from llama documentation
 
