@@ -206,8 +206,15 @@ services:
     volumes:
       - $HOME/redis/data:/data
       - $HOME/redis/redis.conf:/usr/local/etc/redis/redis.conf
-    command: ["redis-server", "/usr/local/etc/redis/redis.conf"]
+    command:
+      [
+        "redis-server",
+        "/usr/local/etc/redis/redis.conf",
+        "--requirepass",
+        "my-password",
+      ]
     environment:
+      - REDIS_USERNAME=${REDIS_USERNAME}
       - REDIS_PASSWORD=my-password
       - REDIS_PORT=6379
       - REDIS_DATABASES=1

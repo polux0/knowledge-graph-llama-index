@@ -65,7 +65,8 @@ child_chunk_sizes_overlap = [64, 128, 256]
 # Smallest sample, for testing purposes
 # documents_directory = "../data/real_world_community_model_1st_half"
 # Complete documentation
-documents_directory = "../data/documentation"
+
+documents_directory = "../data/documentation_optimal/test1"
 documents = load_documents(documents_directory)
 
 # load the documents, example from llama documentation
@@ -210,8 +211,6 @@ question = "Can you tell me about the key domains of Real World Community Model"
 nodes = retriever_chunk.retrieve(
     question,
 )
-print("Parent retrievals, length: ", len(nodes))
-
 print("Displaying source node with parent retrieval: \n")
 for node in nodes:
     print(node)
@@ -231,9 +230,7 @@ def generate_response_based_on_vector_embeddings_with_debt(question: str):
     print(
         "With parent-child retriever*******************************************************************\n\n: "
     )
-    print("Template received, vector embeddings:", prompt_template)
     message_template = format_message(question, prompt_template)
-    print("!Final question, vetor embeddings:", message_template)
     response = query_engine_chunk.query(message_template)
     experiment.response = str(response)
     experiment.source_agent = "VDBAgent"
