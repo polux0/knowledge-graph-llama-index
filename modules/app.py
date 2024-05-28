@@ -22,7 +22,7 @@ if "initialized" not in st.session_state:
     st.session_state.initialized = True
     st.session_state.messages = []
     st.session_state.knowledgeGraphResponse = ""
-    # st.session_state.vectorEmbeddingsResponse = ""
+    st.session_state.vectorEmbeddingsResponse = ""
     st.session_state.raptorIndexingResponse = ""  # Initialize new response
     st.session_state.responseSynthesized = ""
     st.session_state.multirepresentationIndexingResponse = ""  # Initialize new response1
@@ -94,10 +94,10 @@ if prompt := st.chat_input("What is up?"):
         #     generate_response_based_on_knowledge_graph_with_debt,
         #     prompt
         # )
-        # future_ve = executor.submit(
-        #     generate_response_based_on_vector_embeddings_with_debt,
-        #     prompt
-        # )
+        future_ve = executor.submit(
+            generate_response_based_on_vector_embeddings_with_debt,
+            prompt
+        )
         future_ri = executor.submit(
             generate_response_based_on_raptor_indexing_with_debt,
             prompt
@@ -109,7 +109,7 @@ if prompt := st.chat_input("What is up?"):
             )
         # Wait for the functions to complete and retrieve results
         # responseKG, experimentKG, sourceNodesKG = future_kg.result()
-        # responseVE, experimentVDB, sourceNodesVDB = future_ve.result()
+        responseVE, experimentVDB, sourceNodesVDB = future_ve.result()
         responseRI, experimentRI, sourceNodesRI = future_ri.result()  # Retrieve new response
         responseMRI, experimentMRI, sourceNodesMRI = future_mri.result() # Retrieve new response1
 
@@ -120,11 +120,11 @@ if prompt := st.chat_input("What is up?"):
     # responseSynthesized, experimentSynthesized = get_synthesized_response_based_on_nodes_with_score(prompt, nodesCombined)  # Generate the synthesized response
 
     # st.session_state.knowledgeGraphResponse = responseKG
-    # st.session_state.vectorEmbeddingsResponse = responseVE
+    st.session_state.vectorEmbeddingsResponse = responseVE
     st.session_state.raptorIndexingResponse = responseRI  # Store the new response
     # st.session_state.responseSynthesized = responseSynthesized  # Store the synthesized response
     # st.session_state.experimentKG = experimentKG
-    # st.session_state.experimentVDB = experimentVDB
+    st.session_state.experimentVDB = experimentVDB
     st.session_state.experimentRI = experimentRI  # Store the new experiment
     # st.session_state.experimentSynthesized = experimentSynthesized  # Store the synthesized experiment
     st.session_state.multirepresentationIndexingResponse = responseMRI
@@ -138,12 +138,12 @@ if prompt := st.chat_input("What is up?"):
 # if st.button('👎', key="kg_dislike"):
 #     st.session_state.kg_response_value = 1
 
-# st.markdown("Parent-child Indexing: ")
-# st.markdown(st.session_state.vectorEmbeddingsResponse)
-# if st.button('👍', key="ve_like"):
-#     st.session_state.ve_response_value = 2
-# if st.button('👎', key="ve_dislike"):
-#     st.session_state.ve_response_value = 1
+st.markdown("Parent-child Indexing: ")
+st.markdown(st.session_state.vectorEmbeddingsResponse)
+if st.button('👍', key="ve_like"):
+    st.session_state.ve_response_value = 2
+if st.button('👎', key="ve_dislike"):
+    st.session_state.ve_response_value = 1
 
 st.markdown("Raptor Indexing: ")
 st.markdown(st.session_state.raptorIndexingResponse)
