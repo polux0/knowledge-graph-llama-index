@@ -66,7 +66,7 @@ child_chunk_sizes_overlap = [64, 128, 256]
 # documents_directory = "../data/real_world_community_model_1st_half"
 # Complete documentation
 
-documents_directory = "../data/documentation_optimal/test1"
+documents_directory = "../data/documentation_optimal"
 documents = load_documents(documents_directory)
 
 # load the documents, example from llama documentation
