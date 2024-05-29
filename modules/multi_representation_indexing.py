@@ -71,7 +71,9 @@ documents_directory = "../data/documentation_optimal"
 chunk_size = 2048
 chunk_overlap = 518
 model_name_id = "default"
+# Production
 embedding_model_id = "openai-text-embedding-3-large"
+# Local
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
@@ -111,21 +113,11 @@ chroma_client = chromadb.HttpClient(
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
 
-# redis_client = f'redis://{os.getenv("REDIS_USERNAME")}:{os.getenv("REDIS_PASSWORD")}@{os.getenv("REDIS_URL")}:{os.getenv("REDIS_PORT")}'
-# Redis client
-# client = get_client(redis_client)
-
 redis_client = Redis(
-    host=os.getenv("REDIS_URL"),
+    host=os.getenv("REDIS_HOST"),
     port=os.getenv("REDIS_PORT"),
     password=os.getenv("REDIS_PASSWORD"),
 )
-print("redis_client: ", redis_client)
-# The storage layer for the parent documents
-# redis_store = RedisStore(
-#     redis_url=f'redis://{os.getenv("REDIS_URL")}:{os.getenv("REDIS_PORT")}',
-#     namespace=redis_namespace
-# )
 redis_store = RedisStore(client=redis_client, namespace=redis_namespace)
 all_documents = load_documents_langchain(documents_directory)
 
@@ -216,9 +208,13 @@ qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
 sub_docs = vectorstore.similarity_search(question, k=3)
-print("subdocs: \n", sub_docs)
+# for docs in sub_docs:
+#     print("subdocs: \n", docs)
 
 retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
+# print("Nodes retrieved: \n")
+# for node in retrieved_docs:
+#     print(node)
 # retrieved_docs[0].page_content[0:500]
 print("retrieved docs: \n", retrieved_docs)
 print("retrieved documents, length: " + str(len(retrieved_docs)))
@@ -226,6 +222,19 @@ print("retrieved documents, length: " + str(len(retrieved_docs)))
 response_dictionary = qa_chain({"query": question})
 response = response_dictionary["result"]
 print("Printing final answer", response)
+
+
+def stringify_and_combine(sub_docs, retrieved_docs) -> str:
+    combined_output = "subdocs: \n"
+    combined_output += "\n".join([repr(doc) for doc in sub_docs])
+    combined_output += "\n\nNodes retrieved: \n"
+    combined_output += "\n".join([repr(doc) for doc in retrieved_docs])
+    return combined_output
+
+
+# Call the function and print the result
+# combined_string = stringify_and_combine(sub_docs, retrieved_docs)
+# print("What is going into the elasticsearch: \n", combined_string)
 
 
 def generate_response_based_on_multirepresentation_indexing_with_debt(question: str):
@@ -241,8 +250,8 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
-    # Source nodes
-    source_nodes = retriever.get_relevant_documents(question, n_results=3)
+    source_nodes = stringify_and_combine(sub_docs, retrieved_docs)
+    experiment.retrieved_nodes = source_nodes
     response_dictionary = qa_chain({"query": question})
     response = response_dictionary["result"]
     experiment.response = str(response)

@@ -6,13 +6,20 @@ import os
 
 env_vars = load_environment_variables()
 setup_logging()
+
+
 class ExperimentDocument:
-    def __init__(self, experiment_id="exp123", embeddings_model="modelXYZ", chunk_size=0, 
-                 chunk_overlap=0, max_triplets_per_chunk=0, llm_used="GPT-3", 
-                 prompt_template="What is the meaning of life?", question="Why are we here?", 
-                 response="To ask questions.", satisfaction_with_answer=True, 
-                 corrected_answer="To seek answers.", retrieval_strategy="sequential", source_agent="",
+    def __init__(self, experiment_id="exp123", embeddings_model="modelXYZ",
+                 chunk_size=0,
+                 chunk_overlap=0, max_triplets_per_chunk=0, llm_used="GPT-3",
+                 prompt_template="What is the meaning of life?",
+                 question="Why are we here?",
+                 response="To ask questions.", satisfaction_with_answer=True,
+                 corrected_answer="To seek answers.",
+                 retrieval_strategy="sequential",
+                 retrieved_nodes="", source_agent="",
                  created_at=None, updated_at=None):
+
         self.experiment_id = experiment_id
         self.embeddings_model = embeddings_model
         self.chunk_size = chunk_size
@@ -25,6 +32,7 @@ class ExperimentDocument:
         self.satisfaction_with_answer = satisfaction_with_answer
         self.corrected_answer = corrected_answer
         self.retrieval_strategy = retrieval_strategy
+        self.retrieved_nodes = retrieved_nodes
         self.source_agent = source_agent
         self.created_at = created_at or "default_created_at_value"
         self.updated_at = updated_at or "default_updated_at_value"
@@ -43,10 +51,12 @@ class ExperimentDocument:
             "Satisfaction_with_answer": self.satisfaction_with_answer,
             "Corrected_answer": self.corrected_answer,
             "Retrieval_strategy": self.retrieval_strategy,
+            "Retrieved_nodes": self.retrieved_nodes,
             "Source_agent": self.source_agent,
-            "Created_at": self.created_at, 
+            "Created_at": self.created_at,
             "Updated_at": self.updated_at
         }
+
 
 class ElasticsearchClient:
     def __init__(self, scheme='http', host='localhost', port=9200):
@@ -56,10 +66,16 @@ class ElasticsearchClient:
         port = os.getenv('ELASTIC_PORT', 9200)  # Note that `os.getenv` returns a string, so you might need to convert types
 
         port = int(port)
-        self.client = Elasticsearch([{'scheme': scheme, 'host': host, 'port': port}])
+        self.client = Elasticsearch([{'scheme': scheme,
+                                      'host': host,
+                                      'port': port}]
+                                    )
 
     def save_experiment(self, experiment_document):
-        self.client.index(index="interaction", document=experiment_document.to_dict())
+        self.client.index(
+            index="interaction",
+            document=experiment_document.to_dict()
+            )
 
     def bulk_save_experiments(self, experiment_documents):
         actions = [
