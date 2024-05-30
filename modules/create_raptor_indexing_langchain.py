@@ -22,7 +22,6 @@ from langchain_community.vectorstores import Chroma
 # Load environment variables
 load_dotenv()
 # Rag Chain ( Langchain )
-from langchain import hub
 from langchain_core.runnables import RunnablePassthrough
 # String output parser
 from langchain_core.output_parsers import StrOutputParser
@@ -34,7 +33,7 @@ from langchain_openai import ChatOpenAI
 # Elasticsearch
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from datetime import datetime, timezone
-from embedding_model_modular_setup import initialize_embedding_model
+from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id, initialize_embedding_model
 # Custom prompts
 from langchain_core.prompts import PromptTemplate
 
@@ -42,9 +41,9 @@ from langchain_core.prompts import PromptTemplate
 chunk_size = 2000
 chunk_overlap = 1000
 # Local
-# chroma_collection_name = "raptor-locll-test1"
 # model_name_id = "default"
 # embedding_model_id = "default"
+# chroma_collection_name = "raptor-locll-test1"
 # Production
 chroma_collection_name = "raptor-complete-documentation-production"
 model_name_id = "default"
@@ -90,19 +89,18 @@ experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 # Initialize Embedding Model
 # TODO: This should be dynamic
 # Hugging face Embeddings
-# embeddings_model = HuggingFaceEndpointEmbeddings(
-#     model="thenlper/gte-large",
-#     task="feature-extraction",
-#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-# )
+embeddings_model = HuggingFaceEndpointEmbeddings(
+    model="thenlper/gte-large",
+    task="feature-extraction",
+    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+)
 # Cohere embeddings
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
 # OpenAI embeddings
-embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
+# embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
-experiment.embed_model = initialize_embedding_model(embedding_model_id="openai-text-embedding-3-large")
-# Logging variables
+experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embedding_model_id="openai-text-embedding-3-large")
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
 
@@ -221,7 +219,12 @@ question = "Would you tell me more about artificial intelligence units?"
 
 # Retriever related: 
 
-source_nodes = retriever.get_relevant_documents(question, n_results=3)
+source_nodes = retriever.get_relevant_documents(
+    question,
+    n_results=3,
+    return_source_documents=True
+)
+print("Source nodes: ", source_nodes)
 
 
 def stringify_and_combine_nodes(nodes) -> str:

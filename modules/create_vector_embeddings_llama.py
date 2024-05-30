@@ -37,15 +37,17 @@ current_time = datetime.now(timezone.utc)
 experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
-# Variables parent
-model_name_id = "default"
-embedding_model_id = "openai-text-embedding-3-large"
+# Constants
 parent_chunk_size = 2048
 parent_chunk_overlap = 512
 # Production
+model_name_id = "default"
+embedding_model_id = "openai-text-embedding-3-large"
 child_chroma_collection_name = "complete-documentation-parent-child"
 # Local testing
 # child_chroma_collection_name = "complete-documentation-parent-child1"
+# model_name_id = "default"
+# embedding_model_id = "default"
 
 # Variables child
 child_chunk_sizes = [128, 256, 512]
@@ -141,11 +143,13 @@ experiment.retrieval_strategy = "RecursiveRetriever - Parent Child"
 
 question = "Can you tell me about the key domains of Real World Community Model?"
 nodes = retriever_chunk.retrieve(question)
+print("Nodes: ", nodes)
 
 prompt_template = get_template_based_on_template_id("default")
 message_template = format_message(question, prompt_template)
 query_engine_chunk = RetrieverQueryEngine.from_args(retriever_chunk, llm=llm)
 response = query_engine_chunk.query(message_template)
+print("Source nodes, returned by query engine: \n", response.source_nodes)
 logger.info(f"Response: {response}")
 
 
