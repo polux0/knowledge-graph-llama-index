@@ -57,23 +57,20 @@ load_dotenv()
 repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 
 # Constants
-
-# Production ones
-chroma_collection_name = "summaries-complete-documentation2"
-redis_namespace = "parent-documents-summaries-complete-documentation2"
-# Local ones
-# chroma_collection_name = "MRITESTTTTTTTTTTT2"
-# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT2"
-# Local
-# documents_directory = "../data/documentation_optimal/test1"
-# Production
-documents_directory = "../data/documentation_optimal"
 chunk_size = 2048
 chunk_overlap = 518
-model_name_id = "default"
-# Production
-embedding_model_id = "openai-text-embedding-3-large"
 # Local
+# model_name_id = "default"
+# embedding_model_id = "openai-text-embedding-3-large"
+# chroma_collection_name = "MRITESTTTTTTTTTTT2"
+# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT2"
+# documents_directory = "../data/documentation_optimal/test1"
+# Production
+model_name_id = "default"
+embedding_model_id = "openai-text-embedding-3-large"
+chroma_collection_name = "summaries-complete-documentation2"
+redis_namespace = "parent-documents-summaries-complete-documentation2"
+documents_directory = "../data/documentation_optimal"
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
@@ -98,7 +95,7 @@ embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
-experiment.embed_model = initialize_embedding_model(
+experiment.embeddings_model = initialize_embedding_model(
     embedding_model_id="openai-text-embedding-3-large"
 )
 
@@ -225,9 +222,9 @@ print("Printing final answer", response)
 
 
 def stringify_and_combine(sub_docs, retrieved_docs) -> str:
-    combined_output = "subdocs: \n"
+    combined_output = "Summary documents: \n"
     combined_output += "\n".join([repr(doc) for doc in sub_docs])
-    combined_output += "\n\nNodes retrieved: \n"
+    combined_output += "\n\Nodes retrieved from original documents ( linked to summaries ) : \n"
     combined_output += "\n".join([repr(doc) for doc in retrieved_docs])
     return combined_output
 
