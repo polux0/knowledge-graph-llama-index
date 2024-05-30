@@ -100,7 +100,7 @@ embeddings_model = HuggingFaceEndpointEmbeddings(
 # embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
-experiment.embeddings_model = get_embedding_model_based_on_model_name_id(embedding_model_id="openai-text-embedding-3-large")
+experiment.embeddings_model = get_embedding_model_based_on_model_name_id(model_name_id=="openai-text-embedding-3-large")
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
 
