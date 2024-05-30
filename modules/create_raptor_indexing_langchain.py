@@ -89,15 +89,15 @@ experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 # Initialize Embedding Model
 # TODO: This should be dynamic
 # Hugging face Embeddings
-embeddings_model = HuggingFaceEndpointEmbeddings(
-    model="thenlper/gte-large",
-    task="feature-extraction",
-    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-)
+# embeddings_model = HuggingFaceEndpointEmbeddings(
+#     model="thenlper/gte-large",
+#     task="feature-extraction",
+#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+# )
 # Cohere embeddings
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
 # OpenAI embeddings
-# embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
+embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
 experiment.embeddings_model = get_embedding_model_based_on_model_name_id(model_name_id=="openai-text-embedding-3-large")
