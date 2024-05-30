@@ -224,9 +224,10 @@ print("Printing final answer", response)
 def stringify_and_combine(sub_docs, retrieved_docs) -> str:
     combined_output = "Summary documents: \n"
     combined_output += "\n".join([repr(doc) for doc in sub_docs])
-    combined_output += "\n\Nodes retrieved from original documents ( linked to summaries ) : \n"
+    combined_output += "\nNodes retrieved from original documents: \n"
     combined_output += "\n".join([repr(doc) for doc in retrieved_docs])
     return combined_output
+
 
 
 # Call the function and print the result
