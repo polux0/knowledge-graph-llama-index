@@ -1,7 +1,7 @@
 import uuid
 import re
 from data_loading import load_documents_langchain
-from embedding_model_modular_setup import initialize_embedding_model
+from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id, initialize_embedding_model
 from format_message_with_prompt import format_message
 from langchain_core.documents import Document
 from langchain_core.output_parsers import StrOutputParser
@@ -95,8 +95,8 @@ embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
 experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
-experiment.embeddings_model = initialize_embedding_model(
-    embedding_model_id="openai-text-embedding-3-large"
+experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
+    model_name_id="openai-text-embedding-3-large"
 )
 
 # Initialize chroma
