@@ -38,15 +38,26 @@ from embedding_model_modular_setup import get_embedding_model_based_on_model_nam
 from langchain_core.prompts import PromptTemplate
 
 # Constants
-chunk_size = 2000
-chunk_overlap = 1000
+
 # Local
+# chunk_size = 2000
+# chunk_overlap = 1000
 # model_name_id = "default"
 # embedding_model_id = "default"
 # chroma_collection_name = "raptor-locll-test1"
-# Production
-chroma_collection_name = "raptor-complete-documentation-production"
-model_name_id = "default"
+
+# Production, 1st configuration
+# chunk_size = 2000
+# chunk_overlap = 1000
+# chroma_collection_name = "raptor-complete-documentation-production"
+# model_name_id = "default"
+# embedding_model_id = "openai-text-embedding-3-large"
+
+# Production, 2nd configuration
+chunk_size = 5096
+chunk_overlap = 2048
+chroma_collection_name = "raptor-complete-documentation-production-1"
+model_name_id = "gpt-3.5-turbo"
 embedding_model_id = "openai-text-embedding-3-large"
 
 # Elasticsearch related
