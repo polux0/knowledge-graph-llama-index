@@ -57,7 +57,7 @@ from langchain_core.prompts import PromptTemplate
 chunk_size = 5096
 chunk_overlap = 2048
 chroma_collection_name = "raptor-complete-documentation-production-1"
-model_name_id = "gpt-3.5-turbo"
+model_name_id = "default"
 embedding_model_id = "openai-text-embedding-3-large"
 
 # Elasticsearch related
