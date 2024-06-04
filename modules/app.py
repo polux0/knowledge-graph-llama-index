@@ -8,6 +8,7 @@ from create_raptor_indexing_langchain import generate_response_based_on_raptor_i
 from environment_setup import setup_logging
 # from response_synthesizer import (
 #     get_synthesized_response_based_on_nodes_with_score, merge_nodes)
+from streamlit_star_rating import st_star_rating
 
 setup_logging()
 
@@ -147,10 +148,9 @@ if prompt := st.chat_input("What is up?"):
 
 st.markdown("Raptor Indexing: ")
 st.markdown(st.session_state.raptorIndexingResponse)
-if st.button('👍', key="ri_like"):
-    st.session_state.ri_response_value = 2
-if st.button('👎', key="ri_dislike"):
-    st.session_state.ri_response_value = 1
+ri_rating = st_star_rating(label="Please rate your experience", maxValue=5, defaultValue=3, key="ri_rating", read_only=False)
+if ri_rating:
+    st.session_state.ri_response_value = ri_rating
 
 # Display synthesized response and handle feedback
 # st.markdown("Synthesized response: ")
@@ -162,7 +162,6 @@ if st.button('👎', key="ri_dislike"):
 
 st.markdown("Multirepresentation Indexing: ")
 st.markdown(st.session_state.multirepresentationIndexingResponse)
-if st.button('👍', key="mri_like"):
-    st.session_state.mri_response_value = 2
-if st.button('👎', key="mri_dislike"):
-    st.session_state.mri_response_value = 1
+mri_rating = st_star_rating(label="Please rate your experience", maxValue=5, defaultValue=3, key="mri_rating", read_only=False)
+if mri_rating:
+    st.session_state.mri_response_value = mri_rating
