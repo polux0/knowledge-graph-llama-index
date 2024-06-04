@@ -883,5 +883,11 @@ zipp==3.18.2
 langchain-text-splitters
 # langchain integration with huggingface
 langchain-huggingface
+# langchain documents to nodes
+langchain-experimental
+# required for langchain_experimental.graph_transformers ( could not use this one, maybe we should remove it )
+json-repair 
+# streamlit 5 star rating 
+st-star-rating
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
