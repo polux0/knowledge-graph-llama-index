@@ -2,7 +2,7 @@ from langchain_community.llms import HuggingFaceEndpoint
 import os
 from dotenv import load_dotenv
 
-#Embeddings
+# Embeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
 from langchain_openai import OpenAIEmbeddings
@@ -17,34 +17,44 @@ import tiktoken
 
 # Generating clusters of documents
 from typing import Optional
+
 # Chroma
 from langchain_community.vectorstores import Chroma
+
 # Load environment variables
 load_dotenv()
 # Rag Chain ( Langchain )
 from langchain_core.runnables import RunnablePassthrough
+
 # String output parser
 from langchain_core.output_parsers import StrOutputParser
+
 # ChromaDB
 import chromadb
+
 # Question and Answer chain
 from langchain.chains import RetrievalQA
 from langchain_openai import ChatOpenAI
+
 # Elasticsearch
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from datetime import datetime, timezone
-from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id, initialize_embedding_model
+from embedding_model_modular_setup import (
+    get_embedding_model_based_on_model_name_id,
+    initialize_embedding_model,
+)
+
 # Custom prompts
 from langchain_core.prompts import PromptTemplate
 
 # Constants
 
 # Local
-# chunk_size = 2000
-# chunk_overlap = 1000
-# model_name_id = "default"
-# embedding_model_id = "default"
-# chroma_collection_name = "raptor-locll-test1"
+chunk_size = 2000
+chunk_overlap = 1000
+model_name_id = "default"
+embedding_model_id = "default"
+chroma_collection_name = "raptor-locll-test1"
 
 # Production, 1st configuration
 # chunk_size = 2000
@@ -54,11 +64,11 @@ from langchain_core.prompts import PromptTemplate
 # embedding_model_id = "openai-text-embedding-3-large"
 
 # Production, 2nd configuration
-chunk_size = 5096
-chunk_overlap = 2048
-chroma_collection_name = "raptor-complete-documentation-production-1"
-model_name_id = "default"
-embedding_model_id = "openai-text-embedding-3-large"
+# chunk_size = 5096
+# chunk_overlap = 2048
+# chroma_collection_name = "raptor-complete-documentation-production-1"
+# model_name_id = "default"
+# embedding_model_id = "openai-text-embedding-3-large"
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
@@ -73,12 +83,13 @@ def split_list_into_parts(lst, n_parts):
     Splits a list into n_parts roughly equal parts.
     """
     for i in range(0, len(lst), n_parts):
-        yield lst[i:i + n_parts]
+        yield lst[i : i + n_parts]
 
 
 # Post-processing
 def format_docs(docs):
     return "\n\n".join(doc.page_content for doc in docs)
+
 
 # Initialize LLM
 
@@ -111,7 +122,9 @@ experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
-experiment.embeddings_model = get_embedding_model_based_on_model_name_id(model_name_id=="openai-text-embedding-3-large")
+experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
+    model_name_id == "openai-text-embedding-3-large"
+)
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
 
@@ -119,17 +132,15 @@ experiment.chunk_overlap = chunk_overlap
 chroma_client = chromadb.HttpClient(
     host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
 )
-# chroma_client.delete_collection(name=chroma_collection_name)
+chroma_client.delete_collection(name=chroma_collection_name)
 # Get or create Chroma collection
-chroma_collection = chroma_client.get_or_create_collection(
-    chroma_collection_name
-)
+chroma_collection = chroma_client.get_or_create_collection(chroma_collection_name)
 
 # Production
-folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
-           'social-system', 'system-overview']
+# folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
+#            'social-system', 'system-overview']
 # Local
-# folders = ['test1']
+folders = ["test1"]
 
 if chroma_collection.count() == 0:
     print("Raptor collection not found, creating embeddings...")
@@ -150,8 +161,7 @@ if chroma_collection.count() == 0:
 
         # Initialize the text splitter
         text_splitter = RecursiveCharacterTextSplitter(
-            chunk_size=chunk_size,
-            chunk_overlap=chunk_overlap
+            chunk_size=chunk_size, chunk_overlap=chunk_overlap
         )
 
         texts_split = text_splitter.split_text(concatenated_content)
@@ -163,11 +173,7 @@ if chroma_collection.count() == 0:
         # Process each batch
         for batch in texts_batches:
             # Generate embeddings and summaries
-            results = recursive_embed_cluster_summarize(
-                batch,
-                level=1,
-                n_levels=3
-            )
+            results = recursive_embed_cluster_summarize(batch, level=1, n_levels=3)
 
             # Initialize all_texts with the batch
             all_texts = batch.copy()
@@ -182,7 +188,7 @@ if chroma_collection.count() == 0:
                 client=chroma_client,
                 collection_name=chroma_collection_name,
                 texts=all_texts,
-                embedding=embeddings_model
+                embedding=embeddings_model,
             )
     print("Complete documentation embeddings created.")
 else:
@@ -190,7 +196,7 @@ else:
     vectorstore = Chroma(
         client=chroma_client,
         collection_name=chroma_collection_name,
-        embedding_function=embeddings_model
+        embedding_function=embeddings_model,
     )
 
 # Initialize the retriever
@@ -206,13 +212,13 @@ experiment.retrieval_strategy = "Raptor"
 # prompt = hub.pull("rlm/rag-prompt")
 # Custom
 prompt = PromptTemplate(
-    input_variables=['context', 'question'],
+    input_variables=["context", "question"],
     template=(
         "You are a friendly library assistant designed to create detailed and precise responses about the standards in the Auravana Project documentation, based on the context given below. For specific definitions of models or domains, please quote directly from the context, whilst ensuring that you answer the question. If you can't find the answer, say 'I don't have the context required to answer that question - could you please rephrase it?'\n"
         "Question: {question}\n"
         "Context: {context}\n"
         "Answer:"
-    )
+    ),
 )
 print("The prompt we are using: ", prompt)
 
@@ -228,12 +234,10 @@ rag_chain = (
 # question = "What are domains of real world community model?"
 question = "Would you tell me more about artificial intelligence units?"
 
-# Retriever related: 
+# Retriever related:
 
 source_nodes = retriever.get_relevant_documents(
-    question,
-    n_results=3,
-    return_source_documents=True
+    question, n_results=3, return_source_documents=True
 )
 print("Source nodes: ", source_nodes)
 
