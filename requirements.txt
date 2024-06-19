@@ -889,5 +889,10 @@ langchain-experimental
 json-repair 
 # streamlit 5 star rating 
 st-star-rating
+# python telegram bot
+python-telegram-bot>=20.0
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
+
+# api related
+Flask==3.0.3
