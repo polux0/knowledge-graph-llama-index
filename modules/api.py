@@ -101,19 +101,6 @@ def store_feedback():
         )
 
         if res['hits']['total']['value'] > 0:
-            # Was used previously, we don't want things to be overrided, so we'll try another approach
-            # Document exists, update it
-            # doc_id = res['hits']['hits'][0]['_id']
-            # existing_feedback = res['hits']['hits'][0]['_source']
-
-            # # Update the feedback fields
-            # if feedback_rating:
-            #     existing_feedback['telegram_feedback_rating'] = feedback_rating
-            # if feedback_text:
-            #     existing_feedback['telegram_feedback_text'] = feedback_text
-
-            # existing_feedback['updated_at'] = datetime.now(timezone.utc)
-            # Testing this approach: 
             doc_id = res['hits']['hits'][0]['_id']
             new_feedback_data = {}
 
@@ -124,15 +111,10 @@ def store_feedback():
                 new_feedback_data['telegram_feedback_text'] = feedback_text
 
             new_feedback_data['updated_at'] = datetime.now(timezone.utc)
-            # Update the document
-            logging.debug("Updating the feedback...")  # Log received data for debugging
-            logging.info("Updating the feedback...")  # Log received data for debugging
-            logging.error("Updating the feedback...")
             print("Updating the feedback...")  # Log received data for debugging
             elasticsearch_client.update_feedback(doc_id, new_feedback_data)
             print(f"Updated feedback from user {user_name} ({user_id}) on message {message_id} in chat {chat_id}: {feedback_rating}, {feedback_text}")
         else:
-            logging.debug("We need to create new feedback document")
             print("We need to create new feedback document")
             # Create a new feedback document
             feedback_data = {
