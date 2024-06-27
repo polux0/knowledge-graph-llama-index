@@ -148,6 +148,7 @@ def main():
     application.add_handler(CommandHandler("feedback", feedback_command))
 
     application.run_polling()
+    print("Telegram bot is up and running...")
 
 
 if __name__ == '__main__':
