@@ -16,6 +16,10 @@ import requests
 
 load_dotenv()
 
+API_URL = os.getenv("API_URL", "http://localhost:5000")
+ASK_URL = f"{API_URL}/ask"
+RATE_URL = f"{API_URL}/rate"
+
 
 # TODO: Consider moving this to some other class:
 def feedback_keyboard():
@@ -38,7 +42,7 @@ async def handle_message(update: Update, context: CallbackContext) -> None:
     print(f"Received message: {user_message}")
     # TODO: Move routes to environment
     ask_response = requests.post(
-        os.getenv("ASK_URL"),
+        ASK_URL,
         json={
             'question': user_message,
             'telegram_chat_id': update.message.chat.id,
@@ -102,7 +106,7 @@ async def feedback_handler(update: Update, context: CallbackContext) -> None:
         'telegram_feedback_rating': feedback_rating,
     }
     # TODO: Move routes to environment
-    requests.post(os.getenv("RATE_URL"), json=feedback_data)
+    requests.post(RATE_URL, json=feedback_data)
     return ConversationHandler.END  # End the conversation here
 
 
@@ -128,7 +132,7 @@ async def feedback_command(update: Update, context: CallbackContext) -> None:
             'document_type': 'feedback',
             'telegram_feedback_text': additional_feedback
         }
-        response = requests.post(os.getenv("RATE_URL"), json=feedback_data)
+        response = requests.post(RATE_URL, json=feedback_data)
 
         if response.status_code == 201:
             await update.message.reply_text("Thank you for your additional feedback!")
