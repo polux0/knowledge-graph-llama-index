@@ -258,8 +258,7 @@ services:
     volumes:
       - .:/usr/src/app
     environment:
-      - ASK_URL=${ASK_URL}
-      - RATE_URL=${RATE_URL}
+      - API_URL=${API_URL}
       - TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
     command: python ./modules/telegram_bot.py
     networks:
