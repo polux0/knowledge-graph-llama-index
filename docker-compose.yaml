@@ -252,6 +252,30 @@ services:
     networks:
       - net
 
+  telegram_bot:
+    build: .
+    container_name: telegram_bot_container
+    volumes:
+      - .:/usr/src/app
+    environment:
+      - ASK_URL=${ASK_URL}
+      - RATE_URL=${RATE_URL}
+      - TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
+    command: python ./modules/telegram_bot.py
+    networks:
+      - net
+
+  api:
+    build: .
+    container_name: api_container
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "5000:5000"
+    command: python ./modules/api.py
+    networks:
+      - net
+
 volumes:
   chroma-data:
     driver: local
