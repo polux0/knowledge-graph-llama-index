@@ -84,10 +84,6 @@ services:
   app:
     build: .
     depends_on:
-      graphd:
-        condition: service_healthy
-      metad0:
-        condition: service_healthy
       chromadb:
         condition: service_healthy
     container_name: app_container
