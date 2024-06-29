@@ -1,141 +1,6 @@
 version: "3.9"
 
 services:
-  metad0:
-    image: docker.io/vesoft/nebula-metad:latest
-    environment:
-      USER: root
-    command:
-      - --meta_server_addrs=metad0:9559
-      - --local_ip=metad0
-      - --ws_ip=metad0
-      - --port=9559
-      - --ws_http_port=19559
-      - --data_path=/data/meta
-      - --log_dir=/logs
-      - --v=0
-      - --minloglevel=0
-    healthcheck:
-      test: ["CMD", "curl", "-sf", "http://metad0:19559/status"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    ports:
-      - 9559:9559
-      - 19559:19559
-      - 19560
-    volumes:
-      - $HOME/nebula/data/meta0:/data/meta
-      - $HOME/nebula/logs/meta0:/logs
-    networks:
-      - net
-    restart: on-failure
-    cap_add:
-      - SYS_PTRACE
-
-  storaged0:
-    image: docker.io/vesoft/nebula-storaged:latest
-    environment:
-      USER: root
-      TZ: "${TZ}"
-    command:
-      - --meta_server_addrs=metad0:9559
-      - --local_ip=storaged0
-      - --ws_ip=storaged0
-      - --port=9779
-      - --ws_http_port=19779
-      - --data_path=/data/storage
-      - --log_dir=/logs
-      - --v=0
-      - --minloglevel=0
-    depends_on:
-      - metad0
-    healthcheck:
-      test: ["CMD", "curl", "-sf", "http://storaged0:19779/status"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    ports:
-      - 9779:9779
-      - 19779:19779
-      - 19780
-    volumes:
-      - $HOME/nebula/data/storage0:/data/storage
-      - $HOME/nebula/logs/storage0:/logs
-    networks:
-      - net
-    restart: on-failure
-    cap_add:
-      - SYS_PTRACE
-
-  graphd:
-    image: docker.io/vesoft/nebula-graphd:latest
-    environment:
-      USER: root
-      TZ: "${TZ}"
-    command:
-      - --meta_server_addrs=metad0:9559
-      - --port=9669
-      - --local_ip=graphd
-      - --ws_ip=graphd
-      - --ws_http_port=19669
-      - --log_dir=/logs
-      - --v=0
-      - --minloglevel=0
-    depends_on:
-      - storaged0
-    healthcheck:
-      test: ["CMD", "curl", "-sf", "http://graphd:19669/status"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-      start_period: 20s
-    ports:
-      - 9669:9669
-      - 19669:19669
-      - 19670
-    volumes:
-      - $HOME/nebula/logs/graph:/logs
-    networks:
-      - net
-    restart: on-failure
-    cap_add:
-      - SYS_PTRACE
-  console:
-    image: docker.io/vesoft/nebula-console:latest
-    entrypoint: ""
-    command:
-      - sh
-      - -c
-      - |
-        for i in `seq 1 60`;do
-          var=`nebula-console -addr graphd -port 9669 -u root -p nebula -e 'ADD HOSTS "storaged0":9779'`;
-          if [[ $$? == 0 ]];then
-            break;
-          fi;
-          sleep 1;
-          echo "retry to add hosts.";
-        done && tail -f /dev/null;
-
-    depends_on:
-      - graphd
-    networks:
-      - net
-  nebula-web-docker:
-    image: vesoft/nebula-graph-studio:latest
-    environment:
-      - NG_SEVER_ROOT_USER=root
-      - NG_SEVER_ROOT_PASSWORD=nebula
-      - NG_SERVER_BASE_URL=http://graphd:9669
-    ports:
-      - "7001:7001" # Port for web interface
-    depends_on:
-      - graphd
-    networks:
-      - net
-
   chromadb:
     image: server
     container_name: chromadb_container
@@ -143,7 +8,6 @@ services:
       context: ./chromadb
       dockerfile: Dockerfile
     volumes:
-      # - $HOME/chroma-data:/chroma/chroma
       - chroma-data:/chroma/chroma
     command: "--workers 1 --host 0.0.0.0 --port 8000 --proxy-headers --log-config ./log_config.yml --timeout-keep-alive 30"
     environment:
@@ -175,13 +39,11 @@ services:
     environment:
       - discovery.type=single-node
       - xpack.security.enabled=false
-      # Ensure this matches the mounted volume path inside the container
       - path.repo=/usr/share/elasticsearch/snapshots
     ports:
       - "9200:9200"
     volumes:
       - $HOME/esdata1:/usr/share/elasticsearch/data
-      # This line mounts $HOME/es_snapshots to /usr/share/elasticsearch/snapshots inside the container
       - $HOME/es_snapshots:/usr/share/elasticsearch/snapshots
     networks:
       - net
@@ -206,9 +68,8 @@ services:
     volumes:
       - $HOME/redis/data:/data
       - $HOME/redis/redis.conf:/usr/local/etc/redis/redis.conf
+      - $HOME/redis/users.acl:/usr/local/etc/redis/users.acl
     environment:
-      - REDIS_USERNAME=${REDIS_USERNAME}
-      - REDIS_PASSWORD=${REDIS_PASSWORD}
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_DATABASES=1
     command:
@@ -235,12 +96,9 @@ services:
     ports:
       - "8080:8080"
       - "8501:8501"
-    environment:
-      - HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
-      - NEO4J_USERNAME=${NEO4J_USERNAME}
-      - NEO4J_PASSWORD=${NEO4J_PASSWORD}
-      - NEO4J_URL=${NEO4J_URL}
-      - NEO4J_DATABASE=${NEO4J_DATABASE}
+      - "5000:5000"
+    env_file:
+      - .env
     # restart: always
     # restart: on-failure
     # command: python ./modules/create_vector_embeddings_llama.py
@@ -251,19 +109,7 @@ services:
     # command: python ./modules/create_knowledge_graph.py
     networks:
       - net
-
-  telegram_bot:
-    build: .
-    container_name: telegram_bot_container
-    volumes:
-      - .:/usr/src/app
-    environment:
-      - API_URL=${API_URL}
-      - TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
-    command: python ./modules/telegram_bot.py
-    networks:
-      - net
-
+  
   api:
     build: .
     container_name: api_container
@@ -271,7 +117,23 @@ services:
       - .:/usr/src/app
     ports:
       - "5000:5000"
+    env_file:
+      - api.env
+    environment:
+      - PROCESS_TYPE=api
     command: python ./modules/api.py
+    networks:
+      - net
+  telegram_bot:
+    build: .
+    container_name: telegram_bot_container
+    volumes:
+      - .:/usr/src/app
+    env_file:
+      - .env
+    environment:
+      - API_URL=${API_URL}
+    command: python ./modules/telegram_bot.py
     networks:
       - net
 

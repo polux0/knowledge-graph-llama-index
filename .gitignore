@@ -41,6 +41,8 @@ neo4j/
 .env.local
 # Env file for production development
 .env.production
+# Env file for API
+api.env
 # Nebula graph logs
 logs
 /logs
