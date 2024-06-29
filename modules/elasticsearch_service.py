@@ -9,14 +9,14 @@ setup_logging()
 
 
 class ExperimentDocument:
-    def __init__(self, experiment_id="exp123", embeddings_model="modelXYZ",
+    def __init__(self, experiment_id="", embeddings_model="",
                  chunk_size=0,
-                 chunk_overlap=0, max_triplets_per_chunk=0, llm_used="GPT-3",
-                 prompt_template="What is the meaning of life?",
-                 question="Why are we here?",
-                 response="To ask questions.", satisfaction_with_answer=True,
-                 corrected_answer="To seek answers.",
-                 retrieval_strategy="sequential",
+                 chunk_overlap=0, max_triplets_per_chunk=0, llm_used="",
+                 prompt_template="",
+                 question="",
+                 response="", satisfaction_with_answer=0,
+                 corrected_answer="",
+                 retrieval_strategy="",
                  retrieved_nodes="", source_agent="",
                  created_at=None, updated_at=None):
 
@@ -57,6 +57,11 @@ class ExperimentDocument:
             "Updated_at": self.updated_at
         }
 
+    def to_dict_telegram_extended(self, additional_fields):
+        base_dict = self.to_dict()
+        base_dict.update(additional_fields)
+        return base_dict
+
 
 class ElasticsearchClient:
     def __init__(self, scheme='http', host='localhost', port=9200):
@@ -71,11 +76,28 @@ class ElasticsearchClient:
                                       'port': port}]
                                     )
 
+    def index_document(self, index, document):
+        try:
+            response = self.client.index(index=index, document=document)
+            logging.debug(f"Document indexed successfully: {response}")
+            print(f"Document indexed successfully: {response}")
+            return response
+        except Exception as e:
+            logging.error(f"Error indexing document: {e}")
+            print(f"Error indexing document: {e}")
+
     def save_experiment(self, experiment_document):
         self.client.index(
             index="interaction",
             document=experiment_document.to_dict()
             )
+
+    def save_interaction(self, experiment_document, additional_fields):
+        if additional_fields:
+            document = experiment_document.to_dict_telegram_extended(
+                additional_fields
+            )
+        self.client.index(index="interaction", document=document)
 
     def bulk_save_experiments(self, experiment_documents):
         actions = [
@@ -83,3 +105,33 @@ class ElasticsearchClient:
             for doc in experiment_documents
         ]
         bulk(self.client, actions)
+
+    def search_feedback(self, chat_id, message_id, user_id):
+        query = {
+            "query": {
+                "bool": {
+                    "must": [
+                        {"term": {"telegram_chat_id": chat_id}},
+                        {"term": {"telegram_message_id": message_id}},
+                        {"term": {"telegram_user_id": user_id}},
+                        {"term": {"document_type": "feedback"}}
+                    ]
+                }
+            }
+        }
+        return self.client.search(index='interaction', body=query)
+
+
+    def update_feedback(self, doc_id, new_feedback_data):
+        existing_doc = self.client.get(index='interaction', id=doc_id)
+        existing_feedback_data = existing_doc['_source']
+
+        # Merge the new feedback data with the existing data
+        updated_feedback_data = {**existing_feedback_data, **new_feedback_data}
+
+        # Update the document with the merged data
+        self.client.update(
+            index='interaction',
+            id=doc_id,
+            body={"doc": updated_feedback_data}
+        )
