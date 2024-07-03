@@ -37,7 +37,7 @@ def ask_question():
     answer_raptor, experiment_raptor, source_nodes_raptor = (
         generate_response_based_on_raptor_indexing_with_debt(question)
     )
-    answer_mri, experiment_mri, source_nodes_mri = (
+    answer_mri, experiment_mri, source_nodes_mri, retrieved_docs_mri = (
         generate_response_based_on_multirepresentation_indexing_with_debt(question)
     )
 
