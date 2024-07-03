@@ -49,3 +49,6 @@ logs
 logs/
 data/meta0
 data/storage0
+
+# Redis specific
+users.acl
