@@ -60,17 +60,17 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 chunk_size = 2048
 chunk_overlap = 518
 # Local
-# model_name_id = "default"
-# embedding_model_id = "openai-text-embedding-3-large"
-# chroma_collection_name = "MRITESTTTTTTTTTTT2"
-# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT2"
-# documents_directory = "../data/documentation_optimal/test1"
-# Production
 model_name_id = "default"
 embedding_model_id = "openai-text-embedding-3-large"
-chroma_collection_name = "summaries-complete-documentation2"
-redis_namespace = "parent-documents-summaries-complete-documentation2"
-documents_directory = "../data/documentation_optimal"
+chroma_collection_name = "MRITESTTTTTTTTTTT3"
+redis_namespace = "parent-documents-MRITESTTTTTTTTTTT3"
+documents_directory = "../data/documentation_optimal/test1"
+# Production
+# model_name_id = "default"
+# embedding_model_id = "openai-text-embedding-3-large"
+# chroma_collection_name = "summaries-complete-documentation2"
+# redis_namespace = "parent-documents-summaries-complete-documentation2"
+# documents_directory = "../data/documentation_optimal"
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
@@ -113,6 +113,7 @@ experiment.chunk_overlap = chunk_overlap
 redis_client = Redis(
     host=os.getenv("REDIS_HOST"),
     port=os.getenv("REDIS_PORT"),
+    username=os.getenv("REDIS_USERNAME"),
     password=os.getenv("REDIS_PASSWORD"),
 )
 redis_store = RedisStore(client=redis_client, namespace=redis_namespace)
@@ -254,4 +255,4 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
     response = response_dictionary["result"]
     experiment.response = str(response)
 
-    return response, experiment, source_nodes
+    return response, experiment, source_nodes, retrieved_docs
