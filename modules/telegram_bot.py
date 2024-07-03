@@ -40,7 +40,6 @@ async def start(update: Update, context: CallbackContext) -> None:
 async def handle_message(update: Update, context: CallbackContext) -> None:
     user_message = update.message.text
     print(f"Received message: {user_message}")
-    # TODO: Move routes to environment
     ask_response = requests.post(
         ASK_URL,
         json={
@@ -72,20 +71,12 @@ async def feedback_handler(update: Update, context: CallbackContext) -> None:
     feedback_data = query.data
     feedback_rating = int(feedback_data.split('_')[1])
     asked_by_telegram_user_id = query.from_user.id
-    # Was previously ( We were having problems with ID discrepancy between /ask and /rate end-points )
-    # telegram_chat_id = query.message.chat.id
-    # telegram_message_id = query.message.message_id
-    # Trying to utilize thread-safe context, so we can resolve previously mentioned discrepancy issues
     telegram_chat_id = context.user_data.get('original_chat_id')
     telegram_message_id = context.user_data.get('original_message_id')
 
     print(f"Feedback in form of rating received for message_id: {telegram_message_id}")
     # Print the required information
     print(f"Asked by User ID: {asked_by_telegram_user_id}, Chat ID: {telegram_chat_id}, Message ID: {telegram_message_id}")
-    # TODO: Think if there is a better way to acknowledge the feedback:
-    # Pros: It's clean, meaning it doesn't include polute group space with messages
-    # Cons: It expires once it's rated, so people cannot change mind later
-    # Potentional alternative solution: We could write private message to user
 
     # Remove the feedback buttons as a signal that we got the feedback.
     await query.edit_message_reply_markup(reply_markup=None)

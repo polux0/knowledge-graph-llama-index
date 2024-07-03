@@ -11,6 +11,11 @@ from multi_representation_indexing import (
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 import logging
 
+from response_synthesizer import create_nodes_with_score, get_synthesized_response_based_on_nodes_with_score, merge_nodes
+
+class Document:
+    def __init__(self, page_content: str):
+        self.page_content = page_content
 
 app = Flask(__name__)
 
@@ -37,13 +42,20 @@ def ask_question():
     answer_raptor, experiment_raptor, source_nodes_raptor = (
         generate_response_based_on_raptor_indexing_with_debt(question)
     )
-    answer_mri, experiment_mri, source_nodes_mri = (
+    answer_mri, experiment_mri, source_nodes_mri, retrieved_docs_mri = (
         generate_response_based_on_multirepresentation_indexing_with_debt(question)
     )
 
     formatted_response = (
         f"Raptor agent answer:\n{answer_raptor}\n\n" f"MRI agent answer:\n{answer_mri}"
     )
+
+    test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
+    test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
+    
+    nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
+    responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(question, nodesCombined)
+
     # TODO: Modularize
     additional_fields = {
         "telegram_chat_id": telegram_chat_id,
@@ -60,8 +72,6 @@ def ask_question():
         jsonify(
             {
                 "answer": formatted_response,
-                # 'interaction_data_raptor': interaction_data_raptor,
-                # 'interaction_data_mri': interaction_data_mri
             }
         ),
         200,
