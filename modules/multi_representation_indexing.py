@@ -25,11 +25,16 @@ from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 import chromadb
 
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnableSequence
+
 # Elasticsearch
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from datetime import datetime, timezone
 
+
 # Prompts
+from langchain_core.prompts import PromptTemplate
 from large_language_model_setup import get_llm_based_on_model_name_id
 from prompts import get_template_based_on_template_id
 
@@ -79,15 +84,15 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Initialize large language model, for local testing
-llm = HuggingFaceEndpoint(
-    repo_id=repository_id,
-    # max_length=128,
-    temperature=0.1,
-    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-)
+# llm = HuggingFaceEndpoint(
+#     repo_id=repository_id,
+#     # max_length=128,
+#     temperature=0.1,
+#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+# )
 
 # Initialize large language model, production
-# llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name=model_name_id)
+llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name="gpt-3.5-turbo")
 
 # Initalize embeddings model
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
@@ -202,6 +207,58 @@ print(
     f"Are there embeddings inside MRI collection {chroma_collection.name} ?",
     f"count: {chroma_collection.count()}",
 )
+
+# Implementation of message history
+
+from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+    SystemMessage
+)
+
+contextualize_q_system_prompt = (
+    "Given a chat history and the latest user question "
+    "which might reference context in the chat history, "
+    "formulate a standalone question which can be understood "
+    "without the chat history. Do NOT answer the question, "
+    "just reformulate it if needed and otherwise return it as is."
+)
+
+contextualize_q_prompt = ChatPromptTemplate.from_messages(
+    [
+        ("system", contextualize_q_system_prompt),
+        MessagesPlaceholder("chat_history"),
+        ("human", "{input}"),
+    ]
+)
+
+chain = contextualize_q_prompt | llm
+
+
+response = chain.invoke(
+    {
+        "chat_history": [
+                HumanMessage(content='hi!'),
+                AIMessage(content='what\'s up?'),
+                HumanMessage(content='I need some help with my project.'),
+                AIMessage(content='Sure, I\'d be happy to help! What do you need assistance with?'),
+                HumanMessage(content='What is Task Decomposition?'),
+                AIMessage(content='Task decomposition involves breaking down a complex task into smaller and simpler steps to make it more manageable and easier to accomplish. This process can be done using techniques like Chain of Thought (CoT) or Tree of Thoughts to guide the model in breaking down tasks effectively. Task decomposition can be facilitated by providing simple prompts to a language model, task-specific instructions, or human inputs.'),
+        ],
+        "input": [
+            HumanMessage(content="What are common ways of doing it?")
+        ]
+    }   
+)
+print(f"response: {response}")
+
+
+# TODO: Modify retrieve_telegram_history format
+history = elasticsearch_client.retrieve_telegram_history(1971913512, 5)
+
+# Implementation of message history
+
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
