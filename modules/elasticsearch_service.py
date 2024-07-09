@@ -135,3 +135,46 @@ class ElasticsearchClient:
             id=doc_id,
             body={"doc": updated_feedback_data}
         )
+    def retrieve_telegram_history(self, telegram_chat_id: int, last_n_messages):
+        query = {
+        "size": last_n_messages,
+        "sort": [
+            {
+            "Created_at": {
+                "order": "desc"
+            }
+            }
+        ],
+        "_source": ["Question", "Response"],
+        "query": {
+            "bool": {
+            "must": [
+                {
+                "exists": {
+                    "field": "Question"
+                }
+                },
+                {
+                "exists": {
+                    "field": "Response"
+                }
+                },
+                {
+                "term": {
+                    "telegram_chat_id": telegram_chat_id
+                }
+                }
+            ]
+            }
+        }
+        }
+        response = self.client.search(index='interaction', body=query)
+        # Extract and format the results. Format: [(human: 'question'), (response: 'response')]
+        formatted_messages = []
+        for hit in response['hits']['hits']:
+            question = hit["_source"]["Question"]
+            response = hit["_source"]["Response"]
+            formatted_messages.append(("human", question))
+            formatted_messages.append(("ai", response))
+            
+        return formatted_messages

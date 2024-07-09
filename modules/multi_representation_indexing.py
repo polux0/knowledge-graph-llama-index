@@ -25,11 +25,16 @@ from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 import chromadb
 
+from langchain_core.runnables import RunnablePassthrough
+from langchain_core.runnables import RunnableSequence
+
 # Elasticsearch
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from datetime import datetime, timezone
 
+
 # Prompts
+from langchain_core.prompts import PromptTemplate
 from large_language_model_setup import get_llm_based_on_model_name_id
 from prompts import get_template_based_on_template_id
 
@@ -39,6 +44,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 # Logging
 import logging
 import sys
+
+from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
 
 
 def preprocess_text(text):
@@ -87,7 +94,7 @@ llm = HuggingFaceEndpoint(
 )
 
 # Initialize large language model, production
-# llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name=model_name_id)
+contextualize_llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name="gpt-3.5-turbo")
 
 # Initalize embeddings model
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
@@ -178,38 +185,36 @@ if chroma_collection.count() == 0 and len(keys) == 0:
         retriever.vectorstore.add_documents([summary_doc])
         # Store the original document in Redis
         retriever.docstore.mset([(doc_id, document)])
-        # Our own solution
-        # for document in documents:
-        #     summaries = chain.batch(document, {"max_concurrency": 2})
-        #     doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
-        #     # Documents linked to summaries
-        #     summary_docs = [
-        #         Document(page_content=s, metadata={id_key: doc_ids[i]})
-        #         for i, s in enumerate(summaries)
-        #     ]
-        #     retriever.vectorstore.add_documents(summary_docs)
-        #     retriever.docstore.mset(list(zip(doc_ids, documents)))
-        # Our own solution
-
-        # adding the original chunks to the vectorstore as well
+        # Adding the original chunks to the vectorstore as well
         # for i, doc in enumerate(documents):
         #     doc.metadata[id_key] = doc_ids[i]
         #     retriever.vectorstore.add_documents(documents)
-        # Our own solution
     print("Create MRI embeddings for complete documentation...")
 print("MRI Embeddings have been already created...")
 print(
     f"Are there embeddings inside MRI collection {chroma_collection.name} ?",
     f"count: {chroma_collection.count()}",
 )
+
+# Local test of message history
+
+chat_id = 535329585
+test_user_message = "What are common ways of doing it?"
+    
+processor = MessageHistoryProcessor(elasticsearch_client, chat_id, is_test=True)
+response = processor.process_message(test_user_message)
+print(f"!!!MessageHistoryProcessor result: {response}")
+
+# Local test of retrievals functionality
+
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
 sub_docs = vectorstore.similarity_search(question, k=3)
-# for docs in sub_docs:
-#     print("subdocs: \n", docs)
-
 retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
+
+#TODO: Code clean up
+
 # print("Nodes retrieved: \n")
 # for node in retrieved_docs:
 #     print(node)
@@ -221,6 +226,7 @@ response_dictionary = qa_chain({"query": question})
 response = response_dictionary["result"]
 print("Printing final answer", response)
 
+#TODO: Move to `utils` or modify the way we are storing retrieved nodes
 
 def stringify_and_combine(sub_docs, retrieved_docs) -> str:
     combined_output = "Summary documents: \n"
@@ -228,12 +234,6 @@ def stringify_and_combine(sub_docs, retrieved_docs) -> str:
     combined_output += "\nNodes retrieved from original documents: \n"
     combined_output += "\n".join([repr(doc) for doc in retrieved_docs])
     return combined_output
-
-
-
-# Call the function and print the result
-# combined_string = stringify_and_combine(sub_docs, retrieved_docs)
-# print("What is going into the elasticsearch: \n", combined_string)
 
 
 def generate_response_based_on_multirepresentation_indexing_with_debt(question: str):
@@ -244,6 +244,32 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
         llm,
         retriever=retriever,
         #    prompt=prompt_template
+    )
+    experiment.source_agent = "Multi Representation Agent"
+
+    current_time = datetime.now(timezone.utc)
+    experiment.updated_at = current_time.isoformat(timespec="milliseconds")
+    source_nodes = stringify_and_combine(sub_docs, retrieved_docs)
+    experiment.retrieved_nodes = source_nodes
+    response_dictionary = qa_chain({"query": question})
+    response = response_dictionary["result"]
+    experiment.response = str(response)
+
+    return response, experiment, source_nodes, retrieved_docs
+
+def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int):
+
+
+    processor = MessageHistoryProcessor(
+        elasticsearch_client, 
+        chat_id=chat_id,
+    )
+    processed_question = processor.process_message(question)
+    experiment.question = processed_question
+    experiment.prompt_template = " "
+    qa_chain = RetrievalQA.from_chain_type(
+        llm,
+        retriever=retriever,
     )
     experiment.source_agent = "Multi Representation Agent"
 
