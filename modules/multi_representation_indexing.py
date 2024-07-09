@@ -45,6 +45,8 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import logging
 import sys
 
+from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
+
 
 def preprocess_text(text):
     # Replace newline characters
@@ -84,15 +86,15 @@ experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # Initialize large language model, for local testing
-# llm = HuggingFaceEndpoint(
-#     repo_id=repository_id,
-#     # max_length=128,
-#     temperature=0.1,
-#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
-# )
+llm = HuggingFaceEndpoint(
+    repo_id=repository_id,
+    # max_length=128,
+    temperature=0.1,
+    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+)
 
 # Initialize large language model, production
-llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name="gpt-3.5-turbo")
+contextualize_llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name="gpt-3.5-turbo")
 
 # Initalize embeddings model
 # embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
@@ -183,24 +185,10 @@ if chroma_collection.count() == 0 and len(keys) == 0:
         retriever.vectorstore.add_documents([summary_doc])
         # Store the original document in Redis
         retriever.docstore.mset([(doc_id, document)])
-        # Our own solution
-        # for document in documents:
-        #     summaries = chain.batch(document, {"max_concurrency": 2})
-        #     doc_ids = [f"{redis_namespace}-{uuid.uuid4()}" for _ in documents]
-        #     # Documents linked to summaries
-        #     summary_docs = [
-        #         Document(page_content=s, metadata={id_key: doc_ids[i]})
-        #         for i, s in enumerate(summaries)
-        #     ]
-        #     retriever.vectorstore.add_documents(summary_docs)
-        #     retriever.docstore.mset(list(zip(doc_ids, documents)))
-        # Our own solution
-
-        # adding the original chunks to the vectorstore as well
+        # Adding the original chunks to the vectorstore as well
         # for i, doc in enumerate(documents):
         #     doc.metadata[id_key] = doc_ids[i]
         #     retriever.vectorstore.add_documents(documents)
-        # Our own solution
     print("Create MRI embeddings for complete documentation...")
 print("MRI Embeddings have been already created...")
 print(
@@ -208,65 +196,25 @@ print(
     f"count: {chroma_collection.count()}",
 )
 
-# Implementation of message history
+# Local test of message history
 
-from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
-from langchain.schema import (
-    AIMessage,
-    HumanMessage,
-    SystemMessage
-)
+chat_id = 535329585
+test_user_message = "What are common ways of doing it?"
+    
+processor = MessageHistoryProcessor(elasticsearch_client, chat_id, is_test=True)
+response = processor.process_message(test_user_message)
+print(f"!!!MessageHistoryProcessor result: {response}")
 
-contextualize_q_system_prompt = (
-    "Given a chat history and the latest user question "
-    "which might reference context in the chat history, "
-    "formulate a standalone question which can be understood "
-    "without the chat history. Do NOT answer the question, "
-    "just reformulate it if needed and otherwise return it as is."
-)
-
-contextualize_q_prompt = ChatPromptTemplate.from_messages(
-    [
-        ("system", contextualize_q_system_prompt),
-        MessagesPlaceholder("chat_history"),
-        ("human", "{input}"),
-    ]
-)
-
-chain = contextualize_q_prompt | llm
-
-
-response = chain.invoke(
-    {
-        "chat_history": [
-                HumanMessage(content='hi!'),
-                AIMessage(content='what\'s up?'),
-                HumanMessage(content='I need some help with my project.'),
-                AIMessage(content='Sure, I\'d be happy to help! What do you need assistance with?'),
-                HumanMessage(content='What is Task Decomposition?'),
-                AIMessage(content='Task decomposition involves breaking down a complex task into smaller and simpler steps to make it more manageable and easier to accomplish. This process can be done using techniques like Chain of Thought (CoT) or Tree of Thoughts to guide the model in breaking down tasks effectively. Task decomposition can be facilitated by providing simple prompts to a language model, task-specific instructions, or human inputs.'),
-        ],
-        "input": [
-            HumanMessage(content="What are common ways of doing it?")
-        ]
-    }   
-)
-print(f"response: {response}")
-
-
-# TODO: Modify retrieve_telegram_history format
-history = elasticsearch_client.retrieve_telegram_history(1971913512, 5)
-
-# Implementation of message history
+# Local test of retrievals functionality
 
 qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 question = "What are domains of real world community model?"
 question1 = "Domains of real world community model"
 sub_docs = vectorstore.similarity_search(question, k=3)
-# for docs in sub_docs:
-#     print("subdocs: \n", docs)
-
 retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
+
+#TODO: Code clean up
+
 # print("Nodes retrieved: \n")
 # for node in retrieved_docs:
 #     print(node)
@@ -278,6 +226,7 @@ response_dictionary = qa_chain({"query": question})
 response = response_dictionary["result"]
 print("Printing final answer", response)
 
+#TODO: Move to `utils` or modify the way we are storing retrieved nodes
 
 def stringify_and_combine(sub_docs, retrieved_docs) -> str:
     combined_output = "Summary documents: \n"
@@ -285,12 +234,6 @@ def stringify_and_combine(sub_docs, retrieved_docs) -> str:
     combined_output += "\nNodes retrieved from original documents: \n"
     combined_output += "\n".join([repr(doc) for doc in retrieved_docs])
     return combined_output
-
-
-
-# Call the function and print the result
-# combined_string = stringify_and_combine(sub_docs, retrieved_docs)
-# print("What is going into the elasticsearch: \n", combined_string)
 
 
 def generate_response_based_on_multirepresentation_indexing_with_debt(question: str):
@@ -301,6 +244,32 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
         llm,
         retriever=retriever,
         #    prompt=prompt_template
+    )
+    experiment.source_agent = "Multi Representation Agent"
+
+    current_time = datetime.now(timezone.utc)
+    experiment.updated_at = current_time.isoformat(timespec="milliseconds")
+    source_nodes = stringify_and_combine(sub_docs, retrieved_docs)
+    experiment.retrieved_nodes = source_nodes
+    response_dictionary = qa_chain({"query": question})
+    response = response_dictionary["result"]
+    experiment.response = str(response)
+
+    return response, experiment, source_nodes, retrieved_docs
+
+def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int):
+
+
+    processor = MessageHistoryProcessor(
+        elasticsearch_client, 
+        chat_id=chat_id,
+    )
+    processed_question = processor.process_message(question)
+    experiment.question = processed_question
+    experiment.prompt_template = " "
+    qa_chain = RetrievalQA.from_chain_type(
+        llm,
+        retriever=retriever,
     )
     experiment.source_agent = "Multi Representation Agent"
 

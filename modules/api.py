@@ -1,9 +1,11 @@
 from datetime import datetime, timezone
 from create_raptor_indexing_langchain import (
+    generate_response_based_on_raptor_indexing,
     generate_response_based_on_raptor_indexing_with_debt,
 )
 from flask import Flask, request, jsonify
 from multi_representation_indexing import (
+    generate_response_based_on_multirepresentation_indexing,
     generate_response_based_on_multirepresentation_indexing_with_debt,
 )
 
@@ -35,10 +37,10 @@ def ask_question():
         return jsonify({"error": "No question provided"}), 400
 
     answer_raptor, experiment_raptor, source_nodes_raptor = (
-        generate_response_based_on_raptor_indexing_with_debt(question)
+        generate_response_based_on_raptor_indexing(question, telegram_chat_id)
     )
     answer_mri, experiment_mri, source_nodes_mri, retrieved_docs_mri = (
-        generate_response_based_on_multirepresentation_indexing_with_debt(question)
+        generate_response_based_on_multirepresentation_indexing(question, telegram_chat_id)
     )
 
     formatted_response = (
