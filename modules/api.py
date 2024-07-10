@@ -1,18 +1,21 @@
 from datetime import datetime, timezone
 from create_raptor_indexing_langchain import (
     generate_response_based_on_raptor_indexing,
-    generate_response_based_on_raptor_indexing_with_debt,
 )
 from flask import Flask, request, jsonify
 from multi_representation_indexing import (
     generate_response_based_on_multirepresentation_indexing,
-    generate_response_based_on_multirepresentation_indexing_with_debt,
 )
 
 # Elasticsearch
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 import logging
 
+from response_synthesizer import create_nodes_with_score, get_synthesized_response_based_on_nodes_with_score, merge_nodes
+
+class Document:
+    def __init__(self, page_content: str):
+        self.page_content = page_content
 
 app = Flask(__name__)
 
@@ -46,6 +49,13 @@ def ask_question():
     formatted_response = (
         f"Raptor agent answer:\n{answer_raptor}\n\n" f"MRI agent answer:\n{answer_mri}"
     )
+
+    test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
+    test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
+    
+    nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
+    responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(question, nodesCombined)
+
     # TODO: Modularize
     additional_fields = {
         "telegram_chat_id": telegram_chat_id,
@@ -57,13 +67,12 @@ def ask_question():
     # Log interactions
     elasticsearch_client.save_interaction(experiment_raptor, additional_fields)
     elasticsearch_client.save_interaction(experiment_mri, additional_fields)
-
+    elasticsearch_client.save_experiment(experiment_raptor_and_mri_synthezis)
+    # Log 
     return (
         jsonify(
             {
-                "answer": formatted_response,
-                # 'interaction_data_raptor': interaction_data_raptor,
-                # 'interaction_data_mri': interaction_data_mri
+                "answer": responseSynthesized,
             }
         ),
         200,

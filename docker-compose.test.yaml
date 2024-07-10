@@ -108,32 +108,32 @@ services:
     # command: python ./modules/create_knowledge_graph.py
     networks:
       - net
-  api:
-    build: .
-    container_name: api_container
-    volumes:
-      - .:/usr/src/app
-    ports:
-      - "5000:5000"
-    env_file:
-      - api.env
-    environment:
-      - PROCESS_TYPE=api
-    command: python ./modules/api.py
-    networks:
-      - net
-  telegram_bot:
-    build: .
-    container_name: telegram_bot_container
-    volumes:
-      - .:/usr/src/app
-    env_file:
-      - .env
-    environment:
-      - API_URL=${API_URL}
-    command: python ./modules/telegram_bot.py
-    networks:
-      - net
+  # api:
+  #   build: .
+  #   container_name: api_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   ports:
+  #     - "5000:5000"
+  #   env_file:
+  #     - api.env
+  #   environment:
+  #     - PROCESS_TYPE=api
+  #   command: python ./modules/api.py
+  #   networks:
+  #     - net
+  # telegram_bot:
+  #   build: .
+  #   container_name: telegram_bot_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   env_file:
+  #     - .env
+  #   environment:
+  #     - API_URL=${API_URL}
+  #   command: python ./modules/telegram_bot.py
+  #   networks:
+  #     - net
 
 volumes:
   chroma-data:

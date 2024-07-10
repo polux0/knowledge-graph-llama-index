@@ -112,7 +112,7 @@ if prompt := st.chat_input("What is up?"):
         # responseKG, experimentKG, sourceNodesKG = future_kg.result()
         # responseVE, experimentVDB, sourceNodesVDB = future_ve.result()
         responseRI, experimentRI, sourceNodesRI = future_ri.result()  # Retrieve new response
-        responseMRI, experimentMRI, sourceNodesMRI = future_mri.result() # Retrieve new response1
+        responseMRI, experimentMRI, sourceNodesMRI, retrievedNodesMRI, retrievedDocsMRI = future_mri.result() # Retrieve new response1
 
     # nodesCombined = merge_nodes(sourceNodesKG, sourceNodesVDB, sourceNodesRI)  # Combine new nodes
     # print("** Nodes combined: %s" % nodesCombined)
