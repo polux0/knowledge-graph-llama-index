@@ -1,2 +1,0 @@
-user api_user on >api_password ~* +@all
-user supervisor_user on >supervisor_password ~* +@all

@@ -4,6 +4,12 @@ from elasticsearch.helpers import bulk
 from environment_setup import (load_environment_variables, setup_logging)
 import os
 
+#TODO: This is not place for those imports & operations that rely on those imports
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+)
+
 env_vars = load_environment_variables()
 setup_logging()
 
@@ -135,3 +141,47 @@ class ElasticsearchClient:
             id=doc_id,
             body={"doc": updated_feedback_data}
         )
+    def retrieve_telegram_history(self, telegram_chat_id: int, last_n_messages):
+        query = {
+        "size": last_n_messages,
+        "sort": [
+            {
+            "Created_at": {
+                "order": "desc"
+            }
+            }
+        ],
+        "_source": ["Question", "Response"],
+        "query": {
+            "bool": {
+            "must": [
+                {
+                "exists": {
+                    "field": "Question"
+                }
+                },
+                {
+                "exists": {
+                    "field": "Response"
+                }
+                },
+                {
+                "term": {
+                    "telegram_chat_id": telegram_chat_id
+                }
+                }
+            ]
+            }
+        }
+        }
+        response = self.client.search(index='interaction', body=query)
+        # Extract and format the results. Format: [(human: 'question'), (response: 'response')]
+        formatted_messages = []
+        for hit in response['hits']['hits']:
+            question = hit["_source"]["Question"]
+            response = hit["_source"]["Response"]
+            #TODO Formating should be part of utils or something, it's place is not here
+            formatted_messages.append(HumanMessage(content=question))
+            formatted_messages.append(AIMessage(content=response))
+            
+        return formatted_messages

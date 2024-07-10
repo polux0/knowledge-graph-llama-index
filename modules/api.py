@@ -40,10 +40,10 @@ def ask_question():
         return jsonify({"error": "No question provided"}), 400
 
     answer_raptor, experiment_raptor, source_nodes_raptor = (
-        generate_response_based_on_raptor_indexing(question)
+        generate_response_based_on_raptor_indexing(question, telegram_chat_id)
     )
     answer_mri, experiment_mri, source_nodes_mri, retrieved_docs_mri = (
-        generate_response_based_on_multirepresentation_indexing(question)
+        generate_response_based_on_multirepresentation_indexing(question, telegram_chat_id)
     )
 
     formatted_response = (
@@ -67,7 +67,8 @@ def ask_question():
     # Log interactions
     elasticsearch_client.save_interaction(experiment_raptor, additional_fields)
     elasticsearch_client.save_interaction(experiment_mri, additional_fields)
-
+    elasticsearch_client.save_experiment(experiment_raptor_and_mri_synthezis)
+    # Log 
     return (
         jsonify(
             {

@@ -13,6 +13,7 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from large_language_model_setup import get_llm_based_on_model_name_id
 from raptor_functions import recursive_embed_cluster_summarize
+from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
 import tiktoken
 
 # Generating clusters of documents
@@ -223,9 +224,7 @@ rag_chain = (
     | llm
     | StrOutputParser()
 )
-
 # Question
-# question = "What are domains of real world community model?"
 question = "Would you tell me more about artificial intelligence units?"
 
 # Retriever related: 
@@ -235,7 +234,6 @@ source_nodes = retriever.get_relevant_documents(
     n_results=3,
     return_source_documents=True
 )
-print("Source nodes: ", source_nodes)
 
 
 def stringify_and_combine_nodes(nodes) -> str:
@@ -245,10 +243,33 @@ def stringify_and_combine_nodes(nodes) -> str:
 
 
 response = rag_chain.invoke(question)
-print(str(response))
+# print(str(response))
 
 
 def generate_response_based_on_raptor_indexing_with_debt(question: str):
+
+    experiment.question = question
+    experiment.prompt_template = prompt.template
+    experiment.source_agent = "Raptor Agent"
+
+    current_time = datetime.now(timezone.utc)
+    experiment.updated_at = current_time.isoformat(timespec="milliseconds")
+    # Source nodes
+    source_nodes = retriever.get_relevant_documents(question, n_results=3)
+    experiment.retrieved_nodes = stringify_and_combine_nodes(source_nodes)
+    response = rag_chain.invoke(question)
+    experiment.response = str(response)
+
+    return str(response), experiment, source_nodes
+
+def generate_response_based_on_raptor_indexing(question: str, chat_id: int):
+
+    processor = MessageHistoryProcessor(
+        elasticsearch_client,
+        chat_id=chat_id,
+    )
+    processed_question = processor.process_message(question)
+    experiment.question = processed_question
 
     experiment.question = question
     experiment.prompt_template = prompt.template
