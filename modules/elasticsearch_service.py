@@ -4,6 +4,12 @@ from elasticsearch.helpers import bulk
 from environment_setup import (load_environment_variables, setup_logging)
 import os
 
+#TODO: This is not place for those imports & operations that rely on those imports
+from langchain.schema import (
+    AIMessage,
+    HumanMessage,
+)
+
 env_vars = load_environment_variables()
 setup_logging()
 
@@ -174,7 +180,8 @@ class ElasticsearchClient:
         for hit in response['hits']['hits']:
             question = hit["_source"]["Question"]
             response = hit["_source"]["Response"]
-            formatted_messages.append(("human", question))
-            formatted_messages.append(("ai", response))
+            #TODO Formating should be part of utils or something, it's place is not here
+            formatted_messages.append(HumanMessage(content=question))
+            formatted_messages.append(AIMessage(content=response))
             
         return formatted_messages
