@@ -33,6 +33,7 @@ class MessageHistoryProcessor:
             history_length: The number of messages to retrieve from the chat history.
             is_test: A flag indicating whether to use test data instead of retrieving actual data.
         """
+        #TODO: Modularize instantiation of language models
         self.contextualize_llm = ChatOpenAI(
             openai_api_key=os.getenv("OPENAI_API_KEY"), 
             model_name="gpt-3.5-turbo"

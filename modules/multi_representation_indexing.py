@@ -196,22 +196,24 @@ print(
     f"count: {chroma_collection.count()}",
 )
 
+# TODO: Code clean up
 # Local test of message history
 
-chat_id = 535329585
-test_user_message = "What are common ways of doing it?"
+# chat_id = 535329585
+# test_user_message = "What are common ways of doing it?"
     
-processor = MessageHistoryProcessor(elasticsearch_client, chat_id, is_test=True)
-response = processor.process_message(test_user_message)
-print(f"!!!MessageHistoryProcessor result: {response}")
+# processor = MessageHistoryProcessor(elasticsearch_client, chat_id, is_test=True)
+# response = processor.process_message(test_user_message)
+# print(f"!!!MessageHistoryProcessor result: {response}")
 
+# TODO: Code clean up
 # Local test of retrievals functionality
 
-qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
-question = "What are domains of real world community model?"
-question1 = "Domains of real world community model"
-sub_docs = vectorstore.similarity_search(question, k=3)
-retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
+# qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
+# question = "What are domains of real world community model?"
+# question1 = "Domains of real world community model"
+# sub_docs = vectorstore.similarity_search(question, k=3)
+# retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
 
 #TODO: Code clean up
 
@@ -219,12 +221,12 @@ retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
 # for node in retrieved_docs:
 #     print(node)
 # retrieved_docs[0].page_content[0:500]
-print("retrieved docs: \n", retrieved_docs)
-print("retrieved documents, length: " + str(len(retrieved_docs)))
+# print("retrieved docs: \n", retrieved_docs)
+# print("retrieved documents, length: " + str(len(retrieved_docs)))
 
-response_dictionary = qa_chain({"query": question})
-response = response_dictionary["result"]
-print("Printing final answer", response)
+# response_dictionary = qa_chain({"query": question})
+# response = response_dictionary["result"]
+# print("Printing final answer", response)
 
 #TODO: Move to `utils` or modify the way we are storing retrieved nodes
 
@@ -235,7 +237,8 @@ def stringify_and_combine(sub_docs, retrieved_docs) -> str:
     combined_output += "\n".join([repr(doc) for doc in retrieved_docs])
     return combined_output
 
-
+#TODO: Message history is not configured to work properly with streamlit.
+#TODO: Temporairly will be removed
 def generate_response_based_on_multirepresentation_indexing_with_debt(question: str):
 
     experiment.question = question
@@ -247,6 +250,9 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
     )
     experiment.source_agent = "Multi Representation Agent"
 
+    sub_docs = vectorstore.similarity_search(question, k=3)
+    retrieved_docs = retriever.get_relevant_documents(question, n_results=3)
+
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
     source_nodes = stringify_and_combine(sub_docs, retrieved_docs)
@@ -257,19 +263,47 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 
     return response, experiment, source_nodes, retrieved_docs
 
-def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int):
 
+#TODO: Code clean-up
+def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int):
 
     processor = MessageHistoryProcessor(
         elasticsearch_client, 
         chat_id=chat_id,
     )
+
     processed_question = processor.process_message(question)
+
+    sub_docs = vectorstore.similarity_search(question, k=3)
+    retrieved_docs = retriever.get_relevant_documents(processed_question, n_results=3)
+
+    prompt = PromptTemplate(
+        input_variables=['context', 'question'],
+        template=(
+            "You are a friendly library assistant designed to create detailed and precise responses about the standards in the Auravana Project documentation, based on the context given below. For specific definitions of models or domains, please quote directly from the context, whilst ensuring that you answer the question. If you can't find the answer, say 'I don't have the context required to answer that question - could you please rephrase it?'\n"
+            "Question: {question}\n"
+            "Context: {context}\n"
+            "Answer:"
+        )
+    )
+    # print("The prompt we are using: ", prompt)
+
+    
     experiment.question = processed_question
     experiment.prompt_template = " "
-    qa_chain = RetrievalQA.from_chain_type(
-        llm,
-        retriever=retriever,
+    # Here qa_chain should be replaced by `rag_chain`
+    
+    # qa_chain = RetrievalQA.from_chain_type(
+    #     llm,
+    #     retriever=retriever,
+    # )
+
+    # Replacement
+    rag_chain = (
+        {"context": retriever , "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
     )
     experiment.source_agent = "Multi Representation Agent"
 
@@ -277,8 +311,19 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
     source_nodes = stringify_and_combine(sub_docs, retrieved_docs)
     experiment.retrieved_nodes = source_nodes
-    response_dictionary = qa_chain({"query": question})
-    response = response_dictionary["result"]
+    # Here response from qa chain should be replaced with response from `rag_chain`
+
+    # response_dictionary = qa_chain({"query": question})
+    # response = response_dictionary["result"]
+    # experiment.response = str(response)
+
+    # Replacement
+    response = rag_chain.invoke(processed_question)
     experiment.response = str(response)
 
-    return response, experiment, source_nodes, retrieved_docs
+    # Here response type should be replaced
+    
+    # return response, experiment, source_nodes, retrieved_docs
+
+    # Replacement
+    return str(response), experiment, source_nodes, retrieved_docs
