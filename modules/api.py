@@ -53,8 +53,13 @@ def ask_question():
     test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
     test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
     
+    print("Trying to merge nodes...")
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
+    print("Nodes merged")
     responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(question, nodesCombined)
+    print("Type of variable Response synthesized:", type(responseSynthesized))
+    print("Response synthesized\n", responseSynthesized)
+    print("Response synthesized, jsonified: \n", jsonify({"answer": str(responseSynthesized)}))
 
     # TODO: Modularize
     additional_fields = {
@@ -65,14 +70,26 @@ def ask_question():
         "document_type": "message",
     }
     # Log interactions
+    print("Raptor saved")
+    logging.debug("Raptor saved")
     elasticsearch_client.save_interaction(experiment_raptor, additional_fields)
+    print("MRI saved")
+    logging.debug("MRI saved")
     elasticsearch_client.save_interaction(experiment_mri, additional_fields)
+    print("experiment_raptor_and_mri_synthezis", experiment_raptor_and_mri_synthezis)
+    logging.debug("experiment_raptor_and_mri_synthezis")
     elasticsearch_client.save_experiment(experiment_raptor_and_mri_synthezis)
+    print("experiment_raptor_and_mri_synthezis saved")
+    logging.debug("experiment_raptor_and_mri_synthezis saved")
     # Log 
+    # return (
+    #     responseSynthesized
+    #     200,
+    # )
     return (
         jsonify(
             {
-                "answer": responseSynthesized,
+                "answer": str(responseSynthesized),
             }
         ),
         200,
