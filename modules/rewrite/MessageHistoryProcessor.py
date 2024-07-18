@@ -41,12 +41,25 @@ class MessageHistoryProcessor:
         self.es_client = es_client
         self.chat_id = chat_id
         self.history_length = history_length
+        # self.contextualize_q_system_prompt = (
+        #     "Given a chat history and the latest user question "
+        #     "which might reference context in the chat history, "
+        #     "formulate a standalone question which can be understood "
+        #     "without the chat history. Do NOT answer the question, "
+        #     "just reformulate it IF NEEDED and otherwise return it AS IS, please!"
+        # )
         self.contextualize_q_system_prompt = (
-            "Given a chat history and the latest user question "
-            "which might reference context in the chat history, "
-            "formulate a standalone question which can be understood "
-            "without the chat history. Do NOT answer the question, "
-            "just reformulate it IF NEEDED and otherwise return it AS IS, please!"
+            "A 'vague follow up question' is when the user asks for more details, or asks you "
+            "to tell them more, without being specific. If the new question is a 'vague follow "
+            "up question', then search the previous question and answer for additional context "
+            "about what the user is interested in, and enrich the new question with this info to "
+            "create a new prompt. If the new question is not a 'vague follow up question', ascertain "
+            "whether it is a 'specific follow up question' by cross-referencing key terms in the new "
+            "question with the previous question and answer. If there is at least a fuzzy match, assume "
+            "that the new question is a precise follow up question, retrieve relevant information from the "
+            "previous question and answer, and use it to enrich the new question to form a new prompt. If "
+            "there is no evidence that the new question relates to the previous question and answer in any "
+            "meaningful way, just leave the new question AS IS."
         )
         self.contextualize_q_prompt = self.create_prompt_template()
         self.chain = self.create_chain()
