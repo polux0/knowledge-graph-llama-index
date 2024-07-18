@@ -169,6 +169,11 @@ class ElasticsearchClient:
                 "term": {
                     "telegram_chat_id": telegram_chat_id
                 }
+                },
+                {
+                    "term": {
+                        "Source_agent": "Response synthesizer"
+                    }
                 }
             ]
             }
