@@ -12,6 +12,7 @@ from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 import logging
 
 from response_synthesizer import create_nodes_with_score, get_synthesized_response_based_on_nodes_with_score, merge_nodes
+from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
 
 class Document:
     def __init__(self, page_content: str):
@@ -39,27 +40,28 @@ def ask_question():
     if not question:
         return jsonify({"error": "No question provided"}), 400
 
-    answer_raptor, experiment_raptor, source_nodes_raptor = (
-        generate_response_based_on_raptor_indexing(question, telegram_chat_id)
-    )
-    answer_mri, experiment_mri, source_nodes_mri, retrieved_docs_mri = (
-        generate_response_based_on_multirepresentation_indexing(question, telegram_chat_id)
+    processor = MessageHistoryProcessor(
+        elasticsearch_client,
+        chat_id=telegram_chat_id,
     )
 
-    formatted_response = (
-        f"Raptor agent answer:\n{answer_raptor}\n\n" f"MRI agent answer:\n{answer_mri}"
+    processed_question = processor.test_alternative(question=question)
+    print("Question: ", question)
+    print("History aware rewriten question: ", processed_question)
+    print("End of the history aware question!")
+
+    answer_raptor, experiment_raptor, source_nodes_raptor = (
+        generate_response_based_on_raptor_indexing(processed_question, telegram_chat_id)
+    )
+    answer_mri, experiment_mri, source_nodes_mri, retrieved_docs_mri = (
+        generate_response_based_on_multirepresentation_indexing(processed_question, telegram_chat_id)
     )
 
     test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
     test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
     
-    print("Trying to merge nodes...")
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
-    print("Nodes merged")
     responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(question, nodesCombined)
-    print("Type of variable Response synthesized:", type(responseSynthesized))
-    print("Response synthesized\n", responseSynthesized)
-    print("Response synthesized, jsonified: \n", jsonify({"answer": str(responseSynthesized)}))
 
     # TODO: Modularize
     additional_fields = {
@@ -70,22 +72,11 @@ def ask_question():
         "document_type": "message",
     }
     # Log interactions
-    print("Raptor saved")
-    logging.debug("Raptor saved")
     elasticsearch_client.save_interaction(experiment_raptor, additional_fields)
-    print("MRI saved")
-    logging.debug("MRI saved")
     elasticsearch_client.save_interaction(experiment_mri, additional_fields)
-    print("experiment_raptor_and_mri_synthezis", experiment_raptor_and_mri_synthezis)
-    logging.debug("experiment_raptor_and_mri_synthezis")
-    elasticsearch_client.save_experiment(experiment_raptor_and_mri_synthezis)
-    print("experiment_raptor_and_mri_synthezis saved")
-    logging.debug("experiment_raptor_and_mri_synthezis saved")
-    # Log 
-    # return (
-    #     responseSynthesized
-    #     200,
-    # )
+    # elasticsearch_client.save_experiment(experiment_raptor_and_mri_synthezis)
+    elasticsearch_client.save_interaction(experiment_raptor_and_mri_synthezis, additional_fields)
+
     return (
         jsonify(
             {

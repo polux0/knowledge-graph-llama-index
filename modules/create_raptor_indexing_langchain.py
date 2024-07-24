@@ -264,20 +264,12 @@ def generate_response_based_on_raptor_indexing_with_debt(question: str):
 
 def generate_response_based_on_raptor_indexing(question: str, chat_id: int):
 
-    processor = MessageHistoryProcessor(
-        elasticsearch_client,
-        chat_id=chat_id,
-    )
-    processed_question = processor.process_message(question)
-    experiment.question = processed_question
-
     experiment.question = question
     experiment.prompt_template = prompt.template
     experiment.source_agent = "Raptor Agent"
 
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
-    # Source nodes
     source_nodes = retriever.get_relevant_documents(question, n_results=3)
     experiment.retrieved_nodes = stringify_and_combine_nodes(source_nodes)
     response = rag_chain.invoke(question)
