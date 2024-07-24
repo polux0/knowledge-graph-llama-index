@@ -267,15 +267,8 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 #TODO: Code clean-up
 def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int):
 
-    processor = MessageHistoryProcessor(
-        elasticsearch_client, 
-        chat_id=chat_id,
-    )
-
-    processed_question = processor.process_message(question)
-
     sub_docs = vectorstore.similarity_search(question, k=3)
-    retrieved_docs = retriever.get_relevant_documents(processed_question, n_results=3)
+    retrieved_docs = retriever.get_relevant_documents(question, n_results=3)
 
     prompt = PromptTemplate(
         input_variables=['context', 'question'],
@@ -286,17 +279,9 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
             "Answer:"
         )
     )
-    # print("The prompt we are using: ", prompt)
 
-    
-    experiment.question = processed_question
+    experiment.question = question
     experiment.prompt_template = " "
-    # Here qa_chain should be replaced by `rag_chain`
-    
-    # qa_chain = RetrievalQA.from_chain_type(
-    #     llm,
-    #     retriever=retriever,
-    # )
 
     # Replacement
     rag_chain = (
@@ -311,19 +296,9 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
     source_nodes = stringify_and_combine(sub_docs, retrieved_docs)
     experiment.retrieved_nodes = source_nodes
-    # Here response from qa chain should be replaced with response from `rag_chain`
-
-    # response_dictionary = qa_chain({"query": question})
-    # response = response_dictionary["result"]
-    # experiment.response = str(response)
 
     # Replacement
-    response = rag_chain.invoke(processed_question)
+    response = rag_chain.invoke(question)
     experiment.response = str(response)
 
-    # Here response type should be replaced
-    
-    # return response, experiment, source_nodes, retrieved_docs
-
-    # Replacement
     return str(response), experiment, source_nodes, retrieved_docs
