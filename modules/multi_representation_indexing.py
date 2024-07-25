@@ -117,6 +117,11 @@ chroma_client = chromadb.HttpClient(
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
 
+print("REDIS_HOST: ", os.getenv("REDIS_HOST"))
+print("REDIS_PORT: ", os.getenv("REDIS_PORT"))
+print("REDIS_USERNAME: ", os.getenv("REDIS_USERNAME"))
+print("REDIS_PASSWORD: ", os.getenv("REDIS_PASSWORD"))
+
 redis_client = Redis(
     host=os.getenv("REDIS_HOST"),
     port=os.getenv("REDIS_PORT"),
