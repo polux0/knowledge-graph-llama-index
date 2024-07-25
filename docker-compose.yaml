@@ -81,29 +81,29 @@ services:
       ]
     networks:
       - net
-  # app:
-  #   build: .
-  #   depends_on:
-  #     chromadb:
-  #       condition: service_healthy
-  #   container_name: app_container
-  #   volumes:
-  #     - .:/usr/src/app
-  #   ports:
-  #     - "8080:8080"
-  #     - "8501:8501"
-  #   env_file:
-  #     - .env
-  #   # restart: always
-  #   # restart: on-failure
-  #   # command: python ./modules/create_vector_embeddings_llama.py
-  #   # command: python ./modules/multi_representation_indexing.py
-  #   # command: python ./modules/create_raptor_indexing_langchain.py
-  #   command: streamlit run ./modules/app.py
-  #   # command: python ./modules/delete_chroma_collections.py
-  #   # command: python ./modules/create_knowledge_graph.py
-  #   networks:
-  #     - net
+  app:
+    build: .
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    container_name: app_container
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8080:8080"
+      - "8501:8501"
+    env_file:
+      - .env
+    # restart: always
+    # restart: on-failure
+    # command: python ./modules/create_vector_embeddings_llama.py
+    # command: python ./modules/multi_representation_indexing.py
+    # command: python ./modules/create_raptor_indexing_langchain.py
+    command: streamlit run ./modules/app.py
+    # command: python ./modules/delete_chroma_collections.py
+    # command: python ./modules/create_knowledge_graph.py
+    networks:
+      - net
   
   api:
     build: .
@@ -113,7 +113,7 @@ services:
     ports:
       - "5000:5000"
     env_file:
-      - api.env
+      - .env.api
     environment:
       - PROCESS_TYPE=api
     command: python ./modules/api.py
