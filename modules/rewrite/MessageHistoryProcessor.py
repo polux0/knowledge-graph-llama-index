@@ -228,26 +228,26 @@ class MessageHistoryProcessor:
         formatted_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in chat_history])
 
         print(f"chat_history: ", chat_history)
-        # prompt = f"""
-        #     Given a chat history and the latest user question which might reference context in the chat history,
-        #     formulate a standalone question which can be understood without the chat history.
-        #     Do NOT answer the question, just reformulate it IF NEEDED and otherwise return it AS IS, please!
-
-        #     Question: {question}
-        #     Chat history: {formatted_history}
-        #     Answer:
-        #     """
-        
         prompt = f"""
-        Here is a chat history and a user's latest question. Based on the chat history and the question, reformulate the question to be standalone and clear, incorporating relevant context.
+            Given a chat history and the latest user question which might reference context in the chat history,
+            formulate a standalone question which can be understood without the chat history.
+            Do NOT answer the question, just reformulate it IF NEEDED and otherwise return it AS IS, please!
 
-        Chat history:
-        {formatted_history}
+            Question: {question}
+            Chat history: {formatted_history}
+            Answer:
+            """
+        
+        # prompt = f"""
+        # Here is a chat history and a user's latest question. Based on the chat history and the question, reformulate the question to be standalone and clear, incorporating relevant context.
 
-        Latest Question: {question}
+        # Chat history:
+        # {formatted_history}
 
-        Reformulated Question:
-        """
+        # Latest Question: {question}
+
+        # Reformulated Question:
+        # """
 
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
