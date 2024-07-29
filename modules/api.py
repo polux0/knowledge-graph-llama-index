@@ -61,7 +61,7 @@ def ask_question():
     test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
     
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
-    responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(question, nodesCombined)
+    responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(processed_question, nodesCombined)
 
     # TODO: Modularize
     additional_fields = {

@@ -228,15 +228,16 @@ class MessageHistoryProcessor:
 
         print(f"chat_history: ", chat_history)
         # Attempt 1
-        prompt = f"""
-        Given a chat history and the latest user question which might reference context in the chat history,
-        formulate a standalone question which can be understood without the chat history.
-        Do NOT answer the question, just reformulate it IF NEEDED and otherwise return it AS IS, please!
+        # prompt = f"""
+        # Given a chat history and the latest user question which might reference context in the chat history,
+        # formulate a standalone question which can be understood without the chat history.
+        # Do NOT answer the question, just reformulate it IF NEEDED and otherwise return it AS IS, please!
 
-        Question: {question}
-        Chat history: {formatted_history}
-        Reformulated Question:
-        """
+        # Question: {question}
+        # Chat history: {formatted_history}
+        # Reformulated Question:
+
+        # """
         # Attempt 2
         # prompt = f"""
         # Here is a chat history and a user's latest question. 
