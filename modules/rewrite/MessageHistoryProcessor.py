@@ -80,28 +80,28 @@ class MessageHistoryProcessor:
         #     "- NEVER IGNORE key terms that indicate a specific follow-up question."
         # )
         # self.contextualize_q_system_prompt = (
-        #     "A 'vague follow-up question' is a user_input in which the user requests additional information or clarification without specifying particular details or aspects. For example, 'tell me more'." 
-        #     "A 'specific follow-up question' is a user_input that includes key terms or references from the previous question and answer, indicating a direct continuation of the previous topic."
+            "A 'vague follow-up question' is a user_input in which the user requests additional information or clarification without specifying particular details or aspects. For example, 'tell me more'." 
+            "A 'specific follow-up question' is a user_input that includes key terms or references from the previous question and answer, indicating a direct continuation of the previous topic."
             
-        #     "### Chain of Thoughts:"
+            "### Chain of Thoughts:"
             
-        #     "If the user_input is a 'vague follow-up question':"
-        #     "1. SEARCH the chat_history and IDENTIFY the most recent topic or theme from the question and answer"
-        #     "2. ENRICH the user_input with the topic or theme that you have identified. For example 'tell me more about xyz'."
-        #     "If the new question is a 'specific follow-up question':"
-        #     "1. CROSS-REFERENCE key terms in the user_input with the information in the chat_history."
-        #     "2. If a fuzzy match is found, RETRIEVE relevant information from the chat_history."
-        #     "3. ENRICH the user_input with this information to form a comprehensive and contextually accurate prompt."
-        #     "If no fuzzy match us found, the user_input does not relate to the chat_history:"
-        #     "1. LEAVE the new question AS IS and handle it independently."
+            "If the user_input is a 'vague follow-up question':"
+            "1. SEARCH the chat_history and IDENTIFY the most recent topic or theme from the question and answer"
+            "2. ENRICH the user_input with the topic or theme that you have identified. For example 'tell me more about xyz'."
+            "If the new question is a 'specific follow-up question':"
+            "1. CROSS-REFERENCE key terms in the user_input with the information in the chat_history."
+            "2. If a fuzzy match is found, RETRIEVE relevant information from the chat_history."
+            "3. ENRICH the user_input with this information to form a comprehensive and contextually accurate prompt."
+            "If no fuzzy match us found, the user_input does not relate to the chat_history:"
+            "1. LEAVE the new question AS IS and handle it independently."
 
-        #     "### What Not To Do:"
+            "### What Not To Do:"
 
-        #     "- DO NOT ASSUME context for a vague follow-up question without searching the previous exchange."
-        #     "- DO NOT ENRICH a question with unrelated information."
-        #     "- AVOID treating unrelated questions as related; handle them independently."
-        #     "- NEVER IGNORE key terms that indicate a specific follow-up question."
-        # )
+            "- DO NOT ASSUME context for a vague follow-up question without searching the previous exchange."
+            "- DO NOT ENRICH a question with unrelated information."
+            "- AVOID treating unrelated questions as related; handle them independently."
+            "- NEVER IGNORE key terms that indicate a specific follow-up question."
+        )
 
         # Another prompt
         # self.contextualize_q_system_prompt = (
@@ -216,17 +216,17 @@ class MessageHistoryProcessor:
         )
         return response.content
     
-    def test_alternative(self, question: str):
+    def test_alternative(self, user_input: str):
 
         api_key = os.getenv('OPENAI_API_KEY')  # Correct way to get the API key
 
         client = OpenAI(api_key=api_key)  # Pass the API key if needed
 
-        chat_history = self.es_client.retrieve_telegram_history_different_formatting(self.chat_id, self.history_length)
+        history = self.es_client.retrieve_telegram_history_different_formatting(self.chat_id, self.history_length)
 
-        formatted_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in chat_history])
+        chat_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in chat_history])
 
-        print(f"chat_history: ", chat_history)
+        print(f"chat_history: ", history)
         # Attempt 1
         # prompt = f"""
         # Given a chat history and the latest user question which might reference context in the chat history,
@@ -253,41 +253,36 @@ class MessageHistoryProcessor:
 
         # Attempt 3
         prompt = f"""
-        A "vague follow-up question" is a user input in which the user requests additional information or clarification without specifying particular details or aspects. For example, "tell me more."
 
-        A "specific follow-up question" is a user input that includes key terms or references from the previous question and answer, indicating a direct continuation of the previous topic.
+           "Your role is to compare the {user_input} and the {chat_history} and determine whether the {user_input} needs to be enriched with the {chat_history} or not, and then enrich the {user_input} if yes."
 
-        ### Chain of Thoughts:
+            "### Definitions:"
+            "A 'vague follow-up' is a {user_input} in which the user requests additional information or clarification without being specific. For example, 'tell me more'." 
+            "A 'specific follow-up question' is a {user_input} that includes key terms or references that can be found in the {chat_history}, indicating a direct continuation of the previous topic."
+            "A 'new topic' is where the {user_input} is unrelated to the {chat_history} as it has zero terms or themes that can be cross referenced with the {chat_history}"
+            
+            "### Chain of Thoughts:"
+              "1. DETERMINE whether the {user_input} is a 'vague follow-up question' or NOT.
+              "2. IF NOT, CROSS-REFERENCE key terms or themes in the {user_input} with the information in the {chat_history}."
+              "3. DETERMINE whether the {user_input} is a 'specific follow-up question', or a 'new topic'.
+            
+            "If the {user_input} is a 'vague follow-up question':"
+            "1. SEARCH the {chat_history} and IDENTIFY the most recent topic or theme from the question and answer in the {chat_history}"
+            "2. ENRICH the {user_input} with the topic or theme that you have identified from the {chat_history}. For example 'tell me more about xyz'."
+            "If the {user_input} is a 'specific follow-up question':"
+          
+            "1. ENRICH the {user_input} with the relevant terms of themes from the {chat_history} to form a comprehensive and contextually accurate prompt."
+            "If the {user_input} is a 'new topic':"
 
-        If the user input is a "vague follow-up question":
-        1. SEARCH the chat history and IDENTIFY the most recent topic or theme from the previous question and answer.
-        2. ENRICH the user input with the topic or theme that you have identified. For example, "tell me more about [topic]."
+            "1. Leave the {user_input} as found. Do not change the {user_input}.
+            "### What Not To Do:"
 
-        If the user input is a "specific follow-up question":
-        1. CROSS-REFERENCE key terms in the user input with the information in the chat history.
-        2. If a fuzzy match is found, RETRIEVE relevant information from the chat history.
-        3. ENRICH the user input with this information to form a comprehensive and contextually accurate prompt.
-
-        If no fuzzy match is found and the user input does not relate to the chat history:
-        1. LEAVE the new question AS IS and handle it independently.
-
-        ### What Not To Do:
-
-        - DO NOT ASSUME context for a vague follow-up question without searching the previous exchange.
-        - DO NOT ENRICH a question with unrelated information.
-        - AVOID treating unrelated questions as related; handle them independently.
-        - NEVER IGNORE key terms that indicate a specific follow-up question.
-
-        ### Additional Instructions:
-
-        Given a chat history and the latest user question which might reference context in the chat history,
-        formulate a standalone question which can be understood without the chat history. Do NOT answer the question, just reformulate it IF NEEDED and otherwise return it AS IS, please!
-
-        Question: {question}
-        Chat history: {formatted_history}
-        Reformulated Question:
+            "- DO NOT ASSUME context for a 'vague follow-up question' without searching the {chat_history}"
+            "- DO NOT ENRICH a {user_input} with unrelated information."
+            "- NEVER IGNORE key terms or themes that indicate a specific follow-up question." 
+            "- DO NOT modify a {user_input} if it is a 'new topic'"
+            "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
         """
-
 
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
