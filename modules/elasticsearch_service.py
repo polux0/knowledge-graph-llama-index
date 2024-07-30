@@ -197,7 +197,7 @@ class ElasticsearchClient:
         "size": last_n_messages,
         "sort": [
             {
-            "Created_at": {
+            "Updated_at": {
                 "order": "desc"
             }
             }
