@@ -248,6 +248,7 @@ Hey! Can you tell me more about domains of real world community model?
         "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
         """
         print(prompt)
+        return prompt
 
     def test_alternative(self, user_input: str):
 
