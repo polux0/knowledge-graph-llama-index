@@ -198,7 +198,7 @@ class MessageHistoryProcessor:
     def process_message(self, user_input):
         """
         Processes a user message by contextualizing it based on chat history.
-
+Hey! Can you tell me more about domains of real world community model?
         Args:
             user_input: The user message to process.
 
@@ -316,7 +316,7 @@ class MessageHistoryProcessor:
         #     "- DO NOT modify a {user_input} if it is a 'new topic'"
         #     "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
         # """
-        prompt = self.generate_prompt(user_input=user_input, history=history)
+        prompt = self.generate_prompt(user_input=user_input, history=chat_history)
         print(f"final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
