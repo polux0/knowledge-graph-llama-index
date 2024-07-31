@@ -216,6 +216,39 @@ class MessageHistoryProcessor:
         )
         return response.content
     
+    def generate_prompt(user_input, chat_history):
+        prompt = f"""
+        "Your role is to compare the {user_input} and the {chat_history} and determine whether the {user_input} needs to be enriched with the {chat_history} or not, and then enrich the {user_input} if yes."
+
+        "### Definitions:"
+        "A 'vague follow-up' is a {user_input} in which the user requests additional information or clarification without being specific. For example, 'tell me more'."
+        "A 'specific follow-up question' is a {user_input} that includes key terms or references that can be found in the {chat_history}, indicating a direct continuation of the previous topic."
+        "A 'new topic' is where the {user_input} is unrelated to the {chat_history} as it has zero terms or themes that can be cross-referenced with the {chat_history}"
+        
+        "### Chain of Thoughts:"
+        "1. DETERMINE whether the {user_input} is a 'vague follow-up question' or NOT.
+        "2. IF NOT, CROSS-REFERENCE key terms or themes in the {user_input} with the information in the {chat_history}."
+        "3. DETERMINE whether the {user_input} is a 'specific follow-up question', or a 'new topic'.
+        
+        "If the {user_input} is a 'vague follow-up question':"
+        "1. SEARCH the {chat_history} and IDENTIFY the most recent topic or theme from the question and answer in the {chat_history}"
+        "2. ENRICH the {user_input} with the topic or theme that you have identified from the {chat_history}. For example 'tell me more about xyz'."
+        "If the {user_input} is a 'specific follow-up question':"
+    
+        "1. ENRICH the {user_input} with the relevant terms of themes from the {chat_history} to form a comprehensive and contextually accurate prompt."
+        "If the {user_input} is a 'new topic':"
+
+        "1. Leave the {user_input} as found. Do not change the {user_input}.
+        "### What Not To Do:"
+
+        "- DO NOT ASSUME context for a 'vague follow-up question' without searching the {chat_history}"
+        "- DO NOT ENRICH a {user_input} with unrelated information."
+        "- NEVER IGNORE key terms or themes that indicate a specific follow-up question." 
+        "- DO NOT modify a {user_input} if it is a 'new topic'"
+        "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
+        """
+        print(prompt)
+
     def test_alternative(self, user_input: str):
 
         api_key = os.getenv('OPENAI_API_KEY')  # Correct way to get the API key
@@ -252,38 +285,39 @@ class MessageHistoryProcessor:
         # """
 
         # Attempt 3
-        prompt = f"""
+        # prompt = f"""
 
-           "Your role is to compare the {user_input} and the {chat_history} and determine whether the {user_input} needs to be enriched with the {chat_history} or not, and then enrich the {user_input} if yes."
+        #    "Your role is to compare the {user_input} and the {chat_history} and determine whether the {user_input} needs to be enriched with the {chat_history} or not, and then enrich the {user_input} if yes."
 
-            "### Definitions:"
-            "A 'vague follow-up' is a {user_input} in which the user requests additional information or clarification without being specific. For example, 'tell me more'." 
-            "A 'specific follow-up question' is a {user_input} that includes key terms or references that can be found in the {chat_history}, indicating a direct continuation of the previous topic."
-            "A 'new topic' is where the {user_input} is unrelated to the {chat_history} as it has zero terms or themes that can be cross referenced with the {chat_history}"
+        #     "### Definitions:"
+        #     "A 'vague follow-up' is a {user_input} in which the user requests additional information or clarification without being specific. For example, 'tell me more'." 
+        #     "A 'specific follow-up question' is a {user_input} that includes key terms or references that can be found in the {chat_history}, indicating a direct continuation of the previous topic."
+        #     "A 'new topic' is where the {user_input} is unrelated to the {chat_history} as it has zero terms or themes that can be cross referenced with the {chat_history}"
             
-            "### Chain of Thoughts:"
-              "1. DETERMINE whether the {user_input} is a 'vague follow-up question' or NOT.
-              "2. IF NOT, CROSS-REFERENCE key terms or themes in the {user_input} with the information in the {chat_history}."
-              "3. DETERMINE whether the {user_input} is a 'specific follow-up question', or a 'new topic'.
+        #     "### Chain of Thoughts:"
+        #       "1. DETERMINE whether the {user_input} is a 'vague follow-up question' or NOT.
+        #       "2. IF NOT, CROSS-REFERENCE key terms or themes in the {user_input} with the information in the {chat_history}."
+        #       "3. DETERMINE whether the {user_input} is a 'specific follow-up question', or a 'new topic'.
             
-            "If the {user_input} is a 'vague follow-up question':"
-            "1. SEARCH the {chat_history} and IDENTIFY the most recent topic or theme from the question and answer in the {chat_history}"
-            "2. ENRICH the {user_input} with the topic or theme that you have identified from the {chat_history}. For example 'tell me more about xyz'."
-            "If the {user_input} is a 'specific follow-up question':"
+        #     "If the {user_input} is a 'vague follow-up question':"
+        #     "1. SEARCH the {chat_history} and IDENTIFY the most recent topic or theme from the question and answer in the {chat_history}"
+        #     "2. ENRICH the {user_input} with the topic or theme that you have identified from the {chat_history}. For example 'tell me more about xyz'."
+        #     "If the {user_input} is a 'specific follow-up question':"
           
-            "1. ENRICH the {user_input} with the relevant terms of themes from the {chat_history} to form a comprehensive and contextually accurate prompt."
-            "If the {user_input} is a 'new topic':"
+        #     "1. ENRICH the {user_input} with the relevant terms of themes from the {chat_history} to form a comprehensive and contextually accurate prompt."
+        #     "If the {user_input} is a 'new topic':"
 
-            "1. Leave the {user_input} as found. Do not change the {user_input}.
-            "### What Not To Do:"
+        #     "1. Leave the {user_input} as found. Do not change the {user_input}.
+        #     "### What Not To Do:"
 
-            "- DO NOT ASSUME context for a 'vague follow-up question' without searching the {chat_history}"
-            "- DO NOT ENRICH a {user_input} with unrelated information."
-            "- NEVER IGNORE key terms or themes that indicate a specific follow-up question." 
-            "- DO NOT modify a {user_input} if it is a 'new topic'"
-            "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
-        """
-
+        #     "- DO NOT ASSUME context for a 'vague follow-up question' without searching the {chat_history}"
+        #     "- DO NOT ENRICH a {user_input} with unrelated information."
+        #     "- NEVER IGNORE key terms or themes that indicate a specific follow-up question." 
+        #     "- DO NOT modify a {user_input} if it is a 'new topic'"
+        #     "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
+        # """
+        prompt = self.generate_prompt(user_input=user_input, history=history)
+        print(f"final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             # model="gpt-4o",	
