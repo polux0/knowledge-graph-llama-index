@@ -45,7 +45,7 @@ def ask_question():
         chat_id=telegram_chat_id,
     )
 
-    processed_question = processor.test_alternative(question=question)
+    processed_question = processor.test_alternative(question)
     print("Question: ", question)
     print("History aware rewriten question: ", processed_question)
     print("End of the history aware question!")
