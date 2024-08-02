@@ -12,7 +12,8 @@ def load_environment_variables():
     """
     environment = os.getenv('ENVIRONMENT', 'local')
     env_file = f".env.{environment}"
-    load_dotenv(env_file)
+    if not load_dotenv(env_file):
+        logging.warning(f"Environment file {env_file} not found. Using default environment variables.")
     return {
         "HUGGING_FACE_INFERENCE_ENDPOINT": os.getenv("HUGGING_FACE_INFERENCE_ENDPOINT"),
         "HUGGING_FACE_API_KEY": os.getenv("HUGGING_FACE_API_KEY"),
