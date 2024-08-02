@@ -116,6 +116,7 @@ services:
       - .env.api.production
     environment:
       - SERVICE_TYPE=api
+      - ENVIRONMENT=production
     command: python ./modules/api.py
     networks:
       - net
@@ -127,6 +128,7 @@ services:
     env_file:
       - .env.production
     environment:
+      - ENVIRONMENT=production
       - API_URL=${API_URL}
     command: python ./modules/telegram_bot.py
     networks:
