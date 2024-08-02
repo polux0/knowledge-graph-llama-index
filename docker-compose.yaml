@@ -129,7 +129,6 @@ services:
       - .env.production
     environment:
       - ENVIRONMENT=production
-      - API_URL=${API_URL}
     command: python ./modules/telegram_bot.py
     networks:
       - net
