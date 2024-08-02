@@ -11,7 +11,13 @@ def load_environment_variables():
         dict: A dictionary containing the loaded environment variables.
     """
     environment = os.getenv('ENVIRONMENT', 'local')
-    env_file = f".env.{environment}"
+    service_type = os.getenv('SERVICE_TYPE', '')
+
+    if service_type:
+        env_file = f".env.{service_type}.{environment}"
+    else:
+        env_file = f".env.{environment}"
+
     if not load_dotenv(env_file):
         logging.warning(f"Environment file {env_file} not found. Using default environment variables.")
     return {
