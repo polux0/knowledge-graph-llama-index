@@ -1,3 +1,4 @@
+from utils.environment_setup import load_environment_variables
 from data_loading import load_documents
 from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id, initialize_embedding_model
 from format_message_with_prompt import format_message
@@ -13,14 +14,13 @@ from llama_index.packs.raptor import RaptorRetriever
 # Retrieval
 from llama_index.core.query_engine import RetrieverQueryEngine
 # System
-import os
-from dotenv import load_dotenv
 # Elasticsearch
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from datetime import datetime, timezone
 # Prompts
 from prompts import get_template_based_on_template_id
-load_dotenv()
+env_vars = load_environment_variables()
+
 
 # constants
 # local
@@ -41,7 +41,7 @@ experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
 # ChromaDB
 remote_db = chromadb.HttpClient(
-    host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
+    host=env_vars["CHROMA_URL"], port=env_vars["CHROMA_PORT"]
 )
 
 documents_directory = "../data/documentation"

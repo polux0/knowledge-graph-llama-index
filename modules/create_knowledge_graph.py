@@ -1,14 +1,14 @@
 import os
+from utils.environment_setup import load_environment_variables
 from datetime import datetime, timezone
 
 from data_loading import load_documents, load_documents_with_filnames_as_ids
 from data_path_resolver import resolve_data_path, create_data_path
-from dotenv import load_dotenv
 # Elasticsearch realted
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 from embedding_model_modular_setup import (
     get_embedding_model_based_on_model_name_id, initialize_embedding_model)
-from environment_setup import load_environment_variables, setup_logging
+from utils.environment_setup import load_environment_variables, setup_logging
 from get_document_by_id import get_document_by_id
 from large_language_model_setup import (get_llm_based_on_model_name_id,
                                         initialize_llm)
@@ -22,15 +22,21 @@ from querying import query_knowledge_graph
 from service_context_setup import create_service_context
 from visualize_graph import generate_network_graph
 
-# load_dotenv()
-load_dotenv()
+env_vars = load_environment_variables()
+setup_logging()
 
 
-print("NEBULA URL: ", os.getenv("NEBULA_URL"))
+print("NEBULA URL: ", env_vars["NEBULA_URL"])
+
 client = NebulaGraphClient(
-    [(os.getenv("NEBULA_URL"), int(os.getenv("NEBULA_PORT")))],
-    os.getenv("NEBULA_USERNAME"),
-    os.getenv("NEBULA_PASSWORD"),
+    [
+        (
+            env_vars["NEBULA_URL"], 
+            int(env_vars["NEBULA_PORT"])
+        )
+    ],
+    env_vars["NEBULA_USERNAME"],
+    env_vars["NEBULA_PASSWORD"],
 )
 
 # Initialize the Elasticsearch client - technical debt -
@@ -45,9 +51,6 @@ experiment = ExperimentDocument()
 # Format the current time as an ISO 8601 string, including milliseconds
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 # Local development 
-env_vars = load_environment_variables()
-setup_logging()
-
 # variables
 model_name_id = "default"
 embedding_model_id = "default"
@@ -103,8 +106,8 @@ except Exception as e:
 
 # Redis integration will be here:
 
-# redis_document_manager = RedisDocumentManager(host=os.getenv("REDIS_URL"),
-#                                               port=os.getenv("REDIS_PORT"),
+# redis_document_manager = RedisDocumentManager(host=env_vars["REDIS_URL"],
+#                                               port=env_vars]"REDIS_PORT"],
 #                                               database_name=database_name
 #                                               )
 
@@ -123,9 +126,9 @@ except Exception as e:
     
 # Have to modify this path:
 
-os.environ["NEBULA_USER"] = os.getenv("NEBULA_USERNAME")
-os.environ["NEBULA_PASSWORD"] = os.getenv("NEBULA_PASSWORD")
-os.environ["NEBULA_ADDRESS"] = os.getenv("NEBULA_URL") + ":" + os.getenv("NEBULA_PORT")
+os.environ["NEBULA_USER"] = env_vars("NEBULA_USERNAME")
+os.environ["NEBULA_PASSWORD"] = env_vars("NEBULA_PASSWORD")
+os.environ["NEBULA_ADDRESS"] = env_vars("NEBULA_URL") + ":" + env_vars("NEBULA_PORT")
 # Necessary parameters to instantiate NebulaGraph
 edge_types, rel_prop_names = ["relationship"], [
     "relationship"

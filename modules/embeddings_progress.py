@@ -1,9 +1,12 @@
 import json
 import os
+from utils.environment_setup import load_environment_variables
+
+env_vars = load_environment_variables()
 
 def create_json_file(database_name, document_names):
 
-    env = os.getenv('ENV', 'local')
+    env = env_vars['ENV', 'local']
     filename = f"{database_name}.json" if env == 'local' else f"{database_name}_remote.json"
 
     # Check if the file already exists

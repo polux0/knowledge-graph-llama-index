@@ -37,6 +37,7 @@ services:
     image: docker.elastic.co/elasticsearch/elasticsearch:8.12.1
     container_name: elasticsearch
     environment:
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
       - discovery.type=single-node
       - xpack.security.enabled=false
       - path.repo=/usr/share/elasticsearch/snapshots
@@ -69,51 +70,30 @@ services:
       - $HOME/redis/data:/data
       - $HOME/redis/redis.conf:/usr/local/etc/redis/redis.conf
       - $HOME/redis/users.acl:/usr/local/etc/redis/users.acl
-    environment:
-      - REDIS_PORT=${REDIS_PORT}
-      - REDIS_DATABASES=1
     command:
       [
         "redis-server",
         "/usr/local/etc/redis/redis.conf",
         "--requirepass",
-        "${REDIS_PASSWORD}",
+        "my-password",
       ]
+    environment:
+      - REDIS_PORT=6379
+      - REDIS_DATABASES=1
     networks:
       - net
-  # app:
-  #   build: .
-  #   depends_on:
-  #     chromadb:
-  #       condition: service_healthy
-  #   container_name: app_container
-  #   volumes:
-  #     - .:/usr/src/app
-  #   ports:
-  #     - "8080:8080"
-  #     - "8501:8501"
-  #   env_file:
-  #     - .env
-  #   # restart: always
-  #   # restart: on-failure
-  #   # command: python ./modules/create_vector_embeddings_llama.py
-  #   # command: python ./modules/multi_representation_indexing.py
-  #   # command: python ./modules/create_raptor_indexing_langchain.py
-  #   command: streamlit run ./modules/app.py
-  #   # command: python ./modules/delete_chroma_collections.py
-  #   # command: python ./modules/create_knowledge_graph.py
-  #   networks:
-  #     - net
-  
   api:
     build: .
+    depends_on:
+      chromadb:
+        condition: service_healthy
     container_name: api_container
     volumes:
       - .:/usr/src/app
     ports:
       - "5000:5000"
     env_file:
-      - .env.api.production
+      - .env.api.development
     environment:
       - PROCESS_TYPE=api
     command: python ./modules/api.py
@@ -125,7 +105,7 @@ services:
     volumes:
       - .:/usr/src/app
     env_file:
-      - .env.production
+      - .env.development
     environment:
       - API_URL=${API_URL}
     command: python ./modules/telegram_bot.py

@@ -2,8 +2,7 @@ import logging
 from typing import OrderedDict
 from elasticsearch import Elasticsearch
 from elasticsearch.helpers import bulk
-from environment_setup import (load_environment_variables, setup_logging)
-import os
+from utils.environment_setup import (load_environment_variables, setup_logging)
 
 #TODO: This is not place for those imports & operations that rely on those imports
 from langchain.schema import (
@@ -72,10 +71,9 @@ class ExperimentDocument:
 
 class ElasticsearchClient:
     def __init__(self, scheme='http', host='localhost', port=9200):
-        # Read environment variables, providing default values if they're not set
-        scheme = os.getenv('ELASTIC_SCHEME', 'http')
-        host = os.getenv('ELASTIC_URL', 'localhost')
-        port = os.getenv('ELASTIC_PORT', 9200)  # Note that `os.getenv` returns a string, so you might need to convert types
+        scheme = env_vars['ELASTIC_SCHEME']
+        host = env_vars['ELASTIC_URL']
+        port = env_vars['ELASTIC_PORT']
 
         port = int(port)
         self.client = Elasticsearch([{'scheme': scheme,

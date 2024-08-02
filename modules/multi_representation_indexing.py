@@ -1,3 +1,5 @@
+# System
+from utils.environment_setup import load_environment_variables
 import uuid
 import re
 from data_loading import load_documents_langchain
@@ -10,8 +12,6 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.llms import HuggingFaceEndpoint
 from langchain_community.chat_models import ChatOpenAI
-
-import os
 
 # Redis related
 from langchain_community.storage import RedisStore
@@ -47,6 +47,8 @@ import sys
 
 from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
 
+env_vars = load_environment_variables()
+
 
 def preprocess_text(text):
     # Replace newline characters
@@ -60,7 +62,6 @@ def preprocess_text(text):
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
-load_dotenv()
 repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 
 # Constants
@@ -90,14 +91,14 @@ llm = HuggingFaceEndpoint(
     repo_id=repository_id,
     # max_length=128,
     temperature=0.1,
-    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+    huggingfacehub_api_token=env_vars["HUGGING_FACE_API_KEY"],
 )
 
 # Initialize large language model, production
-contextualize_llm = ChatOpenAI(openai_api_key=os.getenv("OPENAI_API_KEY"), model_name="gpt-3.5-turbo")
+contextualize_llm = ChatOpenAI(openai_api_key=env_vars["OPENAI_API_KEY"], model_name="gpt-3.5-turbo")
 
 # Initalize embeddings model
-# embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
+# embeddings_model = CohereEmbeddings(cohere_api_key=env_vars["COHERE_API_KEY"))
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
 # Logging variables
@@ -108,7 +109,7 @@ experiment.embeddings_model = get_embedding_model_based_on_model_name_id(
 
 # Initialize chroma
 chroma_client = chromadb.HttpClient(
-    host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
+    host=env_vars["CHROMA_URL"], port=env_vars["CHROMA_PORT"]
 )
 # TODO delete after testing
 # chroma_client.delete_collection(name=chroma_collection_name)
@@ -117,16 +118,11 @@ chroma_client = chromadb.HttpClient(
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
 
-print("REDIS_HOST: ", os.getenv("REDIS_HOST"))
-print("REDIS_PORT: ", os.getenv("REDIS_PORT"))
-print("REDIS_USERNAME: ", os.getenv("REDIS_USERNAME"))
-print("REDIS_PASSWORD: ", os.getenv("REDIS_PASSWORD"))
-
 redis_client = Redis(
-    host=os.getenv("REDIS_HOST"),
-    port=os.getenv("REDIS_PORT"),
-    username=os.getenv("REDIS_USERNAME"),
-    password=os.getenv("REDIS_PASSWORD"),
+    host=env_vars["REDIS_HOST"],
+    port=env_vars["REDIS_PORT"],
+    username=env_vars["REDIS_USERNAME"],
+    password=env_vars["REDIS_PASSWORD"],
 )
 redis_store = RedisStore(client=redis_client, namespace=redis_namespace)
 all_documents = load_documents_langchain(documents_directory)

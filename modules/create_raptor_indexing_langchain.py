@@ -1,7 +1,4 @@
 from langchain_community.llms import HuggingFaceEndpoint
-import os
-from dotenv import load_dotenv
-
 #Embeddings
 from langchain_openai import OpenAIEmbeddings
 from langchain_huggingface.embeddings import HuggingFaceEndpointEmbeddings
@@ -20,8 +17,6 @@ import tiktoken
 from typing import Optional
 # Chroma
 from langchain_community.vectorstores import Chroma
-# Load environment variables
-load_dotenv()
 # Rag Chain ( Langchain )
 from langchain_core.runnables import RunnablePassthrough
 # String output parser
@@ -37,6 +32,9 @@ from datetime import datetime, timezone
 from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id, initialize_embedding_model
 # Custom prompts
 from langchain_core.prompts import PromptTemplate
+
+from utils.environment_setup import load_environment_variables
+env_vars = load_environment_variables()
 
 # Constants
 
@@ -88,11 +86,11 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 llm = HuggingFaceEndpoint(
     repo_id=repository_id,
     temperature=0.1,
-    huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+    huggingfacehub_api_token=env_vars["HUGGING_FACE_API_KEY"],
 )
 # Initialize large language model, production
 # llm = ChatOpenAI(
-#     openai_api_key=os.getenv("OPENAI_API_KEY"),
+#     openai_api_key=env_vars["OPENAI_API_KEY"],
 #     model_name=model_name_id
 # )
 # Logging variables
@@ -104,10 +102,10 @@ experiment.llm_used = get_llm_based_on_model_name_id(model_name_id)
 # embeddings_model = HuggingFaceEndpointEmbeddings(
 #     model="thenlper/gte-large",
 #     task="feature-extraction",
-#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+#     huggingfacehub_api_token=env_vars["HUGGING_FACE_API_KEY"],
 # )
 # Cohere embeddings
-# embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
+# embeddings_model = CohereEmbeddings(cohere_api_key=env_vars["COHERE_API_KEY"])
 # OpenAI embeddings
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
 
@@ -118,7 +116,7 @@ experiment.chunk_overlap = chunk_overlap
 
 # Initialize ChromaDB
 chroma_client = chromadb.HttpClient(
-    host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT")
+    host=env_vars["CHROMA_URL"], port=env_vars["CHROMA_PORT"]
 )
 # chroma_client.delete_collection(name=chroma_collection_name)
 # Get or create Chroma collection

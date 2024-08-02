@@ -4,7 +4,7 @@ import sys
 from custom_ingestion_pipeline import CustomIngestionPipeline
 from data_loading import load_documents
 from embedding_model_modular_setup import initialize_embedding_model
-from environment_setup import load_environment_variables
+from utils.environment_setup import load_environment_variables
 from large_language_model_setup import initialize_llm
 from llama_index.core import Document, Settings, StorageContext, VectorStoreIndex
 from llama_index.core.node_parser import SentenceSplitter
@@ -15,7 +15,6 @@ from llama_index.vector_stores.chroma import ChromaVectorStore
 from get_database_name_based_on_parameters import load_child_vector_configuration, load_parent_vector_configuration
 from llama_index.storage.kvstore.redis import RedisKVStore as RedisCache
 from llama_index.core.ingestion import IngestionCache
-import os
 from llama_index.core.indices.query.query_transform.base import StepDecomposeQueryTransform
 import chromadb
 from datetime import datetime, timezone
@@ -89,7 +88,7 @@ Settings.llm = llm
 
 # Connect to ChromaDB
 logger.info("Connecting to ChromaDB client...")
-remote_db = chromadb.HttpClient(host=os.getenv("CHROMA_URL"), port=os.getenv("CHROMA_PORT"))
+remote_db = chromadb.HttpClient(host=env_vars["CHROMA_URL"], port=env_vars["CHROMA_PORT"])
 logger.info("Connected to ChromaDB client.")
 logger.info(f"All collections in Chroma: {remote_db.list_collections()}")
 
@@ -119,9 +118,9 @@ logger.info("Finished with making dictionaries...")
 
 # Ingest cache #2
 redis_client = redis.Redis(
-            host=os.getenv("REDIS_HOST"),
-            port=os.getenv("REDIS_PORT"),
-            password=os.getenv("REDIS_PASSWORD"),
+            host=env_vars["REDIS_HOST"],
+            port=env_vars["REDIS_PORT"],
+            password=env_vars["REDIS_PASSWORD"],
             decode_responses=True,
         )
 ingest_cache_child = IngestionCache(cache=RedisCache.from_redis_client(redis_client),
