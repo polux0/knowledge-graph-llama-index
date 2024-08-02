@@ -17,7 +17,7 @@ def load_environment_variables():
         env_file = f".env.{service_type}.{environment}"
     else:
         env_file = f".env.{environment}"
-
+    print(f"env_file loaded: ", env_file)
     if not load_dotenv(env_file):
         logging.warning(f"Environment file {env_file} not found. Using default environment variables.")
     return {
