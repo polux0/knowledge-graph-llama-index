@@ -115,7 +115,7 @@ services:
     env_file:
       - .env.api.production
     environment:
-      - PROCESS_TYPE=api
+      - SERVICE_TYPE=api
     command: python ./modules/api.py
     networks:
       - net
