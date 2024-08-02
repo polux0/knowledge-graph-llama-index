@@ -13,10 +13,11 @@ def load_environment_variables():
     environment = os.getenv('ENVIRONMENT', 'local')
     service_type = os.getenv('SERVICE_TYPE', '')
 
-    if service_type:
-        env_file = f".env.{service_type}.{environment}"
+    if service_type == 'api':
+        env_file = f".env.api.{environment}"
     else:
         env_file = f".env.{environment}"
+
     print(f"env_file loaded: ", env_file)
     if not load_dotenv(env_file):
         logging.warning(f"Environment file {env_file} not found. Using default environment variables.")
