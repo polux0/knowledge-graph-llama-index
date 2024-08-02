@@ -2,16 +2,14 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.schema import AIMessage, HumanMessage
 from langchain_community.chat_models import ChatOpenAI
 
-#TODO: Modularize access to environment variables
-from dotenv import load_dotenv
-import os
-load_dotenv()
 #TODO: Modularize instantiation of language models
 #TODO: Remove after testing 
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import StrOutputParser
 from langchain_core.runnables import RunnablePassthrough
 from openai import OpenAI
+
+from utils.environment_setup import load_environment_variables
 
 #TODO: Remove after testing
 class MessageHistoryProcessor:
@@ -39,9 +37,10 @@ class MessageHistoryProcessor:
             history_length: The number of messages to retrieve from the chat history.
             is_test: A flag indicating whether to use test data instead of retrieving actual data.
         """
+        self.env_vars = load_environment_variables()
         #TODO: Modularize instantiation of language models
         self.contextualize_llm = ChatOpenAI(
-            openai_api_key=os.getenv("OPENAI_API_KEY"), 
+            openai_api_key=self.env_vars["OPENAI_API_KEY"], 
             model_name="gpt-3.5-turbo",
             temperature = 0,
         )
@@ -198,7 +197,6 @@ class MessageHistoryProcessor:
     def process_message(self, user_input):
         """
         Processes a user message by contextualizing it based on chat history.
-Hey! Can you tell me more about domains of real world community model?
         Args:
             user_input: The user message to process.
 
@@ -209,14 +207,13 @@ Hey! Can you tell me more about domains of real world community model?
         print("retrieved history: \n", chat_history)
         response = self.chain.invoke(
             {
-                # "chat_history": chat_history,
+                "chat_history": chat_history,
                 "user_input": [HumanMessage(content=user_input)],
-                "user_input": user_input,
             }
         )
         return response.content
     
-    def generate_prompt(user_input, chat_history):
+    def generate_prompt(self, user_input, chat_history):
         prompt = f"""
         "Your role is to compare the {user_input} and the {chat_history} and determine whether the {user_input} needs to be enriched with the {chat_history} or not, and then enrich the {user_input} if yes."
 
@@ -247,18 +244,51 @@ Hey! Can you tell me more about domains of real world community model?
         "- DO NOT modify a {user_input} if it is a 'new topic'"
         "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
         """
-        print(prompt)
+        print(f"!prompt: \n", prompt)
         return prompt
+    
+    def generate_prompt1(self, user_input, chat_history):
+            prompt = f"""
+            Your role is to analyze the user_input: "{user_input}" in the context of the chat_history: "{chat_history}" and determine whether the user_input needs to be enriched with information from the chat_history.
 
+            Follow these steps:
+
+            1. Determine the type of user_input:
+            a) Vague follow-up (e.g., "Tell me more")
+            b) Specific follow-up (contains key terms or themes from chat_history)
+            c) New topic (unrelated to chat_history)
+
+            2. Process the user_input based on its type:
+            a) For vague follow-ups:
+                - Identify the most recent relevant topic from chat_history
+                - Enrich user_input with this topic (e.g., "Tell me more about [topic]")
+            b) For specific follow-ups:
+                - Enrich user_input with relevant context from chat_history
+            c) For new topics:
+                - Do not modify the user_input
+
+            3. Output:
+            - If enriched, return the modified user_input
+            - If not enriched, return "UNCHANGED: [original user_input]"
+
+            Important:
+            - Do not assume context for vague follow-ups without evidence from chat_history
+            - Do not connect unrelated new topics to previous context
+            - Do not answer the question; only reformulate if needed
+
+            Provide your reasoning before giving the final output.
+            """
+            return prompt
+    
     def test_alternative(self, user_input: str):
 
-        api_key = os.getenv('OPENAI_API_KEY')  # Correct way to get the API key
+        api_key = self.env_vars['OPENAI_API_KEY']  # Correct way to get the API key
 
         client = OpenAI(api_key=api_key)  # Pass the API key if needed
 
         history = self.es_client.retrieve_telegram_history_different_formatting(self.chat_id, self.history_length)
 
-        chat_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in chat_history])
+        chat_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in history])
 
         print(f"chat_history: ", history)
         # Attempt 1
@@ -283,41 +313,7 @@ Hey! Can you tell me more about domains of real world community model?
         # Latest Question: {question}
 
         # Reformulated Question:
-        # """
-
-        # Attempt 3
-        # prompt = f"""
-
-        #    "Your role is to compare the {user_input} and the {chat_history} and determine whether the {user_input} needs to be enriched with the {chat_history} or not, and then enrich the {user_input} if yes."
-
-        #     "### Definitions:"
-        #     "A 'vague follow-up' is a {user_input} in which the user requests additional information or clarification without being specific. For example, 'tell me more'." 
-        #     "A 'specific follow-up question' is a {user_input} that includes key terms or references that can be found in the {chat_history}, indicating a direct continuation of the previous topic."
-        #     "A 'new topic' is where the {user_input} is unrelated to the {chat_history} as it has zero terms or themes that can be cross referenced with the {chat_history}"
-            
-        #     "### Chain of Thoughts:"
-        #       "1. DETERMINE whether the {user_input} is a 'vague follow-up question' or NOT.
-        #       "2. IF NOT, CROSS-REFERENCE key terms or themes in the {user_input} with the information in the {chat_history}."
-        #       "3. DETERMINE whether the {user_input} is a 'specific follow-up question', or a 'new topic'.
-            
-        #     "If the {user_input} is a 'vague follow-up question':"
-        #     "1. SEARCH the {chat_history} and IDENTIFY the most recent topic or theme from the question and answer in the {chat_history}"
-        #     "2. ENRICH the {user_input} with the topic or theme that you have identified from the {chat_history}. For example 'tell me more about xyz'."
-        #     "If the {user_input} is a 'specific follow-up question':"
-          
-        #     "1. ENRICH the {user_input} with the relevant terms of themes from the {chat_history} to form a comprehensive and contextually accurate prompt."
-        #     "If the {user_input} is a 'new topic':"
-
-        #     "1. Leave the {user_input} as found. Do not change the {user_input}.
-        #     "### What Not To Do:"
-
-        #     "- DO NOT ASSUME context for a 'vague follow-up question' without searching the {chat_history}"
-        #     "- DO NOT ENRICH a {user_input} with unrelated information."
-        #     "- NEVER IGNORE key terms or themes that indicate a specific follow-up question." 
-        #     "- DO NOT modify a {user_input} if it is a 'new topic'"
-        #     "- DO NOT answer the question. Your role is to reformulate the question, ONLY if needed."
-        # """
-        prompt = self.generate_prompt(user_input=user_input, chat_history=chat_history)
+        prompt = self.generate_prompt1(user_input=user_input, chat_history=chat_history)
         print(f"final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
@@ -328,5 +324,10 @@ Hey! Can you tell me more about domains of real world community model?
             ],
             temperature=0,
         )
-        reformulated_question = response.choices[0].message.content  # Adjusted based on the response structure
-        return reformulated_question
+        reformulated_question = response.choices[0].message.content
+        
+        # If the response starts with "UNCHANGED:", return the original user_input
+        if reformulated_question.startswith("UNCHANGED:"):
+            return user_input
+        else:
+            return reformulated_question

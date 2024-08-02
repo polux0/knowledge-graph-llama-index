@@ -1,5 +1,4 @@
 import logging
-
 from embedding_models import EMBEDDING_MODELS
 from llama_index.embeddings.huggingface import (
             HuggingFaceInferenceAPIEmbedding,
@@ -7,7 +6,7 @@ from llama_index.embeddings.huggingface import (
 from llama_index.embeddings.cohere import CohereEmbedding
 from llama_index.embeddings.openai import OpenAIEmbedding
 from huggingface_hub import login
-from environment_setup import load_environment_variables
+from utils.environment_setup import load_environment_variables
 import os
 env_vars = load_environment_variables()
 
@@ -22,7 +21,7 @@ def initialize_embedding_model(embedding_model_id):
         HuggingFaceInferenceAPIEmbedding: The initialized embedding model.
     """
     # technical debt, move to embedding_models.py
-    hugging_face_token = env_vars['HF_TOKEN']
+    hugging_face_token = env_vars['HUGGING_FACE_API_KEY']
     login(token=hugging_face_token)
     if embedding_model_id in EMBEDDING_MODELS:
         if embedding_model_id == 'cohere':
@@ -34,7 +33,7 @@ def initialize_embedding_model(embedding_model_id):
             )
             return model_name
         if embedding_model_id.startswith("openai"):
-            os.environ["OPENAI_API_KEY"] = os.getenv("OPENAI_API_KEY")
+            os.environ["OPENAI_API_KEY"] = env_vars["OPENAI_API_KEY"]
             model_name = EMBEDDING_MODELS[embedding_model_id]
             return OpenAIEmbedding(
                 model=model_name,
@@ -48,8 +47,8 @@ def initialize_embedding_model(embedding_model_id):
             model_name = EMBEDDING_MODELS[embedding_model_id]
             return HuggingFaceInferenceAPIEmbedding(
                 model_name=model_name,
-                api_url=os.getenv("HUGGING_FACE_INFERENCE_ENDPOINT"),
-                token=os.getenv("HUGGING_FACE_API_KEY"),
+                api_url=env_vars["HUGGING_FACE_INFERENCE_ENDPOINT"],
+                token=env_vars["HUGGING_FACE_API_KEY"],
                 api_key=hugging_face_token,
             )
     else:

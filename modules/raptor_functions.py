@@ -12,23 +12,23 @@ from langchain_openai import ChatOpenAI
 from langchain_cohere import CohereEmbeddings
 from langchain_community.llms import HuggingFaceEndpoint
 from ratelimit import limits, sleep_and_retry
-import os
-from dotenv import load_dotenv
+from utils.environment_setup import load_environment_variables
 
-load_dotenv()
+env_vars = load_environment_variables()
+
 model_name_id = "gpt-3.5-turbo"
 
 # Embeddings model
 # embeddings_model = HuggingFaceEndpointEmbeddings(
 #     model="thenlper/gte-large",
 #     task="feature-extraction",
-#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+#     huggingfacehub_api_token=env_vars["HUGGING_FACE_API_KEY"],
 # ) 
 # Embeddings model
 embeddings_model = OpenAIEmbeddings(model="text-embedding-3-large")
-# embeddings_model = CohereEmbeddings(cohere_api_key=os.getenv("COHERE_API_KEY"))
+# embeddings_model = CohereEmbeddings(cohere_api_key=env_vars["COHERE_API_KEY"])
 llm = ChatOpenAI(
-    openai_api_key=os.getenv("OPENAI_API_KEY"),
+    openai_api_key=env_vars["OPENAI_API_KEY"],
     model_name=model_name_id
 )
 # Large language model
@@ -36,7 +36,7 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
 # llm = HuggingFaceEndpoint(
 #     repo_id=repository_id,
 #     temperature=0.1,
-#     huggingfacehub_api_token=os.getenv("HUGGING_FACE_API_KEY"),
+#     huggingfacehub_api_token=env_vars["HUGGING_FACE_API_KEY"],
 # )
 
 RANDOM_SEED = 224  # Fixed seed for reproducibility

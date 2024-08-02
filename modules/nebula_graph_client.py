@@ -110,7 +110,7 @@ class NebulaGraphClient:
 
         # test_space_name = "c3e570fc129a2e8f88321fdf7c516282998388f407514e4b04afe27d31bae75"
         # Create the space since it does not exist
-        create_space_query = f"CREATE SPACE {space_name} (partition_num={partition_num},replica_factor={replica_factor}, vid_type=FIXED_STRING(256))"
+        create_space_query = f"CREATE SPACE {space_name} (partition_num={partition_num},replica_factor={replica_factor}, vid_type=FIXED_STRING(2054))"
         # create_space_query = f"CREATE SPACE IF NOT EXISTS {test_space_name}(vid_type=FIXED_STRING(256)); USE {test_space_name};"
         print(f"Executing query to create space: {create_space_query}")
         result = self.session.execute(create_space_query)

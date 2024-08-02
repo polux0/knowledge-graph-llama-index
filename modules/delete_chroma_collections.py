@@ -1,5 +1,5 @@
 import chromadb
-from environment_setup import load_environment_variables
+from utils.environment_setup import load_environment_variables
 
 env_vars = load_environment_variables()
 # Initialize the Chroma client

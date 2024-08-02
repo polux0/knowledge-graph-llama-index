@@ -3,7 +3,7 @@ from datetime import datetime, timezone
 from typing import List, Sequence
 
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
-from environment_setup import load_environment_variables
+from utils.environment_setup import load_environment_variables
 from large_language_model_setup import (get_llm_based_on_model_name_id,
                                         initialize_llm)
 from llama_index.core import PromptTemplate, Settings, get_response_synthesizer

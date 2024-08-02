@@ -1,16 +1,14 @@
-from dotenv import load_dotenv
 from llama_index.core import StorageContext
 from llama_index.graph_stores.neo4j import Neo4jGraphStore
-import os
 from persistence_directory_validity import check_files_in_directory
+from utils.environment_setup import load_environment_variables
 
-# load_dotenv()
-load_dotenv()
+env_vars = load_environment_variables()
 
-NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
-NEO4J_PASSOWRD = os.getenv("NEO4J_PASSOWRD")
-NEO4J_URL = os.getenv("NEO4J_URL")
-NEO4J_DATABASE = os.getenv("NEO4J_DATABASE")
+NEO4J_USERNAME = env_vars["NEO4J_USERNAME"]
+NEO4J_PASSOWRD = env_vars["NEO4J_PASSOWRD"]
+NEO4J_URL = env_vars["NEO4J_URL"]
+NEO4J_DATABASE = env_vars["NEO4J_DATABASE"]
 
 
 # technical debt - modularize further so it can receive vector storage as well
@@ -37,10 +35,10 @@ def create_storage_context(neo4j_credentials, env_vars, persistence_dir):
         storage_context = StorageContext.from_defaults(persistence_dir)
         print("Created storage context from persistence directory...")
     else:
-        NEO4J_USERNAME = os.getenv("NEO4J_USERNAME")
-        NEO4J_PASSOWRD = os.getenv("NEO4J_PASSOWRD")
-        NEO4J_URL = os.getenv("NEO4J_URL")
-        NEO4J_DATABASE = os.getenv("NEO4J_DATABASE")
+        NEO4J_USERNAME = env_vars["NEO4J_USERNAME"]
+        NEO4J_PASSOWRD = env_vars["NEO4J_PASSOWRD"]
+        NEO4J_URL = env_vars["NEO4J_URL"]
+        NEO4J_DATABASE = env_vars["NEO4J_DATABASE"]
         graph_store = Neo4jGraphStore(
             username=NEO4J_USERNAME,
             password=NEO4J_PASSOWRD,

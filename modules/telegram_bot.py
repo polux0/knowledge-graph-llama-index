@@ -1,4 +1,3 @@
-import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     Application,
@@ -9,14 +8,13 @@ from telegram.ext import (
     CallbackQueryHandler,
     filters
 )
-
-from dotenv import load_dotenv
+from utils.environment_setup import load_environment_variables
 import requests
 
+env_vars = load_environment_variables()
 
-load_dotenv()
 
-API_URL = os.getenv("API_URL", "http://localhost:5000")
+API_URL = env_vars["API_URL"]
 ASK_URL = f"{API_URL}/ask"
 RATE_URL = f"{API_URL}/rate"
 
@@ -134,7 +132,7 @@ async def feedback_command(update: Update, context: CallbackContext) -> None:
 
 
 def main():
-    token = os.getenv("TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN")
+    token = env_vars["TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN"]
     application = Application.builder().token(token).build()
 
     application.add_handler(CommandHandler("start", start))

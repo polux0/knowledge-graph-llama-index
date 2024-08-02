@@ -29,7 +29,7 @@ def query_knowledge_graph(index,
     
     print("!!!!!!!!!!!!!!!!Template received, knowledge graph:", template_id)
     message_template = format_message(query, template_id)
-    response = query_engine.query(message_template)
+    response = query_engine.query(query)
     print("!!!!!!!!!!!!!!!!Final question, knowledge graph:", message_template)
     # logging.info(f"Logging the response nodes from knowledge graph: {response.source_nodes}")
     return response.response, response.source_nodes
