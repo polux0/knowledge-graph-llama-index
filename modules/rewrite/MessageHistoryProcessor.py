@@ -280,6 +280,22 @@ class MessageHistoryProcessor:
             """
             return prompt
     
+    def generate_prompt2(self, user_input, chat_history):
+        prompt = f"""
+        Analyze the user_input: "{user_input}" in the context of the chat_history: "{chat_history}" and determine if it needs enrichment from chat_history. Follow these steps:
+
+        1. Determine user_input type: vague follow-up, specific follow-up, or new topic.
+        2. Process accordingly: enrich vague/specific follow-ups with context, leave new topics unchanged.
+        3. Output a single sentence:
+        - If enriched: the modified user_input as a question
+        - If unchanged: "UNCHANGED: [original user_input]"
+
+        Important: Don't assume context without evidence, don't connect unrelated topics, and don't answer the question.
+
+        Provide the final output as a single sentence, ready to be passed down the pipeline.
+        """
+        return prompt
+    
     def test_alternative(self, user_input: str):
 
         api_key = self.env_vars['OPENAI_API_KEY']  # Correct way to get the API key
@@ -315,7 +331,7 @@ class MessageHistoryProcessor:
         # Latest Question: {question}
 
         # Reformulated Question:
-        prompt = self.generate_prompt1(user_input=user_input, chat_history=chat_history)
+        prompt = self.generate_prompt2(user_input=user_input, chat_history=chat_history)
         print(f"final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
