@@ -288,9 +288,11 @@ class MessageHistoryProcessor:
 
         history = self.es_client.retrieve_telegram_history_different_formatting(self.chat_id, self.history_length)
 
+        print(f"history: \n", history)
+
         chat_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in history])
 
-        print(f"chat_history: ", history)
+        print(f"chat_history: \n", chat_history)
         # Attempt 1
         # prompt = f"""
         # Given a chat history and the latest user question which might reference context in the chat history,
