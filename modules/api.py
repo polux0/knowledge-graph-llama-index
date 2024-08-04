@@ -60,11 +60,11 @@ def ask_question():
     print(f"!!Answer mri: ", answer_mri)
 
     test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
-    print(f"!!!Source nodes raptor: \n")
+    print(f"!!!Source nodes raptor: \n", test_source_nodes_raptor)
     test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
-    print(f"!!!Source node mri: \n")
+    print(f"!!!Source node mri: \n", test_source_nodes_mri)
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
-    print(f"!!!!Combined source nodes: \n")
+    print(f"!!!!Combined source nodes: \n", nodesCombined)
     responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(processed_question, nodesCombined)
     print(f"!!!!Response synthesized from combined nodes: \n", responseSynthesized)
 
