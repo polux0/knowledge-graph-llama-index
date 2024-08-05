@@ -248,37 +248,37 @@ class MessageHistoryProcessor:
         return prompt
     
     def generate_prompt1(self, user_input, chat_history):
-            prompt = f"""
-            Your role is to analyze the user_input: "{user_input}" in the context of the chat_history: "{chat_history}" and determine whether the user_input needs to be enriched with information from the chat_history.
+        prompt = f"""
+        Your role is to analyze the user_input: "{user_input}" in the context of the chat_history: "{chat_history}" and determine whether the user_input needs to be enriched with information from the chat_history.
 
-            Follow these steps:
+        Follow these steps:
 
-            1. Determine the type of user_input:
-            a) Vague follow-up (e.g., "Tell me more")
-            b) Specific follow-up (contains key terms or themes from chat_history)
-            c) New topic (unrelated to chat_history)
+        1. Determine the type of user_input:
+        a) Vague follow-up (e.g., "Tell me more")
+        b) Specific follow-up (contains key terms or themes from chat_history)
+        c) New topic (unrelated to chat_history)
 
-            2. Process the user_input based on its type:
-            a) For vague follow-ups:
-                - Identify the most recent relevant topic from chat_history
-                - Enrich user_input with this topic (e.g., "Tell me more about [topic]")
-            b) For specific follow-ups:
-                - Enrich user_input with relevant context from chat_history
-            c) For new topics:
-                - Do not modify the user_input
+        2. Process the user_input based on its type:
+        a) For vague follow-ups:
+            - Identify the most recent relevant topic from chat_history
+            - Enrich user_input with this topic (e.g., "Tell me more about [topic]")
+        b) For specific follow-ups:
+            - Enrich user_input with relevant context from chat_history
+        c) For new topics:
+            - Do not modify the user_input
 
-            3. Output:
-            - If enriched, return the modified user_input
-            - If not enriched, return "UNCHANGED: [original user_input]"
+        3. Output:
+        - If enriched, return the modified user_input
+        - If not enriched, return "UNCHANGED: [original user_input]"
 
-            Important:
-            - Do not assume context for vague follow-ups without evidence from chat_history
-            - Do not connect unrelated new topics to previous context
-            - Do not answer the question; only reformulate if needed
+        Important:
+        - Do not assume context for vague follow-ups without evidence from chat_history
+        - Do not connect unrelated new topics to previous context
+        - Do not answer the question; only reformulate if needed
 
-            Provide your reasoning before giving the final output.
-            """
-            return prompt
+        Provide your reasoning before giving the final output.
+        """
+        return prompt
     
     def generate_prompt2(self, user_input, chat_history):
         prompt = f"""
@@ -332,7 +332,7 @@ class MessageHistoryProcessor:
 
         # Reformulated Question:
         prompt = self.generate_prompt2(user_input=user_input, chat_history=chat_history)
-        print(f"final prompt that is being fed to the llm", prompt)
+        # print(f"final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
             model="gpt-3.5-turbo",
             # model="gpt-4o",	
