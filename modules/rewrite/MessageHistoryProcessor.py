@@ -457,6 +457,52 @@ class MessageHistoryProcessor:
         """
         return prompt
 
+    def generate_prompt6(self, chat_history, user_input):
+        prompt = f"""
+        Your specific role is to take INPUTS and follow a specific PROCESS to create a defined OUTPUT. Your response will contain the OUTPUT, nothing else.
+        INPUT = {chat_history} and {user_input}.
+        PROCESS = Determine if the user_input is follow up that implies a continuation of the chat_history, by reviewing the chat_history.
+        OUTPUT = a single prompt that looks like a user_input. This output will either be the original user_input or an enriched version of the user_input, based on the context in the chat_history.
+
+        ### Few-Shot Examples:
+
+        Example 1:
+        user_input: 'Can you explain more?'
+        chat_history review: 'We discussed the benefits of regular exercise in our last conversation.'
+        Output: 'Can you give additional information about the benefits of regular exercise?'
+
+        Example 2 (Specific Follow-Up):
+        user_input: 'What are some examples of aerobic exercises which can help with my problem?'
+        chat_history review: 'The users problem relates to an unhealthy heart'
+        Output: 'What are some examples of specific aerobic exercises that are good for heart health?'
+
+        Example 3 (New Topic):
+        user_input: 'Tell me about the history of the Roman Empire.'
+        chat_history review: 'The benefits of regular exercise are increased heart health, increased mobility, etc.'
+        Output: 'Tell me about the history of the Roman Empire.'
+
+        ### Chain of Thoughts (Stages):
+
+        1. HANDLING VAGUE FOLLOW-UP QUESTIONS:
+        1.1 SEARCH the chat_history for the most recent theme or useful information.
+        1.2 ENRICH the user_input with the identified theme or useful information (e.g., 'tell me more about xyz').
+
+        2. HANDLING SPECIFIC FOLLOW-UP QUESTIONS:
+        2.1 ENRICH the user_input with relevant information from the chat_history.
+
+        4. HANDLING NEW TOPICS:
+        4.1 Leave the user_input unchanged.
+
+        ### What Not To Do:
+        - DO NOT show your working
+        - DO NOT assume context for a 'vague follow-up' without searching the chat_history.
+        - DO NOT enrich a user_input with unrelated information.
+        - NEVER ignore key terms indicating a specific follow-up.
+        - DO NOT modify a 'new topic' user_input.
+        - DO NOT answer the question. Your output is in the form of a user_input.
+        - REMEMBER your only OUTPUT is in in the form of a standalone question.
+        """
+        return prompt
     
     def test_alternative(self, user_input: str):
 
@@ -506,8 +552,8 @@ class MessageHistoryProcessor:
         # Latest Question: {question}
 
         # Reformulated Question:
-        prompt = self.generate_prompt5(user_input=user_input, chat_history=chat_history)
-        # print(f"final prompt that is being fed to the llm", prompt)
+        prompt = self.generate_prompt6(user_input=user_input, chat_history=chat_history)
+        print(f"final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
             # model="gpt-3.5-turbo",
             model="gpt-4o",
