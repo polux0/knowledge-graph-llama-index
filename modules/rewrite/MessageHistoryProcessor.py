@@ -514,16 +514,16 @@ class MessageHistoryProcessor:
 
         # print(f"history: \n", history)
 
-        # Test
-        history = []
-        question = "How will the calendar change in a community type society?"
-        response = ("In a community type society, the calendar would change to a 13-month system with each month consisting of 28 days, totaling 364 days in a year, "
-            "along with an additional 'non-day.' This change aims to eliminate inconsistencies and inefficiencies in the current Gregorian calendar system, "
-            "making scheduling and financial operations more predictable and consistent. The equal-length months simplify economic planning, industrial scheduling, "
-            "and personal organization. The rationale, advantages, and implementation strategy for this calendar system are outlined in the article.")
+        # Test / fixed history
+        # history = []
+        # question = "How will the calendar change in a community type society?"
+        # response = ("In a community type society, the calendar would change to a 13-month system with each month consisting of 28 days, totaling 364 days in a year, "
+        #     "along with an additional 'non-day.' This change aims to eliminate inconsistencies and inefficiencies in the current Gregorian calendar system, "
+        #     "making scheduling and financial operations more predictable and consistent. The equal-length months simplify economic planning, industrial scheduling, "
+        #     "and personal organization. The rationale, advantages, and implementation strategy for this calendar system are outlined in the article.")
 
-        history.append({"role": "user", "content": question})
-        history.append({"role": "assistant", "content": response})
+        # history.append({"role": "user", "content": question})
+        # history.append({"role": "assistant", "content": response})
 
         # Test
 
