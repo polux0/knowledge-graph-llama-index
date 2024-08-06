@@ -413,6 +413,19 @@ class MessageHistoryProcessor:
 
         # print(f"history: \n", history)
 
+        # Test
+        history = []
+        question = "How will the calendar change in a community type society?"
+        response = ("In a community type society, the calendar would change to a 13-month system with each month consisting of 28 days, totaling 364 days in a year, "
+            "along with an additional 'non-day.' This change aims to eliminate inconsistencies and inefficiencies in the current Gregorian calendar system, "
+            "making scheduling and financial operations more predictable and consistent. The equal-length months simplify economic planning, industrial scheduling, "
+            "and personal organization. The rationale, advantages, and implementation strategy for this calendar system are outlined in the article.")
+
+        history.append({"role": "user", "content": question})
+        history.append({"role": "assistant", "content": response})
+
+        # Test
+
         chat_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in history])
 
         print(f"chat_history: \n", chat_history)
@@ -441,8 +454,8 @@ class MessageHistoryProcessor:
         prompt = self.generate_prompt4(user_input=user_input, chat_history=chat_history)
         # print(f"final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            # model="gpt-4o",	
+            # model="gpt-3.5-turbo",
+            model="gpt-4o",
             messages=[
                 {"role": "system", "content": "You are a helpful assistant."},
                 {"role": "user", "content": prompt},
