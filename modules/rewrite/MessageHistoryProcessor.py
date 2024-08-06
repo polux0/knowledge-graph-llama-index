@@ -449,6 +449,7 @@ class MessageHistoryProcessor:
             ],
             temperature=0,
         )
+        print("Whole response from the memory agent: \n", response)
         reformulated_question = response.choices[0].message.content
         
         # If the response starts with "UNCHANGED:", return the original user_input
