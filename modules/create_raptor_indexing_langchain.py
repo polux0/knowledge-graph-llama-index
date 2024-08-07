@@ -1,3 +1,4 @@
+import os
 from langchain_community.llms import HuggingFaceEndpoint
 #Embeddings
 from langchain_openai import OpenAIEmbeddings
@@ -32,6 +33,8 @@ from datetime import datetime, timezone
 from embedding_model_modular_setup import get_embedding_model_based_on_model_name_id, initialize_embedding_model
 # Custom prompts
 from langchain_core.prompts import PromptTemplate
+# Testing Groq
+from langchain_groq import ChatGroq
 
 from utils.environment_setup import load_environment_variables
 env_vars = load_environment_variables()
@@ -83,11 +86,25 @@ def format_docs(docs):
 
 
 repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
+# Initialize large language model, local testing
+
 llm = HuggingFaceEndpoint(
     repo_id=repository_id,
     temperature=0.1,
     huggingfacehub_api_token=env_vars["HUGGING_FACE_API_KEY"],
 )
+
+# Experiment with Groq
+
+# os.environ["GROQ_API_KEY"] = env_vars["GROQ_API_KEY"]
+# llm = ChatGroq(
+#     model="llama3-70b-8192",
+#     temperature=0,
+#     max_tokens=None,
+#     timeout=None,
+#     max_retries=2,
+#     # other params...
+# )
 # Initialize large language model, production
 # llm = ChatOpenAI(
 #     openai_api_key=env_vars["OPENAI_API_KEY"],
