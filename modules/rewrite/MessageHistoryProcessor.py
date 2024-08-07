@@ -460,7 +460,7 @@ class MessageHistoryProcessor:
     def generate_prompt6(self, chat_history, user_input):
         prompt = f"""
         Your specific role is to take INPUTS and follow a specific PROCESS to create a defined OUTPUT. Your response will contain the OUTPUT, nothing else.
-        INPUT = {chat_history} and {user_input}.
+        INPUT = chat_history={chat_history} and user_input={user_input}.
         PROCESS = Determine if the user_input is follow up that implies a continuation of the chat_history, by reviewing the chat_history.
         OUTPUT = a single prompt that looks like a user_input. This output will either be the original user_input or an enriched version of the user_input, based on the context in the chat_history.
 
@@ -504,6 +504,197 @@ class MessageHistoryProcessor:
         """
         return prompt
     
+    def generate_prompt7(self, chat_history, user_input):
+        prompt = f"""
+        Your specific role is to take INPUTS and follow a specific PROCESS to create a defined OUTPUT. Your response will contain the OUTPUT, nothing else.
+        INPUT = chat_history={chat_history} and user_input={user_input}.
+        PROCESS = Determine if the user_input is a follow-up that implies a continuation of the chat_history by reviewing the chat_history.
+        OUTPUT = a single prompt that looks like a user_input. This output will either be the original user_input or an enriched version of the user_input based on the context in the chat_history.
+
+        ### Few-Shot Examples:
+
+        Example 1 (Vague Follow-Up):
+        user_input: 'Can you explain more?'
+        chat_history review: 'We discussed the benefits of regular exercise in our last conversation.'
+        Output: 'Can you give additional information about the benefits of regular exercise?'
+
+        Example 2 (Specific Follow-Up):
+        user_input: 'What are some examples of aerobic exercises which can help with my problem?'
+        chat_history review: 'The user's problem relates to an unhealthy heart'
+        Output: 'What are some examples of specific aerobic exercises that are good for heart health?'
+
+        Example 3 (New Topic):
+        user_input: 'Tell me about the history of the Roman Empire.'
+        chat_history review: 'The benefits of regular exercise are increased heart health, increased mobility, etc.'
+        Output: 'Tell me about the history of the Roman Empire.'
+
+        Example 4 (Unrelated Follow-Up):
+        user_input: 'Can you give me a recipe for lasagna?'
+        chat_history review: 'We discussed the benefits of regular exercise in our last conversation.'
+        Output: 'Can you give me a recipe for lasagna?'
+
+        Example 5 (Direct Follow-Up):
+        user_input: 'What other benefits does regular exercise provide?'
+        chat_history review: 'The benefits of regular exercise are increased heart health, increased mobility, etc.'
+        Output: 'What other benefits does regular exercise provide?'
+
+        ### Chain of Thoughts (Stages):
+
+        1. HANDLING VAGUE FOLLOW-UP QUESTIONS:
+        1.1 SEARCH the chat_history for the most recent theme or useful information.
+        1.2 ENRICH the user_input with the identified theme or useful information (e.g., 'tell me more about xyz').
+
+        2. HANDLING SPECIFIC FOLLOW-UP QUESTIONS:
+        2.1 ENRICH the user_input with relevant information from the chat_history.
+
+        3. HANDLING NEW TOPICS:
+        3.1 Leave the user_input unchanged.
+
+        4. HANDLING UNRELATED FOLLOW-UPS:
+        4.1 Leave the user_input unchanged.
+
+        ### What Not To Do:
+        - DO NOT show your working.
+        - DO NOT assume context for a 'vague follow-up' without searching the chat_history.
+        - DO NOT enrich a user_input with unrelated information.
+        - NEVER ignore key terms indicating a specific follow-up.
+        - DO NOT modify a 'new topic' user_input.
+        - DO NOT answer the question. Your output is in the form of a user_input.
+        - REMEMBER your only OUTPUT is in the form of a standalone question.
+        """
+        return prompt
+
+    def generate_prompt8(self, chat_history, user_input):
+        prompt = f"""
+        Your specific role is to take INPUTS and follow a specific PROCESS to create a defined OUTPUT. Your response will contain the OUTPUT, nothing else.
+        INPUT = chat_history={chat_history} and user_input={user_input}.
+        PROCESS = Determine if the user_input is a follow-up that implies a continuation of the chat_history by reviewing the chat_history.
+        OUTPUT = a single prompt that looks like a user_input. This output will either be the original user_input or an enriched version of the user_input based on the context in the chat_history.
+
+        ### Few-Shot Examples:
+
+        Example 1 (Vague Follow-Up):
+        user_input: 'Can you explain more?'
+        chat_history review: 'We discussed the benefits of regular exercise in our last conversation.'
+        Output: 'Can you give additional information about the benefits of regular exercise?'
+
+        Example 2 (Specific Follow-Up):
+        user_input: 'What are some examples of aerobic exercises which can help with my problem?'
+        chat_history review: 'The user's problem relates to an unhealthy heart'
+        Output: 'What are some examples of specific aerobic exercises that are good for heart health?'
+
+        Example 3 (New Topic):
+        user_input: 'Tell me about the history of the Roman Empire.'
+        chat_history review: 'The benefits of regular exercise are increased heart health, increased mobility, etc.'
+        Output: 'Tell me about the history of the Roman Empire.'
+
+        Example 4 (Unrelated Follow-Up):
+        user_input: 'Can you give me a recipe for lasagna?'
+        chat_history review: 'We discussed the benefits of regular exercise in our last conversation.'
+        Output: 'Can you give me a recipe for lasagna?'
+
+        Example 5 (Direct Follow-Up):
+        user_input: 'What other benefits does regular exercise provide?'
+        chat_history review: 'The benefits of regular exercise are increased heart health, increased mobility, etc.'
+        Output: 'What other benefits does regular exercise provide?'
+
+        Example 6 (New Topic):
+        user_input: 'What is social system domain?'
+        chat_history review: 'The domains of a real-world community model in a 13-month calendar system are: ...'
+        Output: 'What is social system domain?'
+
+        ### Chain of Thoughts (Stages):
+
+        1. HANDLING VAGUE FOLLOW-UP QUESTIONS:
+        1.1 SEARCH the chat_history for the most recent theme or useful information.
+        1.2 ENRICH the user_input with the identified theme or useful information (e.g., 'tell me more about xyz').
+
+        2. HANDLING SPECIFIC FOLLOW-UP QUESTIONS:
+        2.1 ENRICH the user_input with relevant information from the chat_history.
+
+        3. HANDLING NEW TOPICS:
+        3.1 Leave the user_input unchanged.
+
+        4. HANDLING UNRELATED FOLLOW-UPS:
+        4.1 Leave the user_input unchanged.
+
+        ### What Not To Do:
+        - DO NOT show your working.
+        - DO NOT assume context for a 'vague follow-up' without searching the chat_history.
+        - DO NOT enrich a user_input with unrelated information.
+        - NEVER ignore key terms indicating a specific follow-up.
+        - DO NOT modify a 'new topic' user_input.
+        - DO NOT answer the question. Your output is in the form of a user_input.
+        - REMEMBER your only OUTPUT is in the form of a standalone question.
+        """
+        return prompt
+    
+    def generate_prompt9(self, chat_history, user_input):
+        prompt = f"""
+        Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question.
+
+        Chat History:
+
+        {chat_history}
+
+        Follow Up Input: {user_input}
+
+        Standalone Question:
+        """
+        return prompt
+    
+    def generate_prompt10(self, chat_history, user_input):
+        prompt = f"""
+        Your role is to take INPUT and follow the Chain of Thoughts below to create the OUTPUT. Your response will contain ONLY the OUTPUT as a standalone question.
+       
+        INPUT = chat_history={chat_history}, user_input={user_input}.
+
+        ### Chain of Thoughts:
+
+        1. HANDLING NEW TOPICS:
+        1.1 The chat_history is not related to the user_input.
+        1.2 The user_input is a new topic
+        1.3 Return a stanalone question as original user_input as the OUTPUT
+
+        2. HANDLING FOLLOW-UP QUESTIONS:
+        2.1 The user_input is a clear follow up question based on the language used OR
+        2.2 The chat_history is clearly related to the user_input
+        2.3 The user_input is a follow up, so ENRICH with relevant context to create a history aware user prompt and return a standalone question as OUTPUT. 
+
+        ### Few-Shot Examples:
+
+        Example 1 (New Topic):
+        user_input: 'Tell me about the history of the Roman Empire.'
+        chat_history review: 'We talked about the benefits of regular exercise are increased heart health, increased mobility, etc.'
+        Output: 'Tell me about the history of the Roman Empire.'
+
+        Example 2 (Follow up):
+        user_input: 'Tell me more?'
+        chat_history review: 'We discussed the benefits of regular exercise.'
+        Output: 'Can you give a more detailed response with more information about the benefits of regular exercise?'
+
+        Example 3 (Follow Up):
+        user_input: 'What are some examples which can help with my problem?'
+        chat_history review: 'The user's problem relates to an unhealthy heart'
+        Output: 'What are some examples of specific aerobic exercises that are good for heart health?'
+
+        Example 4 (Follow-Up):
+        user_input: 'What other benefits does regular exercise provide?'
+        chat_history review: 'The benefits of regular exercise are increased heart health and increased mobility.'
+        Output: 'What other benefits does regular exercise provide as well as increased heart health and increased mobility?'
+
+        Example 5 (New Topic):
+        user_input: 'Can you give me a recipe for lasagna?'
+        chat_history review: 'We discussed the benefits of regular exercise in our last conversation.'
+        Output: 'Can you give me a recipe for lasagna?'
+
+        ### What Not To Do:
+        - DO NOT modify a 'new topic' user_input.
+        - DO NOT show your working.
+        - REMEMBER your only OUTPUT is in the form of a standalone question.
+        """
+        return prompt
+
     def test_alternative(self, user_input: str):
 
         api_key = self.env_vars['OPENAI_API_KEY']  # Correct way to get the API key
@@ -512,24 +703,23 @@ class MessageHistoryProcessor:
 
         history = self.es_client.retrieve_telegram_history_different_formatting(self.chat_id, self.history_length)
 
-        # print(f"history: \n", history)
+        # print(f"!history: \n", history)
 
         # Test / fixed history
-        history = []
-        question = "How will the calendar change in a community type society?"
-        response = ("In a community type society, the calendar would change to a 13-month system with each month consisting of 28 days, totaling 364 days in a year, "
-            "along with an additional 'non-day.' This change aims to eliminate inconsistencies and inefficiencies in the current Gregorian calendar system, "
-            "making scheduling and financial operations more predictable and consistent. The equal-length months simplify economic planning, industrial scheduling, "
-            "and personal organization. The rationale, advantages, and implementation strategy for this calendar system are outlined in the article.")
+        # history = []
+        # question = "How will the calendar change in a community type society?"
+        # response = ("In a community type society, the calendar would change to a 13-month system with each month consisting of 28 days, totaling 364 days in a year, "
+        #     "along with an additional 'non-day.' This change aims to eliminate inconsistencies and inefficiencies in the current Gregorian calendar system, "
+        #     "making scheduling and financial operations more predictable and consistent. The equal-length months simplify economic planning, industrial scheduling, "
+        #     "and personal organization. The rationale, advantages, and implementation strategy for this calendar system are outlined in the article.")
 
-        history.append({"role": "user", "content": question})
-        history.append({"role": "assistant", "content": response})
-
-        # Test
+        # history.append({"role": "user", "content": question})
+        # history.append({"role": "assistant", "content": response})
+        # Test / fixed history
 
         chat_history = "\n".join([f"{entry['role'].capitalize()}: {entry['content']}" for entry in history])
 
-        print(f"chat_history: \n", chat_history)
+        print(f"!chat_history: \n", chat_history)
         # Attempt 1
         # prompt = f"""
         # Given a chat history and the latest user question which might reference context in the chat history,
@@ -552,8 +742,8 @@ class MessageHistoryProcessor:
         # Latest Question: {question}
 
         # Reformulated Question:
-        prompt = self.generate_prompt6(user_input=user_input, chat_history=chat_history)
-        print(f"final prompt that is being fed to the llm", prompt)
+        prompt = self.generate_prompt10(user_input=user_input, chat_history=chat_history)
+        print(f"!Final prompt that is being fed to the llm", prompt)
         response = client.chat.completions.create(
             # model="gpt-3.5-turbo",
             model="gpt-4o",
@@ -563,7 +753,7 @@ class MessageHistoryProcessor:
             ],
             temperature=0,
         )
-        print("Whole response from the memory agent: \n", response)
+        print("!Whole response from the memory agent: \n", response)
         reformulated_question = response.choices[0].message.content
         
         # If the response starts with "UNCHANGED:", return the original user_input
