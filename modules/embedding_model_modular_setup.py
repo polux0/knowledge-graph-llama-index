@@ -1,5 +1,5 @@
 import logging
-from embedding_models import EMBEDDING_MODELS
+from utils.embedding_models import EMBEDDING_MODELS
 from llama_index.embeddings.huggingface import (
             HuggingFaceInferenceAPIEmbedding,
 )

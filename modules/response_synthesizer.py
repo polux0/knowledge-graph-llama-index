@@ -10,8 +10,14 @@ from llama_index.core import PromptTemplate, Settings, get_response_synthesizer
 from llama_index.core.schema import Node, TextNode
 from llama_index.core.response_synthesizers import TreeSummarize
 from llama_index.core.schema import NodeWithScore
+from utils.environment_setup import load_environment_variables
+
+env_var = load_environment_variables()
 
 es_client = ElasticsearchClient()
+
+#Groq testing
+from llama_index.llms.groq import Groq
 
 # Initialize Experiment
 
@@ -75,7 +81,14 @@ def get_synthesized_response_based_on_nodes_with_score(
         "Answer: "
     )
 
-    llm = initialize_llm(model_name_id)
+    # Initial
+    # llm = initialize_llm(model_name_id)
+    # Groq testing
+    llm = Groq(
+        model="llama3-70b-8192", 
+        temperature=0,
+        api_key=env_var['GROQ_API_KEY'],
+    )
     Settings.llm = llm
     experiment.llm_used = get_llm_based_on_model_name_id(
         model_name_id=model_name_id
@@ -114,7 +127,9 @@ def get_synthesized_response_based_on_nodes_with_score(
     combined_prompt = f"{DEFAULT_REFINE_PROMPT_TMPL}{DEFAULT_TEXT_QA_PROMPT_TMPL}"
 
     response_synthesizer = get_response_synthesizer(
-        response_mode=response_mode, llm=llm
+        response_mode=response_mode, 
+        llm=llm,
+        # structured_answer_filtering=True
     )
     experiment.prompt_template = combined_prompt
     experiment.retrieval_strategy = response_mode

@@ -893,6 +893,9 @@ st-star-rating
 python-telegram-bot>=20.0
 # The following packages are considered to be unsafe in a requirements file:
 # setuptools
-
 # api related
 Flask==3.0.3
+# LLM provider - Groq with langchain
+langchain-groq
+# LLM provider - Groq with llama-index
+llama-index-llms-groq

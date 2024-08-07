@@ -26,6 +26,7 @@ def load_environment_variables():
         "HUGGING_FACE_API_KEY": os.getenv("HUGGING_FACE_API_KEY"),
         "OPENAI_API_KEY": os.getenv("OPENAI_API_KEY"),
         "COHERE_API_KEY": os.getenv("COHERE_API_KEY"),
+        "GROQ_API_KEY": os.getenv("GROQ_API_KEY"),
 
         "NEO4J_USERNAME": os.getenv("NEO4J_USERNAME"),
         "NEO4J_PASSWORD": os.getenv("NEO4J_PASSWORD"),
