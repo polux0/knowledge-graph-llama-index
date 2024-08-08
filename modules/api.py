@@ -66,7 +66,7 @@ def ask_question():
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
     # print(f"!!!!Combined source nodes: \n", nodesCombined)
     responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(processed_question, nodesCombined)
-    print(f"!!!!Response synthesized from combined nodes: \n", responseSynthesized)
+    # print(f"!!!!Response synthesized from combined nodes: \n", responseSynthesized)
 
     # TODO: Modularize
     additional_fields = {
