@@ -61,6 +61,7 @@ def ask_question():
 
     test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
     # print(f"!!!Source nodes raptor: \n", test_source_nodes_raptor)
+    print("!!! MRI nodes before transformation")
     test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
     print(f"!!!Source node mri: \n", test_source_nodes_mri)
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
