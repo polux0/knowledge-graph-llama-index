@@ -35,7 +35,10 @@ from embedding_model_modular_setup import get_embedding_model_based_on_model_nam
 from langchain_core.prompts import PromptTemplate
 # Testing Groq
 from langchain_groq import ChatGroq
-
+# To introduce Retriever that returns custom scores
+from typing import List
+from langchain_core.documents import Document
+from langchain_core.runnables import chain
 from utils.environment_setup import load_environment_variables
 env_vars = load_environment_variables()
 
@@ -277,17 +280,27 @@ def generate_response_based_on_raptor_indexing_with_debt(question: str):
 
     return str(response), experiment, source_nodes
 
+#TODO: This is helper function that probably should be moved in utils
+@chain
+def retriever(query: str) -> List[Document]:
+    docs, scores = zip(*vectorstore.similarity_search_with_score(query))
+    for doc, score in zip(docs, scores):
+        doc.metadata["score"] = score
+    return docs
+
 def generate_response_based_on_raptor_indexing(question: str, chat_id: int):
 
     experiment.question = question
     experiment.prompt_template = prompt.template
     experiment.source_agent = "Raptor Agent"
 
+    source_nodes_with_score = retriever.invoke(question)
+    print("RAPTOR RETRIEVER TESTING SOURCE NODES WITH SCORE: \n", source_nodes_with_score)
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
-    source_nodes = retriever.get_relevant_documents(question, n_results=3)
+    # source_nodes = retriever.get_relevant_documents(question, n_results=3)
     experiment.retrieved_nodes = stringify_and_combine_nodes(source_nodes)
     response = rag_chain.invoke(question)
     experiment.response = str(response)
 
-    return str(response), experiment, source_nodes
+    return str(response), experiment, source_nodes_with_score
