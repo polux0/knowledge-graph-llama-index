@@ -20,7 +20,10 @@ from redis import Redis
 
 from langchain_cohere import CohereEmbeddings
 from langchain_community.vectorstores import Chroma
-from langchain.retrievers.multi_vector import MultiVectorRetriever
+# TODO: Delete after testing, as we are trying to introduce retriever that has relevance score of documents
+# from langchain.retrievers.multi_vector import MultiVectorRetriever
+# TODO: 
+from rewrite.retrievers.CustomMultiVectorRetriever import CustomMultiVectorRetriever
 from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 import chromadb
@@ -156,7 +159,7 @@ vectorstore = Chroma(
 id_key = "doc_id"
 
 # The retriever
-retriever = MultiVectorRetriever(
+retriever = CustomMultiVectorRetriever(
     vectorstore=vectorstore,
     byte_store=redis_store,
     id_key=id_key,
@@ -253,6 +256,7 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 
     sub_docs = vectorstore.similarity_search(question, k=3)
     retrieved_docs = retriever.get_relevant_documents(question, n_results=3)
+    print("!MRI RETRIEVED DOCUMENTS. DO THEY HAVE A SCORE?: \n", retrieved_docs)
 
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")

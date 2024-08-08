@@ -32,12 +32,10 @@ experiment.created_at = current_time.isoformat(timespec='milliseconds')
 def create_nodes_with_score(node_list: List):
     nodes_with_score = []
     for item in node_list:
+        print(f"Score:", )
         node = TextNode(text=item.page_content)
-        # print("Node: ", node)
-        node_with_score = NodeWithScore(node=node, score=1.0)
-        # print("NodeWithScore: ", node_with_score)
+        node_with_score = NodeWithScore(node=node, score=item.metadata['score'])
         nodes_with_score.append(node_with_score)
-    # print("!!!nodes_with_score: ", nodes_with_score)
     return nodes_with_score
 
 def merge_nodes(
