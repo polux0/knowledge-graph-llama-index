@@ -274,6 +274,7 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
 
     sub_docs = vectorstore.similarity_search(question, k=3)
     retrieved_docs = retriever.get_relevant_documents(question, n_results=3)
+    print("!MRI RETRIEVED DOCUMENTS. DO THEY HAVE A SCORE?: \n", retrieved_docs)
 
     prompt = PromptTemplate(
         input_variables=['context', 'question'],
