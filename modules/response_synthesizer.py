@@ -40,7 +40,7 @@ def create_nodes_with_score(node_list: List):
     return nodes_with_score
 
 #TODO: Modify, as this is only for the MRI agent
-def create_nodes_with_score_mri(node_list: List, scores: List[float]):
+def create_nodes_with_score_mri(node_list: List):
     nodes_with_score = []
     
     scores = [sub_doc['metadata']['score'] for doc in node_list for sub_doc in doc['metadata']['sub_docs']]
