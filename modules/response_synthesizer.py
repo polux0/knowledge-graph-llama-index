@@ -68,7 +68,8 @@ def get_synthesized_response_based_on_nodes_with_score(
 ):
 
     model_name_id = "mixtral"
-    response_mode = "compact"
+    response_mode = "refine"
+    # response_mode = "compact"
 
     prompt = (
         "Context information is below.\n"
@@ -94,14 +95,14 @@ def get_synthesized_response_based_on_nodes_with_score(
     )
 
     # Initial
-    llm = initialize_llm(model_name_id)
+    # llm = initialize_llm(model_name_id)
     # Groq testing
-    # llm = Groq(
-    #     # model="llama3-70b-8192", 
-    #     model="mixtral-8x7b-32768",
-    #     temperature=0,
-    #     api_key=env_var['GROQ_API_KEY'],
-    # )
+    llm = Groq(
+        model="llama3-70b-8192",
+        # model="mixtral-8x7b-32768",
+        temperature=0,
+        api_key=env_var['GROQ_API_KEY'],
+    )
     Settings.llm = llm
     experiment.llm_used = get_llm_based_on_model_name_id(
         model_name_id=model_name_id
