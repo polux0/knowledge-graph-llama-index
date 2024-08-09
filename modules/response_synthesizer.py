@@ -84,7 +84,8 @@ def get_synthesized_response_based_on_nodes_with_score(
     # llm = initialize_llm(model_name_id)
     # Groq testing
     llm = Groq(
-        model="llama3-70b-8192", 
+        # model="llama3-70b-8192", 
+        model="mixtral-8x7b-32768",
         temperature=0,
         api_key=env_var['GROQ_API_KEY'],
     )
