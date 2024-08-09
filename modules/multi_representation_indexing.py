@@ -256,7 +256,6 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 
     sub_docs = vectorstore.similarity_search(question, k=3)
     retrieved_docs = retriever.get_relevant_documents(question, n_results=3)
-    print("!MRI RETRIEVED DOCUMENTS. DO THEY HAVE A SCORE?: \n", retrieved_docs)
 
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
@@ -274,7 +273,7 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
 
     sub_docs = vectorstore.similarity_search(question, k=3)
     retrieved_docs = retriever.get_relevant_documents(question, n_results=3)
-    print("!MRI RETRIEVED DOCUMENTS. DO THEY HAVE A SCORE?: \n", retrieved_docs)
+    print(f"!MRI RETRIEVED DOCUMENTS. DO THEY HAVE A SCORE?: \n", retrieved_docs)
 
     prompt = PromptTemplate(
         input_variables=['context', 'question'],
