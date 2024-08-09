@@ -32,7 +32,7 @@ experiment.created_at = current_time.isoformat(timespec='milliseconds')
 def create_nodes_with_score(node_list: List):
     nodes_with_score = []
     for item in node_list:
-        print(f"Item:", )
+        print(f"Item:", item)
         node = TextNode(text=item.page_content)
         node_with_score = NodeWithScore(node=node, score=1.0)
         # node_with_score = NodeWithScore(node=node, score=item.metadata['score'])
