@@ -11,7 +11,7 @@ from multi_representation_indexing import (
 from elasticsearch_service import ElasticsearchClient, ExperimentDocument
 import logging
 
-from response_synthesizer import create_nodes_with_score, get_synthesized_response_based_on_nodes_with_score, merge_nodes
+from response_synthesizer import create_nodes_with_score, create_nodes_with_score_mri, get_synthesized_response_based_on_nodes_with_score, merge_nodes
 from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
 
 class Document:
@@ -62,7 +62,7 @@ def ask_question():
     test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
     # print(f"!!!Source nodes raptor: \n", test_source_nodes_raptor)
     print("!!! MRI nodes before transformation")
-    test_source_nodes_mri = create_nodes_with_score(retrieved_docs_mri)
+    test_source_nodes_mri = create_nodes_with_score_mri(retrieved_docs_mri)
     print(f"!!!Source node mri: \n", test_source_nodes_mri)
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
     # print(f"!!!!Combined source nodes: \n", nodesCombined)

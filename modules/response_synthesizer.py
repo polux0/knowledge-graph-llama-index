@@ -34,9 +34,22 @@ def create_nodes_with_score(node_list: List):
     for item in node_list:
         print(f"Item:", item)
         node = TextNode(text=item.page_content)
-        node_with_score = NodeWithScore(node=node, score=1.0)
-        # node_with_score = NodeWithScore(node=node, score=item.metadata['score'])
+        # node_with_score = NodeWithScore(node=node, score=1.0)
+        node_with_score = NodeWithScore(node=node, score=item.metadata['score'])
         nodes_with_score.append(node_with_score)
+    return nodes_with_score
+
+#TODO: Modify, as this is only for the MRI agent
+def create_nodes_with_score_mri(node_list: List, scores: List[float]):
+    nodes_with_score = []
+    
+    scores = [sub_doc['metadata']['score'] for doc in node_list for sub_doc in doc['metadata']['sub_docs']]
+    for item, score in zip(node_list, scores):
+        print(f"Item: {item}, Score: {score}")
+        node = TextNode(text=item['page_content'])  # Assuming item has a 'page_content' key
+        node_with_score = NodeWithScore(node=node, score=score)
+        nodes_with_score.append(node_with_score)
+    
     return nodes_with_score
 
 def merge_nodes(
@@ -143,3 +156,63 @@ def get_synthesized_response_based_on_nodes_with_score(
     experiment.updated_at = updated_at_time.isoformat(timespec='milliseconds')
 
     return response, experiment
+
+
+
+# TEST, #TODO: Delete it afterwards
+
+# documents = [
+#     {
+#         'page_content': 'common system. The realization is that we have  to begin to unify all concepts, ‘consilience’.” - Peter Joseph2...',
+#         'metadata': {
+#             'source': '/usr/src/modules/../data/documentation_optimal/system-overview/auravana-SSS-System-Overview-002-115-EN.pdf',
+#             'page': 82,
+#             'sub_docs': [
+#                 {
+#                     'page_content': "The document discusses the Real World Community Model...",
+#                     'metadata': {
+#                         'doc_id': 'parent-documents-summaries-complete-documentation2-925fdb37-dd78-43c6-92c4-ce12f9465f5f',
+#                         'score': 0.5237699747085571
+#                     }
+#                 }
+#             ]
+#         }
+#     },
+#     {
+#         'page_content': '3. The material system domain - The material organization of the society...',
+#         'metadata': {
+#             'source': '/usr/src/modules/../data/documentation_optimal/system-overview/auravana-SSS-System-Overview-002-115-EN.pdf',
+#             'page': 84,
+#             'sub_docs': [
+#                 {
+#                     'page_content': "The document discusses the Real World Community Model...",
+#                     'metadata': {
+#                         'doc_id': 'parent-documents-summaries-complete-documentation2-c2302c21-df81-4141-a104-1395bf0ef847',
+#                         'score': 0.5358211994171143
+#                     }
+#                 }
+#             ]
+#         }
+#     },
+#     {
+#         'page_content': 'a common system. The realization is that we have to begin to unify all concepts...',
+#         'metadata': {
+#             'source': '/usr/src/modules/../data/documentation_optimal/test1/Aurvana System Overiew - 73 - 84-1-6.pdf',
+#             'page': 3,
+#             'sub_docs': [
+#                 {
+#                     'page_content': "The document discusses the Real World Community Model...",
+#                     'metadata': {
+#                         'doc_id': 'parent-documents-summaries-complete-documentation2-698c3d19-527b-4dd7-9da7-4833e88402c6',
+#                         'score': 0.5374264121055603
+#                     }
+#                 }
+#             ]
+#         }
+#     }
+# ]
+# nodes_with_score = create_nodes_with_score_mri(documents, scores=[])
+
+# # Output the result to see if everything worked correctly
+# for node_with_score in nodes_with_score:
+#     print(node_with_score)
