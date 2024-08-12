@@ -295,11 +295,11 @@ def generate_response_based_on_raptor_indexing(question: str, chat_id: int):
     experiment.source_agent = "Raptor Agent"
 
     source_nodes_with_score = retriever.invoke(question)
-    print("RAPTOR RETRIEVER TESTING SOURCE NODES WITH SCORE: \n", source_nodes_with_score)
+
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
     # source_nodes = retriever.get_relevant_documents(question, n_results=3)
-    experiment.retrieved_nodes = stringify_and_combine_nodes(source_nodes)
+    experiment.retrieved_nodes = stringify_and_combine_nodes(source_nodes_with_score)
     response = rag_chain.invoke(question)
     experiment.response = str(response)
 
