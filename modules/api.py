@@ -53,21 +53,18 @@ def ask_question():
     answer_raptor, experiment_raptor, source_nodes_raptor = (
         generate_response_based_on_raptor_indexing(processed_question, telegram_chat_id) # Here we return source nodes, meaning we don't really rely on a prompt that we have prepared
     )
-    # print(f"!!Answer raptor: ", answer_raptor)
+    print(f"!!Answer raptor: ", answer_raptor)
     answer_mri, experiment_mri, source_nodes_mri, retrieved_docs_mri = (
         generate_response_based_on_multirepresentation_indexing(processed_question, telegram_chat_id) # Here we return source nodes, meaning we don't really rely on a prompt that we have prepared
     )
-    # print(f"!!Answer mri: ", answer_mri)
+    print(f"!!Answer mri: ", answer_mri)
 
     test_source_nodes_raptor = create_nodes_with_score(source_nodes_raptor)
-    # print(f"!!!Source nodes raptor: \n", test_source_nodes_raptor)
-    print("!!! MRI nodes before transformation")
     test_source_nodes_mri = create_nodes_with_score_mri(retrieved_docs_mri)
-    print(f"!!!Source node mri: \n", test_source_nodes_mri)
     nodesCombined = merge_nodes(test_source_nodes_raptor, test_source_nodes_mri)
-    # print(f"!!!!Combined source nodes: \n", nodesCombined)
+    print(f"!!!!Combined source nodes: \n", nodesCombined)
     responseSynthesized, experiment_raptor_and_mri_synthezis = get_synthesized_response_based_on_nodes_with_score(processed_question, nodesCombined)
-    # print(f"!!!!Response synthesized from combined nodes: \n", responseSynthesized)
+    print(f"!!!!Response synthesized from combined nodes: \n", responseSynthesized)
 
     # TODO: Modularize
     additional_fields = {
