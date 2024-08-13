@@ -40,6 +40,9 @@ from typing import List
 from langchain_core.documents import Document
 from langchain_core.runnables import chain
 from utils.environment_setup import load_environment_variables
+# Rerankers
+from langchain.retrievers.contextual_compression import ContextualCompressionRetriever
+from langchain_cohere import CohereRerank
 env_vars = load_environment_variables()
 
 # Constants
@@ -215,6 +218,11 @@ else:
 # Initialize the retriever
 retriever = vectorstore.as_retriever()
 experiment.retrieval_strategy = "Raptor"
+# Initialize the Reranker
+compressor = CohereRerank(model="rerank-english-v3.0")
+compression_retriever = ContextualCompressionRetriever(
+    base_compressor=compressor, base_retriever=retriever
+)
 
 # qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
 # Prompt
@@ -294,7 +302,7 @@ def generate_response_based_on_raptor_indexing(question: str, chat_id: int):
     experiment.prompt_template = prompt.template
     experiment.source_agent = "Raptor Agent"
 
-    source_nodes_with_score = retriever.invoke(question)
+    source_nodes_with_score = compression_retriever.invoke(question)
 
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")

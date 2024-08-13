@@ -899,3 +899,5 @@ Flask==3.0.3
 langchain-groq
 # LLM provider - Groq with llama-index
 llama-index-llms-groq
+# Rerankers
+cohere

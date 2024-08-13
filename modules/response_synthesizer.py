@@ -35,7 +35,10 @@ def create_nodes_with_score(node_list: List):
         print(f"Item:", item)
         node = TextNode(text=item.page_content)
         # node_with_score = NodeWithScore(node=node, score=1.0)
-        node_with_score = NodeWithScore(node=node, score=item.metadata['score'])
+        node_with_score = NodeWithScore(
+            node=node,
+            score=item.metadata.get('score') if item.metadata.get('score') is not None else item.metadata.get('relevance_score')
+        )
         nodes_with_score.append(node_with_score)
     return nodes_with_score
 
