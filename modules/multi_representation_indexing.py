@@ -48,6 +48,10 @@ from langchain_text_splitters import RecursiveCharacterTextSplitter
 import logging
 import sys
 
+# Rerankers
+from langchain.retrievers.contextual_compression import ContextualCompressionRetriever
+from langchain_cohere import CohereRerank
+
 from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
 
 env_vars = load_environment_variables()
@@ -76,6 +80,7 @@ chunk_overlap = 518
 # chroma_collection_name = "MRITESTTTTTTTTTTT3"
 # redis_namespace = "parent-documents-MRITESTTTTTTTTTTT3"
 # documents_directory = "../data/documentation_optimal/test1"
+
 # Production
 model_name_id = "default"
 embedding_model_id = "openai-text-embedding-3-large"
@@ -164,6 +169,13 @@ retriever = CustomMultiVectorRetriever(
     byte_store=redis_store,
     id_key=id_key,
 )
+
+# Reranker
+compressor = CohereRerank(model="rerank-english-v3.0")
+compression_retriever = ContextualCompressionRetriever(
+    base_compressor=compressor, base_retriever=retriever
+)
+
 doc_ids = []
 experiment.retrieval_strategy = (
     f"MultiVectorRetriever, mode: Similarity search"  # There is another method - mmr
@@ -272,7 +284,7 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int):
 
     sub_docs = vectorstore.similarity_search(question, k=3)
-    retrieved_docs = retriever.get_relevant_documents(question, n_results=3)
+    retrieved_docs = compression_retriever.get_relevant_documents(question, n_results=3)
     print(f"!MRI RETRIEVED DOCUMENTS. DO THEY HAVE A SCORE?: \n", retrieved_docs)
 
     prompt = PromptTemplate(
@@ -290,7 +302,7 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
 
     # Replacement
     rag_chain = (
-        {"context": retriever , "question": RunnablePassthrough()}
+        {"context": compression_retriever , "question": RunnablePassthrough()}
         | prompt
         | llm
         | StrOutputParser()
