@@ -70,9 +70,9 @@ def get_synthesized_response_based_on_nodes_with_score(
 ):
 
     model_name_id = "mixtral"
-    response_mode = "compact"
+    # response_mode = "compact"
     # response_mode = "refine"
-    # response_mode = "tree_summarize"
+    response_mode = "tree_summarize"
 
     prompt = (
         "Context information is below.\n"
