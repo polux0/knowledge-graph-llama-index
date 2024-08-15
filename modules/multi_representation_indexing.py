@@ -212,37 +212,6 @@ print(
     f"count: {chroma_collection.count()}",
 )
 
-# TODO: Code clean up
-# Local test of message history
-
-# chat_id = 535329585
-# test_user_message = "What are common ways of doing it?"
-    
-# processor = MessageHistoryProcessor(elasticsearch_client, chat_id, is_test=True)
-# response = processor.process_message(test_user_message)
-# print(f"!!!MessageHistoryProcessor result: {response}")
-
-# TODO: Code clean up
-# Local test of retrievals functionality
-
-# qa_chain = RetrievalQA.from_chain_type(llm, retriever=retriever)
-# question = "What are domains of real world community model?"
-# question1 = "Domains of real world community model"
-# sub_docs = vectorstore.similarity_search(question, k=3)
-# retrieved_docs = retriever.get_relevant_documents(question1, n_results=3)
-
-#TODO: Code clean up
-
-# print("Nodes retrieved: \n")
-# for node in retrieved_docs:
-#     print(node)
-# retrieved_docs[0].page_content[0:500]
-# print("retrieved docs: \n", retrieved_docs)
-# print("retrieved documents, length: " + str(len(retrieved_docs)))
-
-# response_dictionary = qa_chain({"query": question})
-# response = response_dictionary["result"]
-# print("Printing final answer", response)
 
 #TODO: Move to `utils` or modify the way we are storing retrieved nodes
 
@@ -283,9 +252,8 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 #TODO: Code clean-up
 def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int):
 
-    sub_docs = vectorstore.similarity_search(question, k=3)
     retrieved_docs = compression_retriever.get_relevant_documents(question, n_results=3)
-    print(f"!MRI RETRIEVED DOCUMENTS. DO THEY HAVE A SCORE?: \n", retrieved_docs)
+    print(f"!MRI RETRIEVED DOCUMENTS:", retrieved_docs)
 
     prompt = PromptTemplate(
         input_variables=['context', 'question'],
@@ -311,11 +279,11 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
 
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
-    source_nodes = stringify_and_combine(sub_docs, retrieved_docs)
+    source_nodes = retrieved_docs
     experiment.retrieved_nodes = source_nodes
 
     # Replacement
     response = rag_chain.invoke(question)
     experiment.response = str(response)
 
-    return str(response), experiment, source_nodes, retrieved_docs
+    return str(response), experiment, retrieved_docs
