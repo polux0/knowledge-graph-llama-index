@@ -286,4 +286,4 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
     response = rag_chain.invoke(question)
     experiment.response = str(response)
 
-    return str(response), experiment, retrieved_docs
+    return str(response), experiment, source_nodes, retrieved_docs
