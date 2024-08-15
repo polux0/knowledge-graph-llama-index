@@ -80,7 +80,7 @@ def ask_question():
 
     # TODO: Commented out temporarily
     elasticsearch_client.save_interaction(experiment_raptor, additional_fields)
-    elasticsearch_client.save_interaction(experiment_mri, additional_fields)
+    # elasticsearch_client.save_interaction(experiment_mri, additional_fields)
     elasticsearch_client.save_interaction(experiment_raptor_and_mri_synthezis, additional_fields)
 
     return (
