@@ -14,15 +14,10 @@ import logging
 from response_synthesizer import create_nodes_with_score, create_nodes_with_score_mri, get_synthesized_response_based_on_nodes_with_score, merge_nodes
 from rewrite.MessageHistoryProcessor import MessageHistoryProcessor
 
-class Document:
-    def __init__(self, page_content: str):
-        self.page_content = page_content
-
 app = Flask(__name__)
 
 elasticsearch_client = ElasticsearchClient()
 logging.basicConfig(level=logging.DEBUG)
-
 
 @app.route("/ask", methods=["POST"])
 def ask_question():
@@ -80,7 +75,7 @@ def ask_question():
 
     # TODO: Commented out temporarily
     elasticsearch_client.save_interaction(experiment_raptor, additional_fields)
-    # elasticsearch_client.save_interaction(experiment_mri, additional_fields)
+    elasticsearch_client.save_interaction(experiment_mri, additional_fields)
     elasticsearch_client.save_interaction(experiment_raptor_and_mri_synthezis, additional_fields)
 
     return (
@@ -91,7 +86,6 @@ def ask_question():
         ),
         200,
     )
-
 
 @app.route("/rate", methods=["POST"])
 def store_feedback():
