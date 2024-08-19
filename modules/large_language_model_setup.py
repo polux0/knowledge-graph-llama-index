@@ -23,7 +23,11 @@ def initialize_llm(model_name_id):
     else:
         login(token=env_vars['HUGGING_FACE_API_KEY'])
         # For Hugging Face, a helper function might be used to determine the exact model name based on an ID
-        return HuggingFaceInferenceAPI(model_name=get_llm_based_on_model_name_id(model_name_id), hf_token=env_vars['HUGGING_FACE_API_KEY'])
+        return HuggingFaceInferenceAPI(
+            model_name=get_llm_based_on_model_name_id(model_name_id),
+            hf_token=env_vars['HUGGING_FACE_API_KEY'],
+            num_output=2000, #TODO: This should be determined dynamically ( at least where it is possible )
+        )
 
 def messages_to_prompt(messages):
     prompt = ""
