@@ -26,7 +26,7 @@ def initialize_llm(model_name_id):
         return HuggingFaceInferenceAPI(
             model_name=get_llm_based_on_model_name_id(model_name_id),
             hf_token=env_vars['HUGGING_FACE_API_KEY'],
-            num_output=2000, #TODO: This should be determined dynamically ( at least where it is possible )
+            num_output=1000, #TODO: This should be determined dynamically ( at least where it is possible )
         )
 
 def messages_to_prompt(messages):
