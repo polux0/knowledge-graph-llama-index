@@ -283,7 +283,8 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
 
     current_time = datetime.now(timezone.utc)
     experiment.updated_at = current_time.isoformat(timespec="milliseconds")
-    source_nodes = Utils.serialize_retrieved_nodes_for_the_mri_agent(retrieved_docs)
+    source_nodes = retrieved_docs
+    # source_nodes = Utils.serialize_retrieved_nodes_for_the_mri_agent(retrieved_docs)
     experiment.retrieved_nodes = source_nodes
 
     # Replacement
