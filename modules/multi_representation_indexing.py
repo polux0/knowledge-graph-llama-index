@@ -254,9 +254,9 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
 
     retrieved_docs = compression_retriever.get_relevant_documents(question, n_results=3)
     print(f"!MRI RETRIEVED DOCUMENTS:\n", retrieved_docs)
-    print(f"!MRI RETRIEVED DOCUMENTS, Document by document: \n")
-    for doc in retrieved_docs:
-            print(doc)
+    # print(f"!MRI RETRIEVED DOCUMENTS, Document by document: \n")
+    # for doc in retrieved_docs:
+    #         print(doc)
 
     prompt = PromptTemplate(
         input_variables=['context', 'question'],
