@@ -1,0 +1,55 @@
+import json
+from langchain.docstore.document import Document
+
+class Utils:
+    """
+    Utility class for serializing document nodes retrieved for the MRI agent.
+    
+    This class provides a method to serialize complex document structures into a
+    JSON-compatible format suitable for storage in Elasticsearch or similar systems.
+    """
+
+    @staticmethod
+    def serialize_retrieved_nodes_for_the_mri_agent(documents):
+        """
+        Serializes a list of Document objects into a JSON-compatible format.
+
+        This method converts nested `Document` objects and their metadata into
+        a format that can be easily stored and searched in Elasticsearch. It handles
+        the recursion necessary to flatten the structure and ensure that all elements
+        are serializable.
+
+        Args:
+            documents (list): A list of Document objects to be serialized.
+
+        Returns:
+            str: A JSON string representing the serialized documents.
+
+        Example:
+            serialized_json = Utils.serialize_retrieved_nodes_for_the_mri_agent(documents)
+            print(serialized_json)
+        """
+        def serialize_document(document):
+            return {
+                'page_content': str(document.page_content),
+                'metadata': {
+                    key: str(value) if not isinstance(value, list) else [
+                        serialize_document(sub_doc) if isinstance(sub_doc, Document) else str(sub_doc)
+                        for sub_doc in value
+                    ]
+                    for key, value in document.metadata.items()
+                }
+            }
+
+        # Serialize the documents
+        serialized_documents = [serialize_document(doc) for doc in documents]
+
+        # Convert to JSON string
+        return json.dumps(serialized_documents, indent=2)
+
+# Example usage
+# serialized_json = Utils.serialize_retrieved_nodes_for_the_mri_agent(documents)
+# print(serialized_json)
+# documents = [Document(page_content='a common point of focus for a society (of the type  ‘community’) as well as a structured [systems] approach  for accurately engaging with the real world. Essentially,  the Real World Community Model is the highest-level  model representing the unified information system for  a community-type society, and it maps the scope of  the society’s conception and data architecture; it is the  master reference model for the society. That which is  real causes effects in the experiential, objective world. A  unified societal information system relates all actions in  society, because they are all interconnected. This model  can be used to understand and intentionally design any  type of society. A societal information system (SIS) is a system that  provides information for structuring, decisioning, and  control of the organization of a society. It structures the  information set and information processing capability of  a society. Each event affecting the societal system and  its inhabitants is assumed to have a probability of being  processed correctly within the system, independent of  previous states of the system. When the organization of a societal system is defined,  then individual users of the system have a greater  potential for engagement with the system and with  the real world, since every society exists within the real  world, but not every society accounts for its presence.  When navigating in reality, good decisions (as decisions  that create fulfilling state-dynamics for those navigating together) require accurate maps that layout the whole  terrain of life. Maps are useful for deciding a course  of travel (i.e., the journey to be travelled) and they  facilitate the arrival at decisions whose results maintain  desired characteristics and results of travel. Essentially,  the Real World Community Model is an information  system’s model for the semantic organization, storage,  and processing of information at a societal level for  individual, social, and ecological concern about the real  world in which all', metadata={'source': '/usr/src/modules/../data/documentation_optimal/test1/Aurvana System Overiew - 73 - 84-1-6.pdf', 'page': 1, 'sub_docs': [Document(page_content='The Real World Community Model is a high-level model that represents the unified information system for a community-type society. It is used to understand and design any type of society by structuring information for decision-making and control. The model helps individuals engage with the real world and make good decisions by providing accurate maps of societal structures and dynamics. It is essential for creating fulfilling outcomes in society.', metadata={'doc_id': 'parent-documents-summaries-complete-documentation2-26f71799-3ce8-44a4-993c-f45f9763de47', 'score': 0.5900588035583496})], 'relevance_score': 0.9993359}), Document(page_content='a common point of focus for a society (of the type  ‘community’) as well as a structured [systems] approach  for accurately engaging with the real world. Essentially,  the Real World Community Model is the highest-level  model representing the unified information system for  a community-type society, and it maps the scope of  the society’s conception and data architecture; it is the  master reference model for the society. That which is  real causes effects in the experiential, objective world. A  unified societal information system relates all actions in  society, because they are all interconnected. This model  can be used to understand and intentionally design any  type of society. A societal information system (SIS) is a system that  provides information for structuring, decisioning, and  control of the organization of a society. It structures the  information set and information processing capability of  a society. Each event affecting the societal system and  its inhabitants is assumed to have a probability of being  processed correctly within the system, independent of  previous states of the system. When the organization of a societal system is defined,  then individual users of the system have a greater  potential for engagement with the system and with  the real world, since every society exists within the real  world, but not every society accounts for its presence.  When navigating in reality, good decisions (as decisions  that create fulfilling state-dynamics for those navigating together) require accurate maps that layout the whole  terrain of life. Maps are useful for deciding a course  of travel (i.e., the journey to be travelled) and they  facilitate the arrival at decisions whose results maintain  desired characteristics and results of travel. Essentially,  the Real World Community Model is an information  system’s model for the semantic organization, storage,  and processing of information at a societal level for  individual, social, and ecological concern about the real  world in which all', metadata={'source': '/usr/src/modules/../data/documentation_optimal/system-overview/auravana-SSS-System-Overview-002-115-EN.pdf', 'page': 80, 'sub_docs': [Document(page_content="The Real World Community Model is a high-level model that represents the unified information system for a community-type society, mapping the scope of the society's conception and data architecture. It is the master reference model for the society and can be used to understand and design any type of society. A societal information system provides information for structuring, decision-making, and control of the organization of a society. The model emphasizes the interconnectedness of all actions in society and the importance of accurate maps for making good decisions that create fulfilling outcomes for society. It highlights the need for societies to account for their presence in the real world and engage with it intentionally.", metadata={'doc_id': 'parent-documents-summaries-complete-documentation2-c652399d-88f2-49ce-b6de-9b71a59f0226', 'score': 0.6961503028869629})], 'relevance_score': 0.9993359}), Document(page_content='then the whole of the system must be  accounted for: the whole of the real world must be  modeled; there must exist a global accounting for  information in the world space. By accounting for and  organizing information about a common reality, a  population of individuals becomes capable (i.e., creates  the shared potential) of arriving at decisions that lead  them, iteratively, to a higher and more optimal state  of fulfillment. Society is, itself, a dynamic and iterative  process (wherein, iteration is the repetition of a process). The Real World Community model is a single model  that can be viewed from several perspectives, and  is designed to reflect the operation of a society that  accounts as coherently as possible for the real world.  It is built for a social population that has decided to  navigate the world together. This model contains  information accumulated through the lived experience  of a cooperative population. The model determines the  perception and integration of new information and it  facilitates the creation of new knowledge. This model  explains societal reasoning, inference, and decisioning  processes that influence behavior and experience. The information system that is the Real World  Community Model is designed with a “person- independent” architecture. As a functional and common  information system, the model is designed to externalize  information without judgment or subjective projection  such that societal decisions maintain a person- independent, non-arbitrary processing architecture. It is  a system designed to explore implicitly social processes  and physical activities, and make them explicit (i.e., the real-world  community  model www.auravana .org  | sss-so-002 | the system  overview 74|', metadata={'source': '/usr/src/modules/../data/documentation_optimal/test1/Aurvana System Overiew - 73 - 84-1-6.pdf', 'page': 1, 'sub_docs': [Document(page_content='The document discusses the concept of the Real World Community Model, which is designed to account for and organize information about the real world in order to help a population make decisions that lead to a higher state of fulfillment. The model reflects the operation of a society that navigates the world together and accumulates information through lived experiences. It explains societal reasoning, inference, and decision-making processes, and is designed with a "person-independent" architecture to maintain non-arbitrary processing. The model aims to explore social processes and physical activities and make them explicit.', metadata={'doc_id': 'parent-documents-summaries-complete-documentation2-d327bae6-563a-4fd1-b4b6-9ec7d63daacf', 'score': 0.6456846594810486})], 'relevance_score': 0.99889266})]
+# result = Utils.serialize_retrieved_nodes_for_the_mri_agent(documents)
+# print("Serialized documents: \n", documents)
