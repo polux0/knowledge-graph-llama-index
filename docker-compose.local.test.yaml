@@ -82,9 +82,41 @@ services:
       - REDIS_DATABASES=1
     networks:
       - net
+  # Introducing langfuse
+  langfuse:
+    image: langfuse/langfuse:latest
+    container_name: langfuse
+    environment:
+      DATABASE_URL: postgres://langfuse_user:password@postgres:5432/langfuse_db
+      PORT: 3000
+      NEXTAUTH_SECRET: +SC0UIGVT+U8xwXf780oB26nqL8xRSaHhBU6zcFdvp8=
+      NEXTAUTH_URL: http://localhost:3000
+      SALT: 3466e43428669a0feb2ee89ff49917dd
+      ENCRYPTION_KEY: 32ecf4128dd9dbfad3a3c6f9b655c8d3b306aeb0c938f6c04e374faa75bee2ca
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: always
+    networks:
+      - net
+  # Langfuse depends on postgres
+  postgres:
+    image: postgres:13
+    container_name: langfuse_postgres
+    environment:
+      POSTGRES_DB: langfuse_db
+      POSTGRES_USER: langfuse_user
+      POSTGRES_PASSWORD: password
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - net
 volumes:
   chroma-data:
     driver: local
+  postgres_data:
 
 networks:
   net:
