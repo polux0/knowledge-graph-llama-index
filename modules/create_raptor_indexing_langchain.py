@@ -206,7 +206,7 @@ if chroma_collection.count() == 0:
                 texts=all_texts,
                 embedding=embeddings_model
             )
-    print("Complete documentation embeddings created.")
+    print("Created RAPTOR embeddings for complete documenation.")
 else:
     print("Raptor collection found, loading data from it...")
     vectorstore = Chroma(
