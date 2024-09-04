@@ -1,4 +1,4 @@
-# Knowledge-Graph-Llama-Index Setup Guide
+# RAG Setup Guide
 
 ## Overview
 
