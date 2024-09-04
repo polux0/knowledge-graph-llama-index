@@ -205,7 +205,7 @@ if chroma_collection.count() == 0 and len(keys) == 0:
         # for i, doc in enumerate(documents):
         #     doc.metadata[id_key] = doc_ids[i]
         #     retriever.vectorstore.add_documents(documents)
-    print("Create MRI embeddings for complete documentation...")
+    print("Created MRI embeddings for complete documentation...")
 print("MRI Embeddings have been already created...")
 print(
     f"Are there embeddings inside MRI collection {chroma_collection.name} ?",
