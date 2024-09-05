@@ -77,7 +77,7 @@ This script configures Redis users and ACL by creating the file `/usr/local/etc/
 
 ## Running the Setup
 
-## Deploy locally:
+### Deploy locally:
 
 ### Step 1: Execute Setup Scripts
 
@@ -164,7 +164,7 @@ Ensure that your ```.env.production``` and ```.env.api.production``` files are p
 
 Set your ```REDIS_USERNAME``` and ```REDIS_PASSWORD``` to the values you used during the Redis ACL setup.
 
-## Deploy remotely ( via Github actions ):
+### Deploy remotely ( via Github actions ):
 
 ### 1. **Fork the repository**
 
