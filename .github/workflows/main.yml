@@ -20,7 +20,6 @@ jobs:
       - name: Create .env files on server
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
-
           # Ensure required directories exist and set permissions
           mkdir -p /usr/share/snapshots/elasticsearch $HOME/es_snapshots/ $HOME/neo4j/data $HOME/neo4j/logs $HOME/neo4j/import $HOME/neo4j/plugins $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/redis/data $HOME/nebula/data/meta0 $HOME/nebula/logs/meta0 $HOME/nebula/data/storage0 $HOME/nebula/logs/storage0 $HOME/nebula/logs/graph
           # Set permissions for Elasticsearch snapshots
@@ -29,7 +28,6 @@ jobs:
           chown -R 1000:1000 $HOME/es_snapshots $HOME/neo4j $HOME/chroma-data $HOME/esdata1 $HOME/redis $HOME/redis/data $HOME/nebula
           # Make snapshot scripts executable
           chmod +x /home/auravana/app/scripts/elasticsearch/create_snapshot.sh /home/auravana/app/scripts/elasticsearch/setup_repository.sh /home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh /home/auravana/app/scripts/elasticsearch/restore_from_a_snapshot.sh
-
           EOF
         continue-on-error: true
 
@@ -71,60 +69,60 @@ jobs:
             cd /home/auravana/app
 
             cat <<EOT > .env.production
-HUGGING_FACE_INFERENCE_ENDPOINT=${HUGGING_FACE_INFERENCE_ENDPOINT}
-HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
-NEO4J_USERNAME=${NEO4J_DATABASE}
-NEO4J_PASSWORD=${NEO4J_PASSWORD}
-NEO4J_URL=${NEO4J_URL}
-NEO4J_DATABASE=${NEO4J_USERNAME}
-CHROMA_URL=${CHROMA_URL}
-CHROMA_PORT=${CHROMA_PORT}
-ELASTIC_SCHEME=${ELASTIC_SCHEME}
-ELASTIC_URL=${ELASTIC_URL}
-ELASTIC_PORT=${ELASTIC_PORT}
-OPENAI_API_KEY=${OPENAI_API_KEY}
-NEBULA_URL=${NEBULA_URL}
-NEBULA_PORT=${NEBULA_PORT}
-NEBULA_USERNAME=${NEBULA_USERNAME}
-NEBULA_PASSWORD=${NEBULA_PASSWORD}
-REDIS_HOST=${REDIS_URL}
-REDIS_PORT=${REDIS_PORT}
-REDIS_USERNAME=${REDIS_USERNAME1}
-REDIS_PASSWORD=${REDIS_PASSWORD1}
-COHERE_API_KEY=${COHERE_API_KEY}
-ENV=${ENV}
-TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
-API_URL=${API_URL}
-GROQ_API_KEY=${GROQ_API_KEY}
-EOT
+            HUGGING_FACE_INFERENCE_ENDPOINT=${HUGGING_FACE_INFERENCE_ENDPOINT}
+            HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
+            NEO4J_USERNAME=${NEO4J_DATABASE}
+            NEO4J_PASSWORD=${NEO4J_PASSWORD}
+            NEO4J_URL=${NEO4J_URL}
+            NEO4J_DATABASE=${NEO4J_USERNAME}
+            CHROMA_URL=${CHROMA_URL}
+            CHROMA_PORT=${CHROMA_PORT}
+            ELASTIC_SCHEME=${ELASTIC_SCHEME}
+            ELASTIC_URL=${ELASTIC_URL}
+            ELASTIC_PORT=${ELASTIC_PORT}
+            OPENAI_API_KEY=${OPENAI_API_KEY}
+            NEBULA_URL=${NEBULA_URL}
+            NEBULA_PORT=${NEBULA_PORT}
+            NEBULA_USERNAME=${NEBULA_USERNAME}
+            NEBULA_PASSWORD=${NEBULA_PASSWORD}
+            REDIS_HOST=${REDIS_URL}
+            REDIS_PORT=${REDIS_PORT}
+            REDIS_USERNAME=${REDIS_USERNAME1}
+            REDIS_PASSWORD=${REDIS_PASSWORD1}
+            COHERE_API_KEY=${COHERE_API_KEY}
+            ENV=${ENV}
+            TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
+            API_URL=${API_URL}
+            GROQ_API_KEY=${GROQ_API_KEY}
+            EOT
 
-      cat <<EOT > .env.api.production
-HUGGING_FACE_INFERENCE_ENDPOINT=${HUGGING_FACE_INFERENCE_ENDPOINT}
-HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
-NEO4J_USERNAME=${NEO4J_DATABASE}
-NEO4J_PASSWORD=${NEO4J_PASSWORD}
-NEO4J_URL=${NEO4J_URL}
-NEO4J_DATABASE=${NEO4J_USERNAME}
-CHROMA_URL=${CHROMA_URL}
-CHROMA_PORT=${CHROMA_PORT}
-ELASTIC_SCHEME=${ELASTIC_SCHEME}
-ELASTIC_URL=${ELASTIC_URL}
-ELASTIC_PORT=${ELASTIC_PORT}
-OPENAI_API_KEY=${OPENAI_API_KEY}
-NEBULA_URL=${NEBULA_URL}
-NEBULA_PORT=${NEBULA_PORT}
-NEBULA_USERNAME=${NEBULA_USERNAME}
-NEBULA_PASSWORD=${NEBULA_PASSWORD}
-REDIS_HOST=${REDIS_URL}
-REDIS_PORT=${REDIS_PORT}
-REDIS_USERNAME=${REDIS_USERNAME2}
-REDIS_PASSWORD=${REDIS_PASSWORD2}
-COHERE_API_KEY=${COHERE_API_KEY}
-ENV=${ENV}
-TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
-API_URL=${API_URL}
-GROQ_API_KEY=${GROQ_API_KEY}
-EOT
+            cat <<EOT > .env.api.production
+            HUGGING_FACE_INFERENCE_ENDPOINT=${HUGGING_FACE_INFERENCE_ENDPOINT}
+            HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
+            NEO4J_USERNAME=${NEO4J_DATABASE}
+            NEO4J_PASSWORD=${NEO4J_PASSWORD}
+            NEO4J_URL=${NEO4J_URL}
+            NEO4J_DATABASE=${NEO4J_USERNAME}
+            CHROMA_URL=${CHROMA_URL}
+            CHROMA_PORT=${CHROMA_PORT}
+            ELASTIC_SCHEME=${ELASTIC_SCHEME}
+            ELASTIC_URL=${ELASTIC_URL}
+            ELASTIC_PORT=${ELASTIC_PORT}
+            OPENAI_API_KEY=${OPENAI_API_KEY}
+            NEBULA_URL=${NEBULA_URL}
+            NEBULA_PORT=${NEBULA_PORT}
+            NEBULA_USERNAME=${NEBULA_USERNAME}
+            NEBULA_PASSWORD=${NEBULA_PASSWORD}
+            REDIS_HOST=${REDIS_URL}
+            REDIS_PORT=${REDIS_PORT}
+            REDIS_USERNAME=${REDIS_USERNAME2}
+            REDIS_PASSWORD=${REDIS_PASSWORD2}
+            COHERE_API_KEY=${COHERE_API_KEY}
+            ENV=${ENV}
+            TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
+            API_URL=${API_URL}
+            GROQ_API_KEY=${GROQ_API_KEY}
+            EOT
 
             # Start Docker containers
             docker-compose down && docker-compose up --build -d
