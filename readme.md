@@ -234,4 +234,3 @@ By forking the repository and setting up your own secrets, you can customize and
 - `GROQ_API_KEY=XXXXXXXXXXXXXXXXXXXX`
 
 By forking the repository and setting up these secrets, you can customize and deploy the solution to your remote servers.
-
