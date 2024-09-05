@@ -77,7 +77,7 @@ This script configures Redis users and ACL by creating the file `/usr/local/etc/
 
 ## Running the Setup
 
-## Deploy localy:
+## Deploy locally:
 
 ### Step 1: Execute Setup Scripts
 
