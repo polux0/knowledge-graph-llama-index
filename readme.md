@@ -2,12 +2,12 @@
 
 ## Overview
 
-This repository provides a complete setup for deploying a knowledge graph indexing system, including:
+This repository provides a complete setup for deploying a retrieval augmented generation system, including:
 
 1. Elasticsearch schema setup and migrations.
 2. Redis user setup and ACL configuration.
 3. Automatic Elasticsearch snapshots using cron jobs.
-4. Docker-based infrastructure to run embedding processes and a Streamlit UI for interaction.
+4. Docker-based infrastructure to run embedding processes as well as Streamlit UI and Telegram for interaction.
 
 ---
 
@@ -20,6 +20,8 @@ This repository provides a complete setup for deploying a knowledge graph indexi
     - [Setup Elasticsearch Cron Job](#setup-elasticsearch-cron-job)
     - [Setup Redis ACL](#setup-redis-acl)
 3. [Running the Setup](#running-the-setup)
+    - [Deploy locally](#deploy-locally)
+    - [Deploy remotely](#deploy-remotely)
 4. [Docker Configuration](#docker-configuration)
 5. [Running the Docker Containers](#running-the-docker-containers)
 6. [Environment Files Setup](#environment-files-setup)
@@ -31,7 +33,7 @@ This repository provides a complete setup for deploying a knowledge graph indexi
 Before starting, ensure you have the following installed:
 
 - [Docker](https://docs.docker.com/get-docker/) & [Docker Compose](https://docs.docker.com/compose/install/)
-- SSH access to the remote DigitalOcean Droplet (or similar environment).
+- SSH access to the remote server ( DigitalOcean Droplet or similar environment ).
 - Access to GitHub secrets for environment variables like `REDIS_USERNAME`, `REDIS_PASSWORD`, etc.
 
 ---
@@ -74,6 +76,8 @@ This script configures Redis users and ACL by creating the file `/usr/local/etc/
 ---
 
 ## Running the Setup
+
+### Deploy locally:
 
 ### Step 1: Execute Setup Scripts
 
@@ -141,20 +145,93 @@ Bring down the Docker containers:
 
 ```docker-compose down```
 
-### Step 4: Enable the Streamlit UI
+### Step 4: Create telegram bot
 
-Modify ```docker-compose.yaml``` one last time by commenting out all other commands except:
-    
-```command: streamlit run ./modules/app.py```
+[Create telegram bot](https://core.telegram.org/bots/tutorial) and save token in both ```.env.production``` and ```.env.api.production``` under ```TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN```. This will enable you to interact with the bot via telegram
 
-Build and run the Docker containers to start the Streamlit UI:
+### Step 5: Comment out the app service in ```docker-compose.yaml``` in order to save on resources
 
-```docker-compose up --build```
+There are issues with streamlit that needs to be fixed, so this is only temporary. 
 
-You now have the Streamlit UI running and ready for interaction.
+If you succesfully commented out ```app``` service, it should look like this:
+
+![Logo](https://ibb.co/WxNBTyV)
+
 
 ### Environment Files Setup
 
 Ensure that your ```.env.production``` and ```.env.api.production``` files are properly configured based on the ```.copy``` files provided.
 
 Set your ```REDIS_USERNAME``` and ```REDIS_PASSWORD``` to the values you used during the Redis ACL setup.
+
+### Deploy remotely ( via Github actions ):
+
+### 1. **Fork the repository**
+
+1. **Go to the Repository**:  
+   Navigate to the repository you want to fork on GitHub.
+
+2. **Fork the Repository**:  
+   In the top-right corner, click `Fork`. GitHub will create a copy of the repository under your account.
+
+3. **Set Up GitHub Secrets in the Fork**:  
+   After forking, go to your forked repository and follow the steps above to create your own secrets for deployment.
+
+By forking the repository and setting up your own secrets, you can customize and deploy the solution to your remote servers.
+
+### 2. **Creating GitHub Secrets**
+
+1. **Navigate to Your Repository**:  
+   Open the repository page on GitHub.
+
+2. **Open Settings**:  
+   Click the `Settings` tab at the top of the repository.
+
+3. **Access Secrets**:  
+   In the sidebar under `Security`, click `Secrets and variables` > `Actions`.
+
+4. **Add a New Secret**:  
+   Click `New repository secret`.
+
+5. **Name the Secret**:  
+   Enter a name using uppercase letters and underscores, e.g., `API_KEY`, `DB_PASSWORD`.
+
+6. **Add the Secret Value**:  
+   Paste the sensitive value (e.g., API key, token) in the `Secret` field.
+
+7. **Save the Secret**:  
+   Click `Add secret` to save it.
+   
+### List of Necessary Secrets to Add
+- `DROPLET_IP_ADDRESS=XXXXXXXXXXXXXXXXXXXX` (The public IP address of the remote server, used to establish a connection for deployment and management.)
+- `SSH_PRIVATE_KEY=XXXXXXXXXXXXXXXXXXXX` (This is the private key component of an SSH key pair. It must match the public key that has been added to the remote server's authorized keys, allowing secure authentication and access to the server via SSH.)
+- `HUGGING_FACE_INFERENCE_ENDPOINT=XXXXXXXXXXXXXXXXXXXX`
+- `HUGGING_FACE_API_KEY=XXXXXXXXXXXXXXXXXXXX`
+- `NEO4J_USERNAME=neo4j`
+- `NEO4J_PASSWORD=XXXXXXXXXXXXXXXXXXXX`
+- `NEO4J_URL=bolt://neo4j:7687`
+- `NEO4J_DATABASE=neo4j`
+- `CHROMA_URL=chromadb`
+- `CHROMA_PORT=8000`
+- `ELASTIC_SCHEME=http`
+- `ELASTIC_URL=elasticsearch`
+- `ELASTIC_PORT=9200`
+- `OPENAI_API_KEY=XXXXXXXXXXXXXXXXXXXX`
+- `NEBULA_URL=graphd`
+- `NEBULA_PORT=9669`
+- `NEBULA_USERNAME=XXXXXXXXXXXXXXXXXXXX`
+- `NEBULA_PASSWORD=XXXXXXXXXXXXXXXXXXXX`
+- `REDIS_HOST=redis`
+- `REDIS_PORT=6379`
+- `REDIS_USERNAME1=XXXXXXXXXXXXXXXXXXXX`
+- `REDIS_PASSWORD1=XXXXXXXXXXXXXXXXXXXX`
+- `REDIS_USERNAME2=XXXXXXXXXXXXXXXXXXXX`
+- `REDIS_PASSWORD2=XXXXXXXXXXXXXXXXXXXX`
+- `COHERE_API_KEY=XXXXXXXXXXXXXXXXXXXX`
+- `ENV=production`
+- `TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=XXXXXXXXXXXXXXXXXXXX`
+- `API_URL=http://api:5000`
+- `GROQ_API_KEY=XXXXXXXXXXXXXXXXXXXX`
+
+By forking the repository and setting up these secrets, you can customize and deploy the solution to your remote servers.
+
