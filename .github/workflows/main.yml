@@ -17,7 +17,7 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      - name: Create .env file on server
+      - name: Create .env files on server
         run: |
           ssh -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
 
@@ -37,26 +37,31 @@ jobs:
           ssh -v -o StrictHostKeyChecking=no root@${{ secrets.DROPLET_IP_ADDRESS }} << 'EOF'
             export HUGGING_FACE_INFERENCE_ENDPOINT=${{ secrets.HUGGING_FACE_INFERENCE_ENDPOINT }}
             export HUGGING_FACE_API_KEY=${{ secrets.HUGGING_FACE_API_KEY }}
-            export HUGGING_FACE_API_KEY_ANOTHER=${{ secrets.HUGGING_FACE_API_KEY_ANOTHER }}
-            export NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
+            export NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
             export NEO4J_PASSWORD=${{ secrets.NEO4J_PASSWORD }}
             export NEO4J_URL=${{ secrets.NEO4J_URL }}
-            export NEO4J_USERNAME=${{ secrets.NEO4J_USERNAME }}
-            export OPENAI_API_KEY=${{secrets.OPENAI_API_KEY}}
+            export NEO4J_DATABASE=${{ secrets.NEO4J_DATABASE }}
             export CHROMA_URL=${{ secrets.CHROMA_URL }}
-            export CHROMA_PORT=${{secrets.CHROMA_PORT}}
-            export ELASTIC_SCHEME=${{secrets.ELASTIC_SCHEME}}
+            export CHROMA_PORT=${{ secrets.CHROMA_PORT }}
+            export ELASTIC_SCHEME=${{ secrets.ELASTIC_SCHEME }}
             export ELASTIC_URL=${{ secrets.ELASTIC_URL }}
-            export ELASTIC_PORT=${{secrets.ELASTIC_PORT}}
+            export ELASTIC_PORT=${{ secrets.ELASTIC_PORT }}
+            export OPENAI_API_KEY=${{ secrets.OPENAI_API_KEY }}
             export NEBULA_URL=${{ secrets.NEBULA_URL }}
             export NEBULA_PORT=${{ secrets.NEBULA_PORT }}
             export NEBULA_USERNAME=${{ secrets.NEBULA_USERNAME }}
             export NEBULA_PASSWORD=${{ secrets.NEBULA_PASSWORD }}
-            export REDIS_URL=${{ secrets.REDIS_URL }}
+            export REDIS_HOST=${{ secrets.REDIS_HOST }}
             export REDIS_PORT=${{ secrets.REDIS_PORT }}
-            export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-            export COHERE_API_KEY=${{ secrets.COHERE_API_KEY}}
-            export ENV=${{ secrets.ENV}}
+            export REDIS_USERNAME1=${{ secrets.REDIS_USERNAME1 }}
+            export REDIS_PASSWORD1=${{ secrets.REDIS_PASSWORD1 }}
+            export REDIS_USERNAME2=${{ secrets.REDIS_USERNAME2 }}
+            export REDIS_PASSWORD2=${{ secrets.REDIS_PASSWORD2 }}
+            export COHERE_API_KEY=${{ secrets.COHERE_API_KEY }}
+            export ENV=${{ secrets.ENV }}
+            export TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN=${{ secrets.TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN }}
+            export API_URL=${{ secrets.API_URL }}
+            export GROQ_API_KEY=${{ secrets.GROQ_API_KEY }}
             # Delete the directory if it exists and clone the repository anew
             if [ -d "/home/auravana/app" ]; then
               rm -rf /home/auravana/app
@@ -64,30 +69,61 @@ jobs:
             git clone https://github.com/polux0/knowledge-graph-llama-index /home/auravana/app
             cd /home/auravana/app
 
-            cat <<EOT > .env
-            HUGGING_FACE_INFERENCE_ENDPOINT=${HUGGING_FACE_INFERENCE_ENDPOINT}
-            HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
-            HUGGING_FACE_API_KEY_ANOTHER=${HUGGING_FACE_API_KEY_ANOTHER}
-            NEO4J_DATABASE=${NEO4J_DATABASE}
-            NEO4J_PASSWORD=${NEO4J_PASSWORD}
-            NEO4J_URL=${NEO4J_URL}
-            NEO4J_USERNAME=${NEO4J_USERNAME}
-            OPENAI_API_KEY=${OPENAI_API_KEY}
-            CHROMA_URL=${CHROMA_URL}
-            CHROMA_PORT=${CHROMA_PORT}
-            ELASTIC_SCHEME=${ELASTIC_SCHEME}
-            ELASTIC_URL=${ELASTIC_URL}
-            ELASTIC_PORT=${ELASTIC_PORT}
-            NEBULA_URL=${NEBULA_URL}
-            NEBULA_PORT=${NEBULA_PORT}
-            NEBULA_USERNAME=${NEBULA_USERNAME}
-            NEBULA_PASSWORD=${NEBULA_PASSWORD}
-            REDIS_URL=${REDIS_URL}
-            REDIS_PORT=${REDIS_PORT}
-            REDIS_PASSWORD=${REDIS_PASSWORD}
-            COHERE_API_KEY=${COHERE_API_KEY}
-            ENV=${ENV}
-            EOT
+            cat <<EOT > .env.production
+HUGGING_FACE_INFERENCE_ENDPOINT=${HUGGING_FACE_INFERENCE_ENDPOINT}
+HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
+NEO4J_USERNAME=${NEO4J_DATABASE}
+NEO4J_PASSWORD=${NEO4J_PASSWORD}
+NEO4J_URL=${NEO4J_URL}
+NEO4J_DATABASE=${NEO4J_USERNAME}
+CHROMA_URL=${CHROMA_URL}
+CHROMA_PORT=${CHROMA_PORT}
+ELASTIC_SCHEME=${ELASTIC_SCHEME}
+ELASTIC_URL=${ELASTIC_URL}
+ELASTIC_PORT=${ELASTIC_PORT}
+OPENAI_API_KEY=${OPENAI_API_KEY}
+NEBULA_URL=${NEBULA_URL}
+NEBULA_PORT=${NEBULA_PORT}
+NEBULA_USERNAME=${NEBULA_USERNAME}
+NEBULA_PASSWORD=${NEBULA_PASSWORD}
+REDIS_HOST=${REDIS_URL}
+REDIS_PORT=${REDIS_PORT}
+REDIS_USERNAME=${REDIS_USERNAME1}
+REDIS_PASSWORD=${REDIS_PASSWORD1}
+COHERE_API_KEY=${COHERE_API_KEY}
+ENV=${ENV}
+TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN={$TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
+API_URL={API_URL}
+GROQ_API_KEY={GROQ_API_KEY}
+EOT
+
+      cat <<EOT > .env.api.production
+HUGGING_FACE_INFERENCE_ENDPOINT=${HUGGING_FACE_INFERENCE_ENDPOINT}
+HUGGING_FACE_API_KEY=${HUGGING_FACE_API_KEY}
+NEO4J_USERNAME=${NEO4J_DATABASE}
+NEO4J_PASSWORD=${NEO4J_PASSWORD}
+NEO4J_URL=${NEO4J_URL}
+NEO4J_DATABASE=${NEO4J_USERNAME}
+CHROMA_URL=${CHROMA_URL}
+CHROMA_PORT=${CHROMA_PORT}
+ELASTIC_SCHEME=${ELASTIC_SCHEME}
+ELASTIC_URL=${ELASTIC_URL}
+ELASTIC_PORT=${ELASTIC_PORT}
+OPENAI_API_KEY=${OPENAI_API_KEY}
+NEBULA_URL=${NEBULA_URL}
+NEBULA_PORT=${NEBULA_PORT}
+NEBULA_USERNAME=${NEBULA_USERNAME}
+NEBULA_PASSWORD=${NEBULA_PASSWORD}
+REDIS_HOST=${REDIS_URL}
+REDIS_PORT=${REDIS_PORT}
+REDIS_USERNAME=${REDIS_USERNAME2}
+REDIS_PASSWORD=${REDIS_PASSWORD2}
+COHERE_API_KEY=${COHERE_API_KEY}
+ENV=${ENV}
+TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN={$TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN}
+API_URL={API_URL}
+GROQ_API_KEY={GROQ_API_KEY}
+EOT
 
             # Start Docker containers
             docker-compose down && docker-compose up --build -d
