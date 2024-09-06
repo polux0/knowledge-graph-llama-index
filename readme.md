@@ -155,7 +155,7 @@ There are issues with streamlit that needs to be fixed, so this is only temporar
 
 If you succesfully commented out ```app``` service, it should look like this:
 
-![Logo](https://ibb.co/WxNBTyV)
+![Logo](https://i.ibb.co/YR4frk0/app.png)
 
 ### Environment Files Setup
 
