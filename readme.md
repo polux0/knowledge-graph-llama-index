@@ -157,7 +157,6 @@ If you succesfully commented out ```app``` service, it should look like this:
 
 ![Logo](https://ibb.co/WxNBTyV)
 
-
 ### Environment Files Setup
 
 Ensure that your ```.env.production``` and ```.env.api.production``` files are properly configured based on the ```.copy``` files provided.
