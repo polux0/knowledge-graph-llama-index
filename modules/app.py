@@ -5,7 +5,7 @@ import streamlit as st
 # from create_knowledge_graph import generate_response_based_on_knowledge_graph_with_debt
 # from create_vector_embeddings_llama import generate_response_based_on_vector_embeddings_with_debt
 from create_raptor_indexing_langchain import generate_response_based_on_raptor_indexing_with_debt
-from environment_setup import setup_logging
+from utils.environment_setup import setup_logging
 # from response_synthesizer import (
 #     get_synthesized_response_based_on_nodes_with_score, merge_nodes)
 from streamlit_star_rating import st_star_rating
