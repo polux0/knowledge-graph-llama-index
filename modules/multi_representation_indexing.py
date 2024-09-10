@@ -26,7 +26,6 @@ from langchain_community.vectorstores import Chroma
 # from langchain.retrievers.multi_vector import MultiVectorRetriever
 # TODO: 
 from rewrite.retrievers.CustomMultiVectorRetriever import CustomMultiVectorRetriever
-from dotenv import load_dotenv
 from langchain.chains import RetrievalQA
 import chromadb
 
@@ -125,6 +124,10 @@ chroma_client = chromadb.HttpClient(
 # Logging variables
 experiment.chunk_size = chunk_size
 experiment.chunk_overlap = chunk_overlap
+
+print(f"Redis Host: {env_vars.get('REDIS_HOST')}")
+print(f"Redis Port: {env_vars.get('REDIS_PORT')}")
+print(f"Redis Username: {env_vars.get('REDIS_USERNAME')}")
 
 redis_client = Redis(
     host=env_vars["REDIS_HOST"],
