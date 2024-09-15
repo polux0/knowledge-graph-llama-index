@@ -16,7 +16,7 @@ langfuse = Langfuse()
 #TODO: This is fixed at the moment:
 dataset_name = "initial_test"
 #TODO: This is a variable that should not be in code. Where should we place it?
-langfuse.create_dataset(name=dataset_name);
+langfuse.create_dataset(name=dataset_name)
 
 initial_test_items = [
     {"input": {"question": "What are the factors that determine the sustainability of mineral resources, and how do they impact resource management?"}, 
@@ -25,18 +25,18 @@ initial_test_items = [
     "expected_output": "The unified habitat heritage network approach to resource planning treats a habitat as a single technical unit, composed of various sub-habitat technical units. This approach focuses on identifying, acquiring, and optimizing the use of resources within a global network of habitats. It integrates resource availability with the needs of human fulfillment, ensuring that all resources are managed in a way that supports the long-term sustainability of the habitat. The significance of this approach in community-type societies lies in its ability to systematically plan and allocate resources to meet human needs while minimizing environmental impact. It promotes the efficient use of resources, the recycling of materials, and the development of sustainable technologies, making it a cornerstone of sustainable community planning."},
 ]
 
-# upload to langfuse
+# upload to langfuse, most of the time we need to this once
 
-for item in initial_test_items:
-  langfuse.create_dataset_item(
-      dataset_name=dataset_name, #TODO: This is a variable that should not be in code. Where should we place it?
-      # any python object or value
-      input=item["input"],
-      # any python object or value, optional
-      expected_output=item["expected_output"]
-)
+# for item in initial_test_items:
+#   langfuse.create_dataset_item(
+#       dataset_name=dataset_name, #TODO: This is a variable that should not be in code. Where should we place it?
+#       # any python object or value
+#       input=item["input"],
+#       # any python object or value, optional
+#       expected_output=item["expected_output"]
+# )
 
-# Simple evaluation definition
+# simple evaluation definition
 def simple_evaluation(output, expected_output):
   return output == expected_output
 
@@ -47,11 +47,17 @@ def run_langchain_experiment(experiment_name: str):
   for item in dataset.items:
     handler = item.get_langchain_handler(run_name=experiment_name)
  
-    completion = generate_response_based_on_multirepresentation_indexing(item.input["question"], 1, handler)
- 
+    response_str, experiment, source_nodes, retrieved_docs = generate_response_based_on_multirepresentation_indexing(item.input["question"], 1, handler)
+    # Question
+    print("Question: ", item.input["question"])
+    # Answer
+    print("Response: ", response_str)
+    # Context
+    print("Context / Retrieved chunks: \n", retrieved_docs)
+
     handler.trace.score(
       name="exact_match",
-      value=simple_evaluation(completion, item.expected_output)
+      value=simple_evaluation(response_str, item.expected_output)
     )
 
 run_langchain_experiment("Initial test1")

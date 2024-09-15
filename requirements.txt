@@ -903,3 +903,6 @@ llama-index-llms-groq
 cohere
 # Langfuse
 langfuse
+# Evaluation of RAG related
+datasets
+ragas

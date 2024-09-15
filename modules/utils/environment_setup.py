@@ -3,7 +3,6 @@ import logging
 import sys
 from dotenv import load_dotenv
 
-
 def load_environment_variables():
     """Load environment variables from a .env file ( based on active enviornment - local, development, production ).
 
@@ -52,6 +51,20 @@ def load_environment_variables():
 
         "API_URL": os.getenv("API_URL"),
         "TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN": os.getenv("TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN"),
+
+        "POSTGRES_DB": os.getenv("POSTGRES_DB"),
+        "POSTGRES_USER": os.getenv("POSTGRES_USER"),
+        "POSTGRES_PASSWORD": os.getenv("POSTGRES_PASSWORD"),
+
+        "DATABASE_URL": os.getenv("DATABASE_URL"),
+        "PORT": os.getenv("PORT"),
+        "NEXTAUTH_SECRET": os.getenv("NEXTAUTH_SECRET"),
+        "NEXTAUTH_URL": os.getenv("NEXTAUTH_URL"),
+        "SALT": os.getenv("SALT"),
+        "ENCRYPTION_KEY": os.getenv("ENCRYPTION_KEY"),
+
+        "LANGFUSE_PUBLIC_KEY": os.getenv("LANGFUSE_PUBLIC_KEY"),
+        "LANGFUSE_SECRET_KEY": os.getenv("LANGFUSE_SECRET_KEY"),
     }
 
 def setup_logging():

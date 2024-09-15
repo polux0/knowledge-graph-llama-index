@@ -57,6 +57,15 @@ jobs:
             export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
             export COHERE_API_KEY=${{ secrets.COHERE_API_KEY}}
             export ENV=${{ secrets.ENV}}
+            export DATABASE_URL = ${{secrets.DATABASE_URL}}
+            export PORT = ${{secrets.PORT}}
+            export NEXTAUTH_SECRET = ${{secrets.NEXTAUTH_SECRET}}
+            export NEXTAUTH_URL = ${{secrets.NEXTAUTH_URL}}
+            export SALT = ${{secrets.SALT}}
+            export ENCRYPTION_KEY = ${{secrets.ENCRYPTION_KEY}}
+            export POSTGRES_DB = ${{secrets.POSTGRES_DB}}
+            export POSTGRES_USER = ${{secrets.POSTGRES_USER}}
+            export POSTGRES_PASSWORD = ${{secrets.POSTGRES_PASSWORD}}
             # Delete the directory if it exists and clone the repository anew
             if [ -d "/home/auravana/app" ]; then
               rm -rf /home/auravana/app
@@ -87,6 +96,15 @@ jobs:
             REDIS_PASSWORD=${REDIS_PASSWORD}
             COHERE_API_KEY=${COHERE_API_KEY}
             ENV=${ENV}
+            POSTGRES_DB=${POSTGRES_DB}
+            POSTGRES_USER=${POSTGRES_USER}
+            POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+            DATABASE_URL=${DATABASE_URL}
+            PORT=${PORT}
+            NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+            NEXTAUTH_URL=${NEXTAUTH_URL}
+            SALT=${SALT}
+            ENCRYPTION_KEY=${ENCRYPTION_KEY}
             EOT
 
             # Start Docker containers

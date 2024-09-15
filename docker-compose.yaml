@@ -104,7 +104,37 @@ services:
   #   # command: python ./modules/create_knowledge_graph.py
   #   networks:
   #     - net
-  
+    # Introducing langfuse
+  langfuse:
+    image: langfuse/langfuse:latest
+    container_name: langfuse
+    environment:
+      DATABASE_URL: ${DATABASE_URL}
+      PORT: ${LANGFUSE_PORT}
+      NEXTAUTH_SECRET: ${NEXTAUTH_SECRET}
+      NEXTAUTH_URL: ${NEXTAUTH_URL}
+      SALT: ${LANGFUSE_SALT}
+      ENCRYPTION_KEY: ${LANGFUSE_ENCRYPTION_KEY}
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: always
+    networks:
+      - net
+  # Langfuse depends on postgres
+  postgres:
+    image: postgres:13
+    container_name: langfuse_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - net
   api:
     build: .
     container_name: api_container
@@ -132,10 +162,10 @@ services:
     command: python ./modules/telegram_bot.py
     networks:
       - net
-
 volumes:
   chroma-data:
     driver: local
+  postgres_data:
 
 networks:
   net:

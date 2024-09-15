@@ -93,7 +93,7 @@ elasticsearch_client = ElasticsearchClient()
 experiment = ExperimentDocument()
 experiment.created_at = current_time.isoformat(timespec="milliseconds")
 
-# Initialize large language model, for local testing
+# Initialize large language model
 llm = HuggingFaceEndpoint(
     repo_id=repository_id,
     # max_length=128,
@@ -274,6 +274,7 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
     rag_chain = (
         {"context": compression_retriever , "question": RunnablePassthrough()}
         | prompt
+        # | contextualize_llm
         | llm
         | StrOutputParser()
     )
