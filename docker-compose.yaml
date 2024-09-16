@@ -107,7 +107,7 @@ services:
     image: langfuse/langfuse:latest
     container_name: langfuse
     env_file:
-      - .env.api.development
+      - .env.api.production
     ports:
       - "3000:3000"
     depends_on:
@@ -120,7 +120,7 @@ services:
     image: postgres:13
     container_name: langfuse_postgres
     env_file:
-      - .env.development
+      - .env.production
     volumes:
       - postgres_data:/var/lib/postgresql/data
     restart: always
