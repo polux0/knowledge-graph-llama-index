@@ -82,6 +82,30 @@ services:
       - REDIS_DATABASES=1
     networks:
       - net
+  # Introducing langfuse
+  langfuse:
+    image: langfuse/langfuse:latest
+    container_name: langfuse
+    env_file:
+      - .env.api.development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: always
+    networks:
+      - net
+  # Langfuse depends on postgres
+  postgres:
+    image: postgres:13
+    container_name: langfuse_postgres
+    env_file:
+      - .env.development
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - net
   api:
     build: .
     depends_on:
@@ -115,6 +139,7 @@ services:
 volumes:
   chroma-data:
     driver: local
+  postgres_data:
 
 networks:
   net:

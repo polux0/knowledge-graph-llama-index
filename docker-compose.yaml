@@ -101,7 +101,31 @@ services:
   #   # command: python ./modules/delete_chroma_collections.py
   #   # command: python ./modules/create_knowledge_graph.py
   #   networks:
-  #     - net  
+  #     - net
+  # Introducing langfuse
+  langfuse:
+    image: langfuse/langfuse:latest
+    container_name: langfuse
+    env_file:
+      - .env.api.development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - postgres
+    restart: always
+    networks:
+      - net
+  # Langfuse depends on postgres
+  postgres:
+    image: postgres:13
+    container_name: langfuse_postgres
+    env_file:
+      - .env.development
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+    networks:
+      - net
   api:
     build: .
     container_name: api_container
@@ -129,10 +153,10 @@ services:
     command: python ./modules/telegram_bot.py
     networks:
       - net
-
 volumes:
   chroma-data:
     driver: local
+  postgres_data:
 
 networks:
   net:

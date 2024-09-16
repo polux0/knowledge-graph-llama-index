@@ -901,3 +901,8 @@ langchain-groq
 llama-index-llms-groq
 # Rerankers
 cohere
+# Langfuse
+langfuse
+# Evaluation of RAG related
+datasets
+ragas
