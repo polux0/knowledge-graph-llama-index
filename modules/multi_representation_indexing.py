@@ -67,7 +67,7 @@ def preprocess_text(text):
 logging.basicConfig(stream=sys.stdout, level=logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(stream=sys.stdout))
 
-repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
+repository_id = "mistralai/Mistral-7B-Instruct-v0.3"
 
 # Constants
 chunk_size = 2048
@@ -277,8 +277,8 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
     rag_chain = (
         {"context": compression_retriever , "question": RunnablePassthrough()}
         | prompt
-        | contextualize_llm
-        # | llm
+        # | contextualize_llm
+        | llm
         | StrOutputParser()
     )
     experiment.source_agent = "Multi Representation Agent"
