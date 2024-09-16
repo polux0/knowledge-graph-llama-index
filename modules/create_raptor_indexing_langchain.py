@@ -91,7 +91,7 @@ def format_docs(docs):
 # Initialize LLM
 
 
-repository_id = "mistralai/Mistral-7B-Instruct-v0.2"
+repository_id = "mistralai/Mistral-7B-Instruct-v0.3"
 # Initialize large language model, local testing
 
 llm = HuggingFaceEndpoint(
