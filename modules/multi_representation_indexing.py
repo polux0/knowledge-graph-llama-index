@@ -277,8 +277,8 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
     rag_chain = (
         {"context": compression_retriever , "question": RunnablePassthrough()}
         | prompt
-        # | contextualize_llm
-        | llm
+        | contextualize_llm
+        # | llm
         | StrOutputParser()
     )
     experiment.source_agent = "Multi Representation Agent"
