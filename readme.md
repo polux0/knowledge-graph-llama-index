@@ -104,7 +104,7 @@ Save the ```usernames``` and ```passwords``` you entered. You'll need to set the
 
 Create files ```.env.production```, ```.env.api.production``` and ```env.ui.production```. 
 
-Use the ```env.production.copy``` and ```.env.api.production.copy``` files as guidance to structure your environment configuration.
+Use the ```env.production.copy```, ```.env.api.production.copy``` and ```.env.api.production.copy``` files as guidance to structure your environment configuration.
 
 #### Important: 
 
