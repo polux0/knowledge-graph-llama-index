@@ -68,7 +68,7 @@ services:
     volumes:
       - $HOME/redis/data:/data
       - $HOME/redis/redis.conf:/usr/local/etc/redis/redis.conf
-      - $HOME/redis/users.acl:/usr/local/etc/redis/users.acl
+      - $HOME/redis_acls/users.acl:/usr/local/etc/redis/users.acl
     environment:
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_DATABASES=1
@@ -94,6 +94,8 @@ services:
   #     - "8501:8501"
   #   env_file:
   #     - .env.ui.production
+  #   environment:
+  #   - ENVIRONMENT=production
   #   # command: python ./modules/create_vector_embeddings_llama.py
   #   # command: python ./modules/multi_representation_indexing.py
   #   # command: python ./modules/create_raptor_indexing_langchain.py

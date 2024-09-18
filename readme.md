@@ -63,7 +63,7 @@ This script checks and runs the Elasticsearch schema setup and applies the requi
 
 ### 3. **Setup Elasticsearch Cron Job**
 
-Script: [`/scripts/elasticsearch/setup_elasticsearch_cron.sh`](scripts/elasticsearch/setup_elasticsearch_cron.sh)Ru
+Script: [`/scripts/elasticsearch/setup_elasticsearch_cron.sh`](scripts/elasticsearch/setup_elasticsearch_cron.sh)
 
 This script installs a cron job that takes snapshots of Elasticsearch data every hour.
 
@@ -83,24 +83,61 @@ This script configures Redis users and ACL by creating the file `/usr/local/etc/
 
 1. Run the directories and permissions setup script:
    ```bash
-   ./scripts/core/setup_directories_and_permissions.sh
+   . /scripts/core/setup_directories_and_permissions.sh
    
 
-Next, manually run the Redis ACL setup:
-    ```./scripts/redis/setup_redis_acl.sh```
-    
+2. Next, manually run the Redis ACL setup:
+    ```. scripts/redis/setup_redis_acl.sh```
+
+3. Next, manually run ```. scripts/elasticsearch/setup_elasticsearch.sh```
+
+
+4. Finally, manually run ```. scripts/elasticsearch/setup_elasticsearch_cron.sh```
+
 
 #### Important: 
 
-Save the ```usernames``` and ```passwords``` you entered. You'll need to set them in ```.env.production``` and ```.env.api.production``` files under ```REDIS_USERNAME``` and ```REDIS_PASSWORD```.
+Save the ```usernames``` and ```passwords``` you entered. You'll need to set them in ```.env.production```, ```.env.api.production``` and ```.env.ui.production```files under ```REDIS_USERNAME``` and ```REDIS_PASSWORD```.
 
 
 ### Step 2: Configure Environment Files
 
-Create files ```.env.production``` and ```.env.api.production```. 
+Create files ```.env.production```, ```.env.api.production``` and ```env.ui.production```. 
 
 Use the ```env.production.copy``` and ```.env.api.production.copy``` files as guidance to structure your environment configuration.
 
+#### Important: 
+
+Embedding the whole documentation might last between 6 - 12h per index. 
+
+In case you would like to give it relatively quick try, modify:
+
+```documents_directory = "../data/documentation_optimal/"``` 
+
+to 
+
+```documents_directory = "../data/documentation_optimal/test"``` in ```multi_representation_indexing.py``` 
+
+as well as 
+
+```folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan','social-system', 'system-overview']```
+
+to 
+
+```folders = ['test1']``` in ```create_raptor_indexing_langchain.py```
+
+In case you decide to create the indexes via embeddings with different data set, you'll need to manually change name of the collection: 
+
+```chroma_collection_name = "MRITESTTTTTTTTTTT4"```
+```redis_namespace = "parent-documents-MRITESTTTTTTTTTTT4"```
+
+in ```multi_representation_indexing.py``` 
+
+and 
+
+```chroma_collection_name = "raptor-locll-test12"```
+
+in ```create_raptor_indexing_langchain.py```
 
 ### Docker Configuration
 
@@ -110,6 +147,13 @@ Open ```docker-compose.yaml``` and navigate to the ```app``` service/section.
 You'll need to modify it depending on which indexing process or UI you want to run.
 
 ### Step 2: Run the MRI Indexing
+
+
+Comment out those services:
+
+```langfuse```, ```postgres```, ```api```, ```telegram_bot```
+
+as they are not relevant in this stage of the process in `docker-compose.yaml`. 
 
 Comment out all other commands in the `app` section/service of `docker-compose.yaml` except:
 
@@ -128,6 +172,12 @@ Bring down the Docker containers:
 ```docker-compose down```
 
 ### Step 3: Run the RAPTOR Indexing
+
+Comment out those services if you have not already:
+
+```langfuse```, ```postgres```, ```api```, ```telegram_bot```
+
+as they are not relevant in this stage of the process in `docker-compose.yaml`. 
 
 Comment out all other commands in the ```app``` service/section of ```docker-compose.yaml``` except:
     
@@ -159,9 +209,15 @@ If you succesfully commented out ```app``` service, it should look like this:
 
 ### Environment Files Setup
 
-Ensure that your ```.env.production``` and ```.env.api.production``` files are properly configured based on the ```.copy``` files provided.
+Ensure that your ```.env.production```, ```.env.api.production``` and ```.env.api.production``` files are properly configured based on the ```.copy``` files provided.
 
 Set your ```REDIS_USERNAME``` and ```REDIS_PASSWORD``` to the values you used during the Redis ACL setup.
+
+Uncomment out services that you previously commented out:
+
+```langfuse```, ```postgres```, ```api```, ```telegram_bot```
+
+Finally run `docker compose up --build`
 
 ### Deploy remotely ( via Github actions ):
 
