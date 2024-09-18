@@ -252,7 +252,7 @@ def generate_response_based_on_multirepresentation_indexing_with_debt(question: 
 
 
 #TODO: Code clean-up
-def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int, callback_handler):
+def generate_response_based_on_multirepresentation_indexing(question: str, chat_id: int, callback_handler=None):
 
     retrieved_docs = compression_retriever.get_relevant_documents(question, n_results=3)
     print(f"!MRI RETRIEVED DOCUMENTS:\n", retrieved_docs)
@@ -289,8 +289,8 @@ def generate_response_based_on_multirepresentation_indexing(question: str, chat_
     source_nodes = Utils.serialize_retrieved_nodes_for_the_mri_agent(retrieved_docs)
     experiment.retrieved_nodes = source_nodes
 
-    # Replacement
-    response = rag_chain.invoke(question, config={"callbacks":[callback_handler]}),
+    config = {"callbacks": [callback_handler]} if callback_handler else {}
+    response = rag_chain.invoke(question, config=config)
     experiment.response = str(response)
 
     return str(response), experiment, str(source_nodes), retrieved_docs
