@@ -18,8 +18,16 @@ fi
 echo "Removing existing cron jobs..."
 crontab -r || true
 
+# Get the absolute path to the script directory
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+
+# Navigate to the project root (assuming the script is in 'scripts/core/')
+PROJECT_ROOT="$(realpath "$SCRIPT_DIR/../../")"
+
+PERSISTENCE_DIR="$PROJECT_ROOT/persistence/elasticsearch/create_snapshot_with_cleanup.sh"
+
 # Define the cron job to create Elasticsearch snapshots every hour
-CRON_JOB="0 * * * * /home/auravana/app/scripts/elasticsearch/create_snapshot_with_cleanup.sh"
+CRON_JOB="0 * * * * $PERSISTENCE_DIR"
 
 # Add the cron job
 echo "Setting up cron job for Elasticsearch snapshots..."

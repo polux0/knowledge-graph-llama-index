@@ -8,7 +8,7 @@ services:
       context: ./chromadb
       dockerfile: Dockerfile
     volumes:
-      - chroma-data:/chroma/chroma
+      - ./persistence/chroma-data:/chroma/chroma
     command: "--workers 1 --host 0.0.0.0 --port 8000 --proxy-headers --log-config ./log_config.yml --timeout-keep-alive 30"
     environment:
       - IS_PERSISTENT=TRUE
@@ -43,10 +43,15 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - $HOME/esdata1:/usr/share/elasticsearch/data
-      - $HOME/es_snapshots:/usr/share/elasticsearch/snapshots
+      - ./persistence/esdata1:/usr/share/elasticsearch/data
+      - ./persistence/es_snapshots:/usr/share/elasticsearch/snapshots
     networks:
       - net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9200/_cat/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   kibana:
     image: docker.elastic.co/kibana/kibana:8.12.1
     container_name: kibana
@@ -66,9 +71,9 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - $HOME/redis/data:/data
-      - $HOME/redis/redis.conf:/usr/local/etc/redis/redis.conf
-      - $HOME/redis_acls/users.acl:/usr/local/etc/redis/users.acl
+      - ./persistence/redis/data:/data
+      - ./redis.conf:/usr/local/etc/redis/redis.conf
+      - ./persistence/redis_acls/users.acl:/usr/local/etc/redis/users.acl
     environment:
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_DATABASES=1
@@ -81,6 +86,11 @@ services:
       ]
     networks:
       - net
+    healthcheck:
+      test: ["CMD", "redis-cli", "-u", "redis://healthcheck_user@localhost", "ping"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
   # app:
   #   build: .
   #   depends_on:
@@ -105,56 +115,56 @@ services:
   #   networks:
   #     - net
   # Introducing langfuse
-  langfuse:
-    image: langfuse/langfuse:latest
-    container_name: langfuse
-    env_file:
-      - .env.api.production
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    restart: always
-    networks:
-      - net
-  # Langfuse depends on postgres
-  postgres:
-    image: postgres:13
-    container_name: langfuse_postgres
-    env_file:
-      - .env.production
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: always
-    networks:
-      - net
-  api:
-    build: .
-    container_name: api_container
-    volumes:
-      - .:/usr/src/app
-    ports:
-      - "5000:5000"
-    env_file:
-      - .env.api.production
-    environment:
-      - SERVICE_TYPE=api
-      - ENVIRONMENT=production
-    command: python ./modules/api.py
-    networks:
-      - net
-  telegram_bot:
-    build: .
-    container_name: telegram_bot_container
-    volumes:
-      - .:/usr/src/app
-    env_file:
-      - .env.production
-    environment:
-      - ENVIRONMENT=production
-    command: python ./modules/telegram_bot.py
-    networks:
-      - net
+  # langfuse:
+  #   image: langfuse/langfuse:latest
+  #   container_name: langfuse
+  #   env_file:
+  #     - .env.api.production
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #   restart: always
+  #   networks:
+  #     - net
+  # # Langfuse depends on postgres
+  # postgres:
+  #   image: postgres:13
+  #   container_name: langfuse_postgres
+  #   env_file:
+  #     - .env.production
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: always
+  #   networks:
+  #     - net
+  # api:
+  #   build: .
+  #   container_name: api_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   ports:
+  #     - "5000:5000"
+  #   env_file:
+  #     - .env.api.production
+  #   environment:
+  #     - SERVICE_TYPE=api
+  #     - ENVIRONMENT=production
+  #   command: python ./modules/api.py
+  #   networks:
+  #     - net
+  # telegram_bot:
+  #   build: .
+  #   container_name: telegram_bot_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   env_file:
+  #     - .env.production
+  #   environment:
+  #     - ENVIRONMENT=production
+  #   command: python ./modules/telegram_bot.py
+  #   networks:
+  #     - net
 volumes:
   chroma-data:
     driver: local

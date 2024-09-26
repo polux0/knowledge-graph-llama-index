@@ -44,7 +44,7 @@ Before starting, ensure you have the following installed:
 
 Script: [`/scripts/core/setup_directories_and_permissions.sh`](scripts/core/setup_directories_and_permissions.sh)
 
-This script creates the necessary directories for Elasticsearch, Redis, Neo4j, Chroma, and Nebula, and sets proper permissions.
+This script creates the necessary directories for Elasticsearch, Redis, Neo4j, Chroma and sets proper permissions.
 
 **Commands Executed:**
 - Creates required directories for Elasticsearch, Redis, Neo4j, etc.
@@ -71,7 +71,7 @@ This script installs a cron job that takes snapshots of Elasticsearch data every
 
 Script: [`/scripts/redis/setup_redis_acl.sh`](scripts/redis/setup_redis_acl.sh)
 
-This script configures Redis users and ACL by creating the file `/usr/local/etc/redis/users.acl` and allowing you to enter usernames and passwords during setup.
+This script configures Redis users and ACL by creating the file `/usr/local/etc/redis/users.acl` and setting up username and password in the environment files.
 
 ---
 
@@ -79,28 +79,8 @@ This script configures Redis users and ACL by creating the file `/usr/local/etc/
 
 ### Deploy locally:
 
-### Step 1: Execute Setup Scripts
 
-1. Run the directories and permissions setup script:
-   ```bash
-   . /scripts/core/setup_directories_and_permissions.sh
-   
-
-2. Next, manually run the Redis ACL setup:
-    ```. scripts/redis/setup_redis_acl.sh```
-
-3. Next, manually run ```. scripts/elasticsearch/setup_elasticsearch.sh```
-
-
-4. Finally, manually run ```. scripts/elasticsearch/setup_elasticsearch_cron.sh```
-
-
-#### Important: 
-
-Save the ```usernames``` and ```passwords``` you entered. You'll need to set them in ```.env.production```, ```.env.api.production``` and ```.env.ui.production```files under ```REDIS_USERNAME``` and ```REDIS_PASSWORD```.
-
-
-### Step 2: Configure Environment Files
+### Step 1: Configure Environment Files
 
 Create files ```.env.production```, ```.env.api.production``` and ```env.ui.production```. 
 
@@ -146,22 +126,13 @@ in ```create_raptor_indexing_langchain.py```
 Open ```docker-compose.yaml``` and navigate to the ```app``` service/section. 
 You'll need to modify it depending on which indexing process or UI you want to run.
 
-### Step 2: Run the MRI Indexing
-
-
-Comment out those services:
-
-```langfuse```, ```postgres```, ```api```, ```telegram_bot```
-
-as they are not relevant in this stage of the process in `docker-compose.yaml`. 
-
 Comment out all other commands in the `app` section/service of `docker-compose.yaml` except:
 
 ```command: python ./modules/multi_representation_indexing.py```
 
 Build and run the Docker containers:
 
-```docker-compose up --build```
+```make build```
 
 Wait until the embeddings process finishes. You should see the following log:
 
@@ -169,15 +140,9 @@ Wait until the embeddings process finishes. You should see the following log:
 
 Bring down the Docker containers:
 
-```docker-compose down```
+```make stop```
 
-### Step 3: Run the RAPTOR Indexing
-
-Comment out those services if you have not already:
-
-```langfuse```, ```postgres```, ```api```, ```telegram_bot```
-
-as they are not relevant in this stage of the process in `docker-compose.yaml`. 
+### Step 2: Run the RAPTOR Indexing
 
 Comment out all other commands in the ```app``` service/section of ```docker-compose.yaml``` except:
     
@@ -185,7 +150,7 @@ Comment out all other commands in the ```app``` service/section of ```docker-com
 
 Build and run the Docker containers again:
 
-```docker-compose up --build```
+```make build```
 
 Wait for the process to complete. The console will log:
 
@@ -193,31 +158,21 @@ Wait for the process to complete. The console will log:
 
 Bring down the Docker containers:
 
-```docker-compose down```
+```make stop```
 
-### Step 4: Create telegram bot
+### Step 3: Create telegram bot
 
 [Create telegram bot](https://core.telegram.org/bots/tutorial) and save token in both ```.env.production``` and ```.env.api.production``` under ```TELEGRAM_DEVELOPMENT_INTEGRATION_TOKEN```. This will enable you to interact with the bot via telegram
 
-### Step 5: Comment out the app service in ```docker-compose.yaml``` in order to save on resources
+### Step 4: Comment out the app service in ```docker-compose.yaml``` in order to save on resources
 
 There are issues with streamlit that needs to be fixed, so this is only temporary. 
 
-If you succesfully commented out ```app``` service, it should look like this:
+### Step 5: Final
 
-![Logo](https://i.ibb.co/YR4frk0/app.png)
+Once the embeddings processes are finished, make sure to uncomment ```api``` and ```telegram_bot``` services inside ```docker-compose.yaml``` so you can test it out. 
 
-### Environment Files Setup
-
-Ensure that your ```.env.production```, ```.env.api.production``` and ```.env.api.production``` files are properly configured based on the ```.copy``` files provided.
-
-Set your ```REDIS_USERNAME``` and ```REDIS_PASSWORD``` to the values you used during the Redis ACL setup.
-
-Uncomment out services that you previously commented out:
-
-```langfuse```, ```postgres```, ```api```, ```telegram_bot```
-
-Finally run `docker compose up --build`
+Finally run `make build`
 
 ### Deploy remotely ( via Github actions ):
 
