@@ -73,6 +73,7 @@ chmod +x "$PROJECT_ROOT/scripts/elasticsearch/create_snapshot.sh" \
          "$PROJECT_ROOT/scripts/elasticsearch/migrations/01_add_source_agent_into_interaction.sh" \
          "$PROJECT_ROOT/scripts/elasticsearch/migrations/02_add_retrieved_nodes_into_interaction.sh" \
          "$PROJECT_ROOT/scripts/elasticsearch/migrations/03_add_telegram_related_data_into_interaction.sh" \
+         "$PROJECT_ROOT/scripts/core/check_containers.sh" \
          "$PROJECT_ROOT/scripts/elasticsearch/setup_elasticsearch_cron.sh"
          # add migrations
 

@@ -46,6 +46,8 @@ chmod 644 "$acl_file"
 echo "user $username1 on >$password1 ~* +@all" > "$acl_file"
 echo "user $username2 on >$password2 ~* +@all" >> "$acl_file"
 echo "user $username3 on >$password3 ~* +@all" >> "$acl_file"
+# Add the healthcheck_user with nopass and ping permissions 
+echo "user healthcheck_user on nopass ~* +ping" >> "$acl_file"
 
 echo "Redis ACL file created successfully!"
 
