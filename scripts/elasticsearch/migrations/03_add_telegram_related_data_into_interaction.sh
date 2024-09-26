@@ -10,8 +10,8 @@ curl -X PUT "$ELASTICSEARCH_URL/interaction/_mapping" -H "Content-Type: applicat
     "telegram_message_id": { "type": "keyword" },
     "telegram_user_id": { "type": "keyword" },
     "telegram_user_name": { "type": "keyword" },
-    "telegram_feedback_rating": { "type": "integer" },  # Separate field for feedback rating
-    "telegram_feedback_text": { "type": "text" },  # Separate field for feedback text
+    "telegram_feedback_rating": { "type": "integer" },
+    "telegram_feedback_text": { "type": "text" },
     "document_type": { "type": "keyword" }
   }
 }'

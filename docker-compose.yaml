@@ -105,56 +105,56 @@ services:
   #   networks:
   #     - net
   # Introducing langfuse
-  langfuse:
-    image: langfuse/langfuse:latest
-    container_name: langfuse
-    env_file:
-      - .env.api.production
-    ports:
-      - "3000:3000"
-    depends_on:
-      - postgres
-    restart: always
-    networks:
-      - net
-  # Langfuse depends on postgres
-  postgres:
-    image: postgres:13
-    container_name: langfuse_postgres
-    env_file:
-      - .env.production
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    restart: always
-    networks:
-      - net
-  api:
-    build: .
-    container_name: api_container
-    volumes:
-      - .:/usr/src/app
-    ports:
-      - "5000:5000"
-    env_file:
-      - .env.api.production
-    environment:
-      - SERVICE_TYPE=api
-      - ENVIRONMENT=production
-    command: python ./modules/api.py
-    networks:
-      - net
-  telegram_bot:
-    build: .
-    container_name: telegram_bot_container
-    volumes:
-      - .:/usr/src/app
-    env_file:
-      - .env.production
-    environment:
-      - ENVIRONMENT=production
-    command: python ./modules/telegram_bot.py
-    networks:
-      - net
+  # langfuse:
+  #   image: langfuse/langfuse:latest
+  #   container_name: langfuse
+  #   env_file:
+  #     - .env.api.production
+  #   ports:
+  #     - "3000:3000"
+  #   depends_on:
+  #     - postgres
+  #   restart: always
+  #   networks:
+  #     - net
+  # # Langfuse depends on postgres
+  # postgres:
+  #   image: postgres:13
+  #   container_name: langfuse_postgres
+  #   env_file:
+  #     - .env.production
+  #   volumes:
+  #     - postgres_data:/var/lib/postgresql/data
+  #   restart: always
+  #   networks:
+  #     - net
+  # api:
+  #   build: .
+  #   container_name: api_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   ports:
+  #     - "5000:5000"
+  #   env_file:
+  #     - .env.api.production
+  #   environment:
+  #     - SERVICE_TYPE=api
+  #     - ENVIRONMENT=production
+  #   command: python ./modules/api.py
+  #   networks:
+  #     - net
+  # telegram_bot:
+  #   build: .
+  #   container_name: telegram_bot_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   env_file:
+  #     - .env.production
+  #   environment:
+  #     - ENVIRONMENT=production
+  #   command: python ./modules/telegram_bot.py
+  #   networks:
+  #     - net
 volumes:
   chroma-data:
     driver: local

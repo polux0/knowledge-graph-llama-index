@@ -52,3 +52,7 @@ data/storage0
 
 # Redis specific
 users.acl
+
+# Docker volumes
+persistence/*
+!persistence/.gitignore
