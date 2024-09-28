@@ -8,7 +8,7 @@ services:
       context: ./chromadb
       dockerfile: Dockerfile
     volumes:
-      - ./persistence/chroma-data:/chroma/chroma
+      - chroma-data:/chroma/chroma
     command: "--workers 1 --host 0.0.0.0 --port 8000 --proxy-headers --log-config ./log_config.yml --timeout-keep-alive 30"
     environment:
       - IS_PERSISTENT=TRUE
@@ -43,15 +43,10 @@ services:
     ports:
       - "9200:9200"
     volumes:
-      - ./persistence/esdata1:/usr/share/elasticsearch/data
-      - ./persistence/es_snapshots:/usr/share/elasticsearch/snapshots
+      - esdata:/usr/share/elasticsearch/data
+      - es_snapshots:/usr/share/elasticsearch/snapshots
     networks:
       - net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:9200/_cat/health"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
   kibana:
     image: docker.elastic.co/kibana/kibana:8.12.1
     container_name: kibana
@@ -71,9 +66,9 @@ services:
     ports:
       - "6379:6379"
     volumes:
-      - ./persistence/redis/data:/data
+      - redis-data:/data
       - ./redis.conf:/usr/local/etc/redis/redis.conf
-      - ./persistence/redis_acls/users.acl:/usr/local/etc/redis/users.acl
+      - ./users.acl:/usr/local/etc/redis/users.acl
     environment:
       - REDIS_PORT=${REDIS_PORT}
       - REDIS_DATABASES=1
@@ -86,58 +81,29 @@ services:
       ]
     networks:
       - net
-    healthcheck:
-      test: ["CMD", "redis-cli", "-u", "redis://healthcheck_user@localhost", "ping"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-  # app:
-  #   build: .
-  #   depends_on:
-  #     chromadb:
-  #       condition: service_healthy
-  #   container_name: app_container
-  #   volumes:
-  #     - .:/usr/src/app
-  #   ports:
-  #     - "8080:8080"
-  #     - "8501:8501"
-  #   env_file:
-  #     - .env.ui.production
-  #   environment:
-  #   - ENVIRONMENT=production
-  #   # command: python ./modules/create_vector_embeddings_llama.py
-  #   # command: python ./modules/multi_representation_indexing.py
-  #   # command: python ./modules/create_raptor_indexing_langchain.py
-  #   command: streamlit run ./modules/app.py
-  #   # command: python ./modules/delete_chroma_collections.py
-  #   # command: python ./modules/create_knowledge_graph.py
-  #   networks:
-  #     - net
-  # Introducing langfuse
-  # langfuse:
-  #   image: langfuse/langfuse:latest
-  #   container_name: langfuse
-  #   env_file:
-  #     - .env.api.production
-  #   ports:
-  #     - "3000:3000"
-  #   depends_on:
-  #     - postgres
-  #   restart: always
-  #   networks:
-  #     - net
-  # # Langfuse depends on postgres
-  # postgres:
-  #   image: postgres:13
-  #   container_name: langfuse_postgres
-  #   env_file:
-  #     - .env.production
-  #   volumes:
-  #     - postgres_data:/var/lib/postgresql/data
-  #   restart: always
-  #   networks:
-  #     - net
+  app:
+    build: .
+    depends_on:
+      chromadb:
+        condition: service_healthy
+    container_name: app_container
+    volumes:
+      - .:/usr/src/app
+    ports:
+      - "8080:8080"
+      - "8501:8501"
+    env_file:
+      - .env.ui.production
+    environment:
+    - ENVIRONMENT=production
+    # command: python ./modules/create_vector_embeddings_llama.py
+    command: python ./modules/multi_representation_indexing.py
+    # command: python ./modules/create_raptor_indexing_langchain.py
+    # command: streamlit run ./modules/app.py
+    # command: python ./modules/delete_chroma_collections.py
+    # command: python ./modules/create_knowledge_graph.py
+    networks:
+      - net
   # api:
   #   build: .
   #   container_name: api_container
@@ -167,7 +133,11 @@ services:
   #     - net
 volumes:
   chroma-data:
-    driver: local
+  esdata:
+  es_snapshots:
+  redis-data:
+  redis-conf:
+  redis-acl:
   postgres_data:
 
 networks:

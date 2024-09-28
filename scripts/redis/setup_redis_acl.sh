@@ -1,5 +1,37 @@
 #!/bin/bash
 
+# Exit immediately if a command exits with a non-zero status
+set -e
+
+# Get the absolute path to the script directory
+SCRIPT_DIR="$(dirname "$(realpath "$0")")"
+
+# Navigate to the project root (assuming the script is in 'scripts/core/')
+PROJECT_ROOT="$(realpath "$SCRIPT_DIR/../../")"
+
+# Define the lock file path
+LOCK_FILE="$PROJECT_ROOT/scripts/redis/setup_redis_acl.lock"
+
+# Check if the lock file exists
+if [ -f "$LOCK_FILE" ]; then
+    echo "User ACL setup has already been run. Skipping..."
+    exit 0
+fi
+
+# Create the lock file
+touch "$LOCK_FILE"
+
+# Function to clean up the lock file on exit or error
+cleanup() {
+    if [ $? -ne 0 ]; then
+        echo "An error occurred. Removing lock file to allow future runs."
+        rm -f "$LOCK_FILE"
+    fi
+}
+
+# Set the cleanup function to run on script exit
+trap cleanup EXIT
+
 # Function to generate a random string
 generate_random_string() {
     local length=$1
@@ -27,16 +59,8 @@ for i in {1..3}; do
 
 done
 
-# Get the absolute path to the script directory
-SCRIPT_DIR="$(dirname "$(realpath "$0")")"
-
-# Navigate to the project root (assuming the script is in 'scripts/core/')
-PROJECT_ROOT="$(realpath "$SCRIPT_DIR/../../")"
-
 # Define the persistence directory relative to the project root
-PERSISTENCE_DIR="$PROJECT_ROOT/persistence/"
-
-acl_file="$PERSISTENCE_DIR/redis_acls/users.acl"
+acl_file="$PROJECT_ROOT/users.acl"
 
 # Ensure the ACL file exists and set proper permissions
 touch "$acl_file"
@@ -46,15 +70,12 @@ chmod 644 "$acl_file"
 echo "user $username1 on >$password1 ~* +@all" > "$acl_file"
 echo "user $username2 on >$password2 ~* +@all" >> "$acl_file"
 echo "user $username3 on >$password3 ~* +@all" >> "$acl_file"
-# Add the healthcheck_user with nopass and ping permissions 
-echo "user healthcheck_user on nopass ~* +ping" >> "$acl_file"
 
 echo "Redis ACL file created successfully!"
 
 # Display the file content to confirm
 cat "$acl_file"
 
-# List of .env files to modify
 # List of .env files to modify
 env_files=(
     "$PROJECT_ROOT/.env.api.production"
@@ -91,3 +112,6 @@ for i in {0..2}; do
 done
 
 echo "Environment files updated successfully!"
+
+# If the script completes without errors, the lock file will remain in place
+echo "User ACL setup completed successfully. Lock file created at $LOCK_FILE"

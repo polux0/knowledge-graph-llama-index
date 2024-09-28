@@ -56,3 +56,5 @@ users.acl
 # Docker volumes
 persistence/*
 !persistence/.gitignore
+
+users.acl

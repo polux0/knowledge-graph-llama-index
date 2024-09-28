@@ -96,7 +96,9 @@ In case you would like to give it relatively quick try, modify:
 
 to 
 
-```documents_directory = "../data/documentation_optimal/test"``` in ```multi_representation_indexing.py``` 
+```documents_directory = "../data/documentation_optimal/test"``` 
+
+in ```multi_representation_indexing.py``` 
 
 as well as 
 
@@ -104,7 +106,9 @@ as well as
 
 to 
 
-```folders = ['test1']``` in ```create_raptor_indexing_langchain.py```
+```folders = ['test1']``` 
+
+in ```create_raptor_indexing_langchain.py```
 
 In case you decide to create the indexes via embeddings with different data set, you'll need to manually change name of the collection: 
 
