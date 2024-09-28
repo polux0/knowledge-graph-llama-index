@@ -7,7 +7,7 @@ build:
 	@echo "Waiting for all containers to be up and running..."
 	
 	# Call the check_services_up script
-	@./scripts/core/check_services_up.sh
+	@./scripts/core/check_services.sh
 
 	@echo "All containers are up and running!"
 	@echo "Running Elasticsearch setup scripts..."
