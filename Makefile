@@ -21,7 +21,12 @@ run:
 	@echo "Starting docker-compose..."
 	@docker-compose up -d
 	@echo "Waiting for containers to be healthy..."
-	@sleep 15
+	@echo "Waiting for all containers to be up and running..."
+	
+	# Call the check_services_up script
+	@./scripts/core/check_services.sh
+
+	@echo "All containers are up and running!"
 	@echo "Running Elasticsearch setup scripts..."
 	@./scripts/elasticsearch/setup_elasticsearch.sh
 	@./scripts/elasticsearch/setup_repository.sh
