@@ -75,8 +75,8 @@ chunk_overlap = 518
 # Local
 # model_name_id = "default"
 # embedding_model_id = "openai-text-embedding-3-large"
-# chroma_collection_name = "MRITESTTTTTTTTTTT3"
-# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT3"
+# chroma_collection_name = "MRITESTTTTTTTTTTT3X1"
+# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT3X1"
 # documents_directory = "../data/documentation_optimal/test1"
 
 # Production
