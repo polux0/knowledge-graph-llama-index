@@ -27,4 +27,5 @@ typing_extensions>=4.5.0
 uvicorn[standard]>=0.18.3
 orjson>=3.9.12
 # manually added
-chromadb
+# chromadb
+chromadb==0.5.16
