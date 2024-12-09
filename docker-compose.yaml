@@ -97,40 +97,40 @@ services:
     environment:
     - ENVIRONMENT=production
     # command: python ./modules/create_vector_embeddings_llama.py
-    command: python ./modules/multi_representation_indexing.py
-    # command: python ./modules/create_raptor_indexing_langchain.py
+    # command: python ./modules/multi_representation_indexing.py
+    command: python ./modules/create_raptor_indexing_langchain.py
     # command: streamlit run ./modules/app.py
     # command: python ./modules/delete_chroma_collections.py
     # command: python ./modules/create_knowledge_graph.py
     networks:
       - net
-  api:
-    build: .
-    container_name: api_container
-    volumes:
-      - .:/usr/src/app
-    ports:
-      - "5000:5000"
-    env_file:
-      - .env.api.production
-    environment:
-      - SERVICE_TYPE=api
-      - ENVIRONMENT=production
-    command: python ./modules/api.py
-    networks:
-      - net
-  telegram_bot:
-    build: .
-    container_name: telegram_bot_container
-    volumes:
-      - .:/usr/src/app
-    env_file:
-      - .env.production
-    environment:
-      - ENVIRONMENT=production
-    command: python ./modules/telegram_bot.py
-    networks:
-      - net
+  # api:
+  #   build: .
+  #   container_name: api_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   ports:
+  #     - "5000:5000"
+  #   env_file:
+  #     - .env.api.production
+  #   environment:
+  #     - SERVICE_TYPE=api
+  #     - ENVIRONMENT=production
+  #   command: python ./modules/api.py
+  #   networks:
+  #     - net
+  # telegram_bot:
+  #   build: .
+  #   container_name: telegram_bot_container
+  #   volumes:
+  #     - .:/usr/src/app
+  #   env_file:
+  #     - .env.production
+  #   environment:
+  #     - ENVIRONMENT=production
+  #   command: python ./modules/telegram_bot.py
+  #   networks:
+  #     - net
 volumes:
   chroma-data:
   esdata:

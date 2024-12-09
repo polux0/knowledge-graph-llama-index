@@ -148,10 +148,10 @@ chroma_collection = chroma_client.get_or_create_collection(
 )
 
 # Production
-folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
-           'social-system', 'system-overview']
+# folders = ['decision-system', 'habitat-system', 'lifestyle-system', 'material-system', 'project-execution', 'project-plan',
+#            'social-system', 'system-overview']
 # Local
-# folders = ['test1']
+folders = ['test1']
 
 if chroma_collection.count() == 0:
     print("Raptor collection not found, creating embeddings...")
@@ -255,11 +255,11 @@ question = "Would you tell me more about artificial intelligence units?"
 
 # Retriever related: 
 
-source_nodes = retriever.get_relevant_documents(
-    question,
-    n_results=3,
-    return_source_documents=True
-)
+# source_nodes = retriever.get_relevant_documents(
+#     question,
+#     n_results=3,
+#     return_source_documents=True
+# )
 
 
 def stringify_and_combine_nodes(nodes) -> str:

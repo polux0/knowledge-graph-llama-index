@@ -73,18 +73,18 @@ repository_id = "mistralai/Mistral-7B-Instruct-v0.3"
 chunk_size = 2048
 chunk_overlap = 518
 # Local
-# model_name_id = "default"
-# embedding_model_id = "openai-text-embedding-3-large"
-# chroma_collection_name = "MRITESTTTTTTTTTTT3X1"
-# redis_namespace = "parent-documents-MRITESTTTTTTTTTTT3X1"
-# documents_directory = "../data/documentation_optimal/test1"
-
-# Production
 model_name_id = "default"
 embedding_model_id = "openai-text-embedding-3-large"
-chroma_collection_name = "summaries-complete-documentation2"
-redis_namespace = "parent-documents-summaries-complete-documentation2"
-documents_directory = "../data/documentation_optimal"
+chroma_collection_name = "MRITESTTTTTTTTTTT3X1"
+redis_namespace = "parent-documents-MRITESTTTTTTTTTTT3X1"
+documents_directory = "../data/documentation_optimal/test1"
+
+# Production
+# model_name_id = "default"
+# embedding_model_id = "openai-text-embedding-3-large"
+# chroma_collection_name = "summaries-complete-documentation2"
+# redis_namespace = "parent-documents-summaries-complete-documentation2"
+# documents_directory = "../data/documentation_optimal"
 
 # Elasticsearch related
 current_time = datetime.now(timezone.utc)
