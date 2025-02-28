@@ -36,7 +36,7 @@ create_snapshot() {
     curl -X PUT "$ES_URL/_snapshot/$REPO_NAME/$SNAPSHOT_NAME?wait_for_completion=true" -H 'Content-Type: application/json' -d "{}"
 }
 
-# First, delete all existing snapshots
+# First, delete all existing snapshots ( this is problematic in case there is only one snapshot that actually holds our data...)
 delete_all_snapshots
 
 # Then, create a new snapshot

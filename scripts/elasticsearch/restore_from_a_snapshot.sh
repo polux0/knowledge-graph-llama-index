@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Step 1: Take a snapshot
-./create_snapshot_with_cleanup.sh
+./create_snapshot.sh
 
 # Step 2: Delete old index
 curl -X DELETE "http://localhost:9200/interaction"

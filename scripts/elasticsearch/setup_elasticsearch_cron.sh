@@ -24,7 +24,7 @@ SCRIPT_DIR="$(dirname "$(realpath "$0")")"
 # Navigate to the project root (assuming the script is in 'scripts/core/')
 PROJECT_ROOT="$(realpath "$SCRIPT_DIR/../../")"
 
-PERSISTENCE_DIR="$PROJECT_ROOT/persistence/elasticsearch/create_snapshot_with_cleanup.sh"
+PERSISTENCE_DIR="$PROJECT_ROOT/persistence/elasticsearch/create_snapshot.sh"
 
 # Define the cron job to create Elasticsearch snapshots every hour
 CRON_JOB="0 * * * * $PERSISTENCE_DIR"
